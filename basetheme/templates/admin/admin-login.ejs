@@ -1,0 +1,20 @@
+<% stylesheet(furl('/admin.css', '/admin.min.css')) %>
+<section class="login">
+  <div class="wrapper">
+    <h2>Logga in</h2>
+    <% authServices.forEach(function (service) { %>
+      <%
+      switch (service) {
+        case 'github':
+          serviceName = 'GitHub';
+          break;
+        default:
+          serviceName = service.substr(0, 1).toUpperCase() + service.substr(1);
+      }
+      %>
+      <form action="/admin/auth/<%= service %>" method="post">
+        <div><button class="<%= service %>" type="submit">Logga in med <%= serviceName %></button></div>
+      </form>
+    <% }); %>
+  </div>
+</section>

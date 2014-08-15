@@ -1,0 +1,14 @@
+<% block('title', element.dictionaryData.sitename + ' – Admin') -%>
+<% block('pageTitle', element.dictionaryData.sitename) -%>
+<% block('menu', '<li><a href="/admin/logout">Logga ut</a></li>') -%>
+<% block('jsconfig', 'vtConfig.admin = ' + JSON.stringify(jsConfig) + ';') -%>
+<% stylesheet(furl('/admin.css', '/admin.min.css')) -%>
+<% script('//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js') -%>
+<% script(furl('/admin.js', '/admin.min.js')) -%>
+<section class="admin">
+  <div class="wrapper">
+    <h2>Admin</h2>
+    <%- content %>
+  </div>
+</div>
+</section>

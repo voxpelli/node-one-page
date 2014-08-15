@@ -1,0 +1,58 @@
+{
+  "name": "valtechonepage",
+  "version": "2.0.0",
+  "private": true,
+  "license" : "MIT",
+  "author": {
+    "name": "Pelle Wessman",
+    "email": "pelle.wessman@valtech.se"
+  },
+  "dependencies": {
+    "backbone-extend-standalone": "^0.1.2",
+    "cloudinary": "^1.0.8",
+    "connect-busboy": "0.0.1",
+    "connect-pg-simple": "^2.0.0",
+    "connect-roles": "^3.0.3",
+    "dotenv": "^0.4.0",
+    "ejs": "^1.0.0",
+    "express": "^3.4.7",
+    "forms": "~0.3.0",
+    "knex": "^0.6.22",
+    "lodash": "^2.4.1",
+    "marked": "^0.3.2",
+    "passport": ">= 0.1.1",
+    "passport-github": "~0.1.5",
+    "passport-oauth2": "^1.1.2",
+    "passport-twitter": "^1.0.2",
+    "pg.js": "^3.2.0",
+    "promise": "^5.0.0",
+    "static-expiry": "git://github.com/voxpelli/node-connect-static-expiry.git#c363b61f3a850b19716e09d148ac8f7d28965ac0",
+    "strftime": "~0.8.0",
+    "tema": "~0.2.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "~0.5.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-sass": "~0.7.3",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-fontello": "^0.1.3",
+    "grunt-lintspaces": "^0.6.0",
+    "grunt-notify": "~0.3.0",
+    "passport-dummy": "0.0.1"
+  },
+  "engines": {
+    "node": "^0.10.0"
+  },
+  "main": "./lib/app",
+  "scripts": {
+    "start": "node .",
+    "install-schema": "node lib/install-schema.js",
+    "migrate-schema": "./node_modules/.bin/knex migrate:latest",
+    "rollback-schema": "./node_modules/.bin/knex migrate:rollback"
+  },
+  "directories": {
+    "lib": "./lib"
+  }
+}

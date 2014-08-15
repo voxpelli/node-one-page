@@ -1,0 +1,29 @@
+section.description, section.block {
+  padding-bottom: 0;
+  h2 {
+    @extend h2.line;
+    margin-bottom:
+      ((30em - 8 - 1) / 30) // Retain the dimensions of every other h2
+      + (12 / 30); // And add the extra margin that we need here
+  }
+
+  p, h3, h4, h5, h6, pre, table {
+    padding: 0 9px;
+    margin-bottom: (1em / 1.6);
+  }
+  h3 {
+    font-size: 2.4em;
+    line-height: 1.5;
+  }
+  h4, h5, h6 {
+    font-size: 1.6em;
+  }
+}
+section.description {
+  &.no-header {
+    padding-top: 7.4em;
+  }
+}
+section.description .wrapper, #main > div.blocks {
+  margin-bottom: 3.1em;
+}

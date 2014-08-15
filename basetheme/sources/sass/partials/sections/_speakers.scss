@@ -1,0 +1,112 @@
+section.speakers {
+  @mixin speaker-width($speaker-count, $max-width, $speaker-margin: 16px) {
+    $speaker-width: ($max-width - $speaker-margin * ($speaker-count - 1)) / $speaker-count;
+    .speaker {
+      width: ($speaker-width / $max-width) * 100%;
+    }
+  }
+
+  background: hsv_to_color(saturate_hsv(color_to_hsv($color-speakers), 0 - 81));
+  box-shadow: $section-shadow;
+
+  text-align: justify;
+  line-height: 0;
+
+  @include speaker-width(3, if($max-width, $max-width, 944px));
+
+  @media screen and (max-width: 630px) {
+    @include speaker-width(2,  630px);
+  }
+  @media screen and (max-width: 370px) {
+    .speaker {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .wrapper:after
+  {
+    content: '';
+    display: inline-block;
+    width: 100%;
+  }
+  h2 {
+    @extend h2.line;
+    border-bottom-color: $color-speakers;
+  }
+  .speaker {
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    line-height: 15px;
+    text-align: left;
+    padding-bottom: 1em + (2.5em * 0.7);
+  }
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  h3 {
+    background: $color-speakers;
+    color: #fff;
+    font-size: 1.6em;
+    padding: .8125em 2em .8125em 6px;
+    position: relative;
+  }
+  a.readmore {
+    color: #fff;
+    font-size: 1.6em;
+
+    h3 {
+      font-size: 1em;
+    }
+  }
+  .description {
+    overflow: hidden;
+  }
+  p, h4, h5, h6, table, pre {
+    font-size: 1.5em;
+    background: #fff;
+    padding: 10px;
+    display: block;
+  }
+  pre {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .social {
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
+    li {
+      position: relative;
+      display: inline-block;
+      text-indent: -5000em;
+      font-size: 2.5em;
+      line-height: 0;
+      padding: .64em .5em 0 1px;
+      width: 1em;
+      height: 1em;
+    }
+    a:after {
+      @extend %icon;
+      @extend .icon-twitter:before;
+
+      color: $color-speakers;
+      text-indent: 0;
+
+      display: block;
+      position: absolute;
+      bottom: -.3em;
+      left: 0;
+
+      padding: .3em .4em .3em 1px;
+    }
+    .github a:after { @extend .icon-github:before; }
+    .linkedin a:after { @extend .icon-linkedin:before; }
+    .blog a:after { @extend .icon-rss:before; }
+    .dribbble a:after { @extend .icon-dribbble:before; }
+  }
+}

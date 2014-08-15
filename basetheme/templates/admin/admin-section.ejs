@@ -1,0 +1,7 @@
+<% block('menu', '<li><a href="#' + element.sectionId + '">' + escape(element.sectionMenu || element.sectionTitle) + '</a></li>'); -%>
+<div class="<%- element.sectionClass || 'admin-part' %>">
+  <% if (element.sectionTitle) { -%>
+    <h3><%= element.sectionTitle %></h3>
+  <% } -%>
+  <%- content %>
+</div>

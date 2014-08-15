@@ -1,0 +1,5 @@
+<% if (content.data.source === 'vimeo') { -%>
+  <iframe src="//player.vimeo.com/video/<%= content.data.remote_id %>?title=1&amp;byline=1&amp;portrait=1&amp;autoplay=0" width="600" height="400" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+<% } else if (content.data.source === 'youtube') { -%>
+  <iframe width="600" height="400" src="//www.youtube.com/embed/<%= content.data.remote_id %>" frameborder="0" allowfullscreen></iframe>
+<% } -%>

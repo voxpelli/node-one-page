@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+// Losely following the structure of http://thesassway.com/beginner/how-to-structure-a-sass-project
+
+@import "partials/base";
+
+@import "partials/normalize";
+@import "partials/layout";
+@import "partials/icons";
+@import "partials/menu";
+@import "partials/forms";
+@import "partials/sections";

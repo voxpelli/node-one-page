@@ -1,0 +1,38 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
+
+  <!--[if lt IE 9]>
+    <script src="/html5shiv.js"></script>
+  <![endif]-->
+
+  <title><%= block('title') || 'Hello World' %></title>
+  <%- stylesheet() %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/favicon.ico" />
+
+  <script>
+    window.vtConfig = window.vtConfig || {};
+    <%- block('jsconfig') %>
+  </script>
+
+  <% if (block('cssconfig')) { %>
+    <style><%- block('cssconfig') // %></style>
+  <% } %>
+</head>
+
+<body id="top">
+
+<div id="page"><%- content %></div>
+
+<% if (environment === 'development') { %>
+  <script src="http://localhost:35729/livereload.js"></script>
+<% } %>
+
+<script src="<%= furl('/footer.js', '/footer.min.js') %>"></script>
+
+<%- script() %>
+</body>
+</html>

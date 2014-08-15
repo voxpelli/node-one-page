@@ -1,0 +1,53 @@
+<% if (agenda.length) { %>
+  <%
+  block('menu', '<li><a href="/#agenda">Agenda</a></li>');
+  markedOptions = { levelOffset: 4, headerPrefix : 'agenda-' };
+  -%>
+
+  <section class="agenda">
+    <div class="wrapper">
+      <h2 id="agenda">Agendan</h2>
+    </div>
+
+    <%
+    var agendaOdd = true
+      , i, length;
+    for (i = 0, length = agenda.length; i < length; i += 1) {
+      el = agenda[i];
+      agendaOdd = !agendaOdd;
+      %>
+      <div class="agenda_row<%- agendaOdd ? ' odd' : '' %>">
+        <div class="wrapper">
+          <div class="time"><%= strftime('%R', new Date('1970-01-01 ' + el.start)) + ' - ' + strftime('%R', new Date('1970-01-01 ' + el.stop)) %></div>
+          <div class="forelasning">
+            <h4><%= el.title %></h4>
+            <% if (el.speaker) { %>
+              <div class="speaker"><%= el.speaker %></div>
+            <% } %>
+            <% if (el.description) { %>
+              <div class="description">
+                <%- marked(el.description, markedOptions) %>
+              </div>
+            <% } %>
+          </div>
+          <% if (agenda[i + 1] && agenda[i + 1].start == el.start) {
+            i += 1;
+            el = agenda[i];
+            %>
+            <div class="forelasning">
+              <h4><%= el.title %></h4>
+              <% if (el.speaker) { %>
+                <div class="speaker"><%= el.speaker %></div>
+              <% } %>
+              <% if (el.description) { %>
+                <div class="description">
+                  <%- marked(el.description, markedOptions) %>
+                </div>
+              <% } %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </section>
+<% } %>

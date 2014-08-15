@@ -1,0 +1,83 @@
+#page > header {
+  width: 100%;
+  margin: 0;
+  background: $color-background-header;
+  position: relative;
+  z-index: 100;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+
+  .wrapper {
+    padding: 1.5em 0 0;
+  }
+  h1 {
+    font-size: 2em;
+
+    // This margin-right is to ensure that the negative margin of #menu doesn't clash with the h1
+    margin-right: 1.6 * 2em; // #menu font-size * menu margin
+    padding: 0 0 (.9em/2) .2em;
+    float: left;
+
+    a {
+      display: block;
+      padding: (1.1em/2) 0;
+      color: #FFF;
+      &:hover {
+        color: $color-highlight;
+      }
+    }
+  }
+}
+
+#menu {
+  float: right;
+  font-size: 1.6em;
+  line-height: 1;
+  margin-left: -2em;
+  text-align: justify;
+  overflow: hidden;
+
+  ul {
+    font-size: 1em;
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 (7em / 16);
+  }
+  li {
+    display: inline-block;
+    color: #fff;
+    margin: (11em / 16) 0 ((3 + 4 + 11em) / 16) 2em;
+  }
+  li a {
+    padding: (12em / 16) (10em / 16) (3em / 16);
+    color: #FFF;
+    border-bottom: (4em / 16) solid transparent;
+    @include transition(border-color .2s linear);
+  }
+  li a:hover {
+    border-bottom-color: $color-highlight;
+  }
+  li.active a {
+    border-bottom-color: $color-highlight;
+  }
+}
+
+@media screen and (max-width: 690px) {
+  #page > header a.show-menu {
+    display: block;
+  }
+  #menu {
+    float: none;
+    clear: both;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  #menu {
+    margin-left: 0;
+  }
+  #menu li {
+    width: 100%;
+    margin-left: 0;
+  }
+}

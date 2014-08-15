@@ -1,0 +1,49 @@
+input[type=text], textarea, select, .error_msg,
+// Two selectors below for Wufoo
+input.text, selext.select {
+  font-size: 1.8em;
+  border-radius: $border-radius;
+  border: 1px solid #c2c2c2;
+  padding: .4em;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+a.button, button:not(.st-format-btn), input[type=submit] {
+  display: inline-block;
+  padding: (12em / 18) (19em / 18) (10em / 18);
+  margin-bottom: 4px;
+  font-size: 1.8em;
+  line-height: normal;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 0 solid #000;
+  border-radius: $border-radius;
+
+  @include button-color($color-button);
+
+  &.action, &[type=submit] {
+    @include button-color($color-button-positive);
+  }
+  &.danger {
+    @include button-color($color-danger);
+  }
+
+  // Fix for Firefox anti-aliasing problem with border-radius + box-shadow
+  position: relative;
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    z-index: -1;
+  }
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+}

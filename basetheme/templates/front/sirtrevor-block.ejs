@@ -1,0 +1,7 @@
+<% if (content.data.text) { -%>
+  <%- marked(content.data.text, {
+    sanitize: true,
+    levelOffset: 2,
+    headerPrefix : name + '-'
+  }) %>
+<% } -%>

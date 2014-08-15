@@ -1,0 +1,10 @@
+<%- marked(content.data.text, {
+  sanitize: true,
+  levelOffset: 2,
+  headerPrefix : name + '-'
+}) %>
+<% if (content.data.cite) { -%>
+  <p>
+    <cite class="quote">– <%= content.data.cite %></cite>
+  </p>
+<% } -%>

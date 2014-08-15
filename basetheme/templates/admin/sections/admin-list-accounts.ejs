@@ -1,0 +1,24 @@
+<table>
+  <tr>
+    <th scope="col" class="title">Konto</th>
+    <th scope="col">Tjänst</th>
+    <th scope="col">Roll</th>
+    <th scope="col" class="modified">Senast inloggad</th>
+    <th scope="col" class="actions">Åtgärder</th>
+  </tr>
+  <% list.forEach(function(el) { %>
+    <tr>
+      <td class="title"><%= el.identifier %></td>
+      <td><%= el.service[0].toUpperCase() + el.service.slice(1) %></td>
+      <td><%= el.role %></td>
+      <td class="modified"><%= el.lastlogin ? prettydate(new Date(el.lastlogin)) : 'Aldrig' %></td>
+      <td class="actions">
+        <form action="/admin/accounts/<%= encodeURIComponent(el.service) %>/<%= encodeURIComponent(el.identifier) %>?_method=delete" method="post">
+          <div>
+            <button class="danger" type="submit" name="remove">Ta bort</button>
+          </div>
+        </form>
+      </td>
+    </tr>
+  <% }); %>
+</table>

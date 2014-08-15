@@ -1,0 +1,98 @@
+section.agenda {
+  $padding: if($max-width, (10px / $max-width) * 100%, 1%);
+
+  box-shadow: inset 0 -10px 10px -10px rgba(0,0,0,.05);
+  padding-bottom: 4.4em;
+  position: relative;
+
+  h2 {
+    @extend h2.line;
+    margin-bottom:
+      ((30em - 8 - 1) / 30) // Retain the dimensions of every other h2
+      + (12 / 30); // And add the extra margin that we need here
+  }
+  h3, h4 {
+    font-size: 2.4em;
+    line-height: 1.5;
+  }
+  h3 {
+    font-family: $font-special-serif;
+    font-weight: 400;
+    color: $color-highlight;
+    padding: 0.5em $padding;
+  }
+  h4 {
+    margin-top: 0 - (6px / 24px) * 1em;
+  }
+  .agenda_row {
+    clear:both;
+    position: relative;
+    z-index: 10;
+    &.odd {
+      background: $color-zebra;
+    }
+  }
+  .agenda_row .wrapper {
+    padding: 2.5em 0 0;
+  }
+  .agenda_row.odd .wrapper {
+    padding-top: 1.5em;
+  }
+  .wrapper > .time {
+    width: if($max-width, (204px / $max-width) * 100%, 21%);
+    margin-left: $padding;
+    padding: 7px $padding (2.4/1.8)*.5em;
+
+    float: left;
+    border-top: 2px solid #5c5c5c;
+    font-size: 1.8em;
+    line-height: normal;
+    color: $color-text-agenda-time;
+  }
+  .wrapper .forelasning {
+    width: if($max-width, ((($max-width - 204px - 10px - 10px * 2) / 2 - 10px - 27px) / $max-width) * 100%, (100% - 21% - 1% - 1% * 2) / 2 - 1% - 3%);
+    padding: 0 $padding 2.5em if($max-width, (27px / $max-width) * 100%, 3%);
+    float: left;
+  }
+  p, h5, h6, pre, table {
+    font-size: 1.6em;
+    max-height: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+  pre {
+    padding: .5em 1em;
+  }
+  .speaker {
+    font-size: 1.6em;
+    padding-bottom: 2.4em / 1.8 * .5;
+  }
+  .readmore {
+    display: block;
+    font-size: 1.5em;
+    text-decoration: underline;
+    padding: .5em 0;
+    margin: -.5em 0;
+    position: relative;
+    z-index: 10;
+  }
+  @media screen and (max-width: 770px) {
+    .wrapper .forelasning {
+      width: if($max-width, ((($max-width - 204px - 10px - 10px * 2) - 10px - 27px) / $max-width) * 100%, (100% - 21% + 1% - 1% * 2) - 1% - 3%);
+      float: right;
+      padding-left: 0;
+    }
+  }
+  @media screen and (max-width: 370px) {
+    .wrapper > .time,
+    .wrapper .forelasning {
+      float: none;
+      width: auto;
+      margin: 0 $padding;
+    }
+    .wrapper .forelasning {
+      padding-left: $padding;
+    }
+  }
+}

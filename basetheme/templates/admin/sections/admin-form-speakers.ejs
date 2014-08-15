@@ -1,0 +1,37 @@
+<% block('menu', '<li><a href="#speakers">' + escape(dictionaryData.speakers) + '</a></li>'); -%>
+<div class="admin-part">
+  <h3 id="speakers"><%= dictionaryData.speakers %></h3>
+  <form action="/admin/speakers" method="post" enctype="multipart/form-data">
+    <div>
+      <%- form.toHTML() %>
+      <div class="actions">
+        <button type="submit" name="createspeaker"> <%- form.data && form.data.id ? 'Uppdatera' : 'Lägg till' %></button>
+        <% if (form.data && form.data.image) { %>
+          <button class="danger" type="submit" name="deleteimage" value="on">Ta bort bild</button>
+        <% } %>
+      </div>
+    </div>
+  </form>
+  <table>
+    <tr>
+      <th scope="col" class="title">Namn</th>
+      <th scope="col" class="modified">Senast ändrad</th>
+      <th scope="col" class="actions">Åtgärder</th>
+    </tr>
+    <% formData.list.forEach(function (el) { %>
+      <tr>
+        <td class="title"><%= el.name %></td>
+        <td class="modified"><%= prettydate(new Date(el.modified)) %></td>
+        <td class="actions">
+          <form action="/admin/speakers/<%= encodeURIComponent(el.id) %>?_method=delete" method="post">
+            <div>
+              <a href="/admin/speakers/<%= encodeURIComponent(el.id) %>#speakers" class="button">Ändra</a>
+
+              <button class="danger" type="submit" name="remove">Ta bort</button>
+            </div>
+          </form>
+        </td>
+      </tr>
+    <% }); %>
+  </table>
+</div>

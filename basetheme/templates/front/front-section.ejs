@@ -1,0 +1,16 @@
+<%
+header = typeof header === 'undefined' ? false : header;
+cssClasses = typeof cssClasses === 'undefined' ? '' : cssClasses;
+
+if (typeof menuName !== 'undefined' && menuName) {
+  block('menu', '<li><a href="' + escape(typeof menuPath !== 'undefined' ? menuPath : ('/#' + name))  + '">' + escape(menuName) + '</a></li>')
+}
+-%>
+<section <% if (!header) { %>id="<%= name %>"<% } %>  class="<%= cssClasses + ' ' + name + (header ? '' : ' no-header') %>">
+  <div class="wrapper">
+    <% if (header) { -%>
+      <h2 id="<%= name %>"><%= header %></h2>
+    <% } -%>
+    <%- content %>
+  </div>
+</section>

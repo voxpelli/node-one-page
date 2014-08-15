@@ -1,0 +1,18 @@
+<div class="speaker">
+  <% if (el.image) { %>
+    <img src="<%= cloudimage(el.image) %>" width="304" height="304" alt="" />
+  <% } %>
+  <h3><%= el.name %></h3>
+  <% if (el.description) { %>
+    <div class="description">
+      <%- marked(el.description, { levelOffset: 3, headerPrefix : 'speakers-' }) %>
+    </div>
+  <% } %>
+  <% if (el.links.length !== 0) { %>
+    <ul class="social">
+      <% el.links.forEach(function (link) { %>
+        <li class="<%= link.type %>"><a target="_blank" href="<%= link.url %>"><%= link.name %></a></li>
+      <% }); %>
+    </ul>
+  <% } %>
+</div>

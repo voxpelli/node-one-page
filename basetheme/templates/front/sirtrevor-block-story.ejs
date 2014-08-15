@@ -1,0 +1,27 @@
+<% if (content.data.flickr) { -%>
+    <img src="<%= content.data.flickr[8].src %>" alt="" />
+<% } -%>
+
+<% if (content.data.speaker) { -%>
+  <h3><%-
+    marked(content.data.speaker, {
+      sanitize: true,
+      noBlocks: true,
+      headers: false
+    })
+  %></h3>
+<% } -%>
+
+<% if (content.data.quote) { -%>
+  <blockquote><p><%= content.data.quote %></p></blockquote>
+<% } -%>
+
+<%- marked(content.data.text, {
+  sanitize: true,
+  levelOffset: 3,
+  headerPrefix : name + '-'
+}) %>
+
+<% if (content.data.video) { -%>
+  <p class="story-video"><a href="<%= content.data.video %>" target="_blank">Go to video</a></p>
+<% } -%>

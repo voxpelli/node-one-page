@@ -1,0 +1,13 @@
+<!-- HEADER -->
+<header>
+  <div class="wrapper menu">
+    <h1><a href="/"><%= block('pageTitle') || 'Hello World' %></a></h1>
+    <div id="menu">
+      <ul>
+        <%- block('menu') %>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div id="main"><%- content %></div>

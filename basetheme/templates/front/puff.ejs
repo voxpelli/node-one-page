@@ -1,0 +1,16 @@
+<%
+markedOptions = { levelOffset: 2, headerPrefix : name + '-' };
+
+if (typeof extended !== 'undefined' && extended) { -%>
+  <% paragraphs = (body || '').split(/\r\n\r\n/g) -%>
+  <%- marked(paragraphs.shift() || '', markedOptions) %>
+  <% if (paragraphs[0]) { -%>
+    <div class="extended">
+      <%- marked(paragraphs.join('\r\n\r\n'), markedOptions) %>
+    </div>
+  <% } -%>
+<% } else if (typeof plain !== 'undefined' && plain) {  -%>
+  <%- body %>
+<% } else { -%>
+  <%- marked(body, markedOptions) %>
+<% } -%>

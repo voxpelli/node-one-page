@@ -1,0 +1,58 @@
+body { padding: 0; margin: 0; background: #fff; font: 10px/15px Helvetica, Arial, sans-serif; }
+
+h1, h2, h3, h4 { padding: 0; margin: 0; line-height: 1.15em;}
+
+h1 { font-size: 4em; margin: 0; padding: 0 0 .5em 0; line-height: 1em; }
+
+h2 {
+  font-family: $font-special-serif;
+  font-size: 3em;
+  font-weight: 400;
+  margin: 0;
+  padding: 1.8em 9px 1em;
+}
+h2.line {
+  padding-bottom: (8em / 30); // Target is 8px in the normal case
+  margin-bottom: ((30em - 8 - 1) / 30); // Try to retain the dimensions of every other h2
+  border-bottom: 1px solid #ccc;
+}
+
+h3 { font-size: 2.2em; margin: 0; padding: 0 0 .5em 0; }
+h4, h5, h6 { font-size: 1.6em; margin: 0; padding: 0 0 .5em 0; }
+
+p, pre, table, blockquote, ul, ol { font-size: 1.6em; line-height: 1.6em; }
+
+p, pre, table, blockquote { padding: 0; margin: 0; }
+
+p, pre, table, blockquote, ul, ol {
+  p, pre, table, blockquote, ul, ol {
+    font-size: 1em;
+  }
+}
+
+a { color: $color-link; text-decoration: none; }
+
+.wrapper {
+  width: 90%;
+  @if $max-width { max-width: $max-width; }
+  margin: 0 auto;
+  clear: both;
+  overflow: hidden;
+}
+
+#page {
+  overflow: hidden;
+}
+
+section {
+  width: 100%;
+  margin: 0;
+  padding: 1em 0;
+  clear: both;
+}
+
+@media screen and (max-width: 500px) {
+  body {
+    font-size: 8px;
+  }
+}

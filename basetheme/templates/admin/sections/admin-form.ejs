@@ -1,0 +1,36 @@
+<% if (formData) { %>
+<% if (typeof noAdminPartWrap === 'undefined') { %>
+  <div class="admin-part">
+<% } %>
+  <% if (formData.name) { %>
+    <h3 id="<%= formData.id %>"><%= formData.name %></h3>
+  <% } else { %>
+    <span id="<%= formData.id %>"></span>
+  <% } %>
+  <form class="form-<%= formData.id %>" action="/admin/<%= formData.id %>#<%= formData.id %>" method="post" enctype="<%- formData.multipart ? 'multipart/form-data' : 'application/x-www-form-urlencoded' %>">
+    <div>
+      <% var resolvedForm = typeof form === 'undefined' ? formData.form : form; %>
+
+      <% if (resolvedForm.handlingError) { %>
+        <div class="error_msg">
+          <%= resolvedForm.handlingError %><br />
+          Lägg dina ändringar nedan på minnet och gå sedan <a href="/admin#<%= formData.id %>">tillbaka till framsidan</a> och försök genomföra dem igen.
+        </div>
+      <% } %>
+
+      <%- resolvedForm.toHTML() %>
+      <button type="submit" name="create">
+        <%- typeof canAdd === 'undefined' || (resolvedForm.data && resolvedForm.data.id) ? 'Uppdatera' : 'Lägg till' %>
+        <% if (formData.name) { -%>
+          <%=: formData.name | downcase %>
+        <% } -%>
+      </button>
+    </div>
+  </form>
+  <% if (formData.help) { %>
+    <div class="help"><%- linebreakTheFront(formData.help) %></div>
+  <% } %>
+<% if (typeof noAdminPartWrap === 'undefined') { %>
+  </div>
+<% } %>
+<% } %>

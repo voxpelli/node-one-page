@@ -1,0 +1,23 @@
+$color-yellow-fade: #fff886 !default;
+$color-danger: #D2322D !default;
+$color-zebra: #f2f2f2 !default;
+
+$color-link: #F7B935 !default;
+$color-highlight: #F8CE47 !default;
+$color-background-header: #1a1a1a !default;
+$color-background-intro: #222 !default;
+$color-background-register: #EBEBEB !default;
+$color-border-register: #F5F5F5 !default;
+$color-text-agenda-time: #DD6823 !default;
+$color-speakers: #F7B935 !default;
+$color-button: #F8CE47 !default;
+$color-button-positive: #5aa406 !default;
+
+$border-radius: 5px !default;
+$max-width: 944px !default;
+
+$font-special-serif: Georgia, serif !default;
+
+$section-shadow: inset 0 10px 10px -10px rgba(0, 0, 0, 0.2) !default;
+
+@import "modules/all";

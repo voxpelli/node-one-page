@@ -1,0 +1,148 @@
+section.intro {
+  font-family: $font-special-serif;
+
+  padding-top: 1.6em;
+  padding-bottom: 4.3em;
+
+  box-shadow: inset 0 -30px 20px -20px rgba(0,0,0,.8);
+
+  color: #fff;
+  background: $color-background-intro;
+
+  // Fix for Firefox rounding error with background-size cover
+  padding-left: 1px;
+  margin-left: -1px;
+  margin-top: -1px;
+
+  h2, h3, h4, h5, h6, p, table, pre {
+    padding-right: if($max-width, 20px / $max-width * 100%, 2%);
+    padding-left: if($max-width,  20px / $max-width * 100%, 2%);
+    position: relative;
+    z-index: 10;
+  }
+  table, pre {
+    display: block;
+    padding: 0;
+    margin-right: if($max-width, 20px / $max-width * 100%, 2%);
+    margin-left: if($max-width,  20px / $max-width * 100%, 2%);
+  }
+  h2 {
+    font-size: 4.6em;
+    font-weight: 700;
+    padding-top: 1em;
+    padding-bottom: 9px;
+  }
+  h3, h4, h5, h6, p, table, pre {
+    font-size: 2.2em;
+    line-height: 1.3;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  pre {
+    padding: .5em 1em;
+  }
+  a {
+    color: inherit;
+  }
+  a.readmore {
+    font-size: .75em;
+    display: inline-block;
+    position: relative;
+    border-bottom: 1px solid #fff;
+  }
+
+  .wrapper {
+    position: relative;
+    overflow: visible;
+  }
+  .wrapper:before, .wrapper:after {
+    content: "";
+    display: block;
+    position: absolute;
+  }
+  .wrapper:before {
+    right: 58px - 125px;
+    bottom: -4.8em;
+    background: no-repeat left bottom;
+    background-size: 670px auto;
+    width: 670px;
+    height: 700px;
+  }
+  .wrapper:after {
+    background: no-repeat right bottom;
+    background-size: 188px auto;
+    width: 189px;
+    height: 700px;
+    right: 58px;
+    bottom: 0 - 4.3em - 6.7em;
+  }
+
+  @media screen and (-webkit-min-device-pixel-ratio: 1.3),
+    screen and (-o-min-device-pixel-ratio: 13/10),
+    screen and (min-resolution: 1.3dppx) {
+      & {
+        background-size: 33px auto;
+      }
+  }
+  @media screen and (max-width: 880px) {
+    .wrapper:before {
+      right: 0 - 125px;
+    }
+    .wrapper:after {
+      right: 0;
+    }
+  }
+  @media screen and (max-width: 705px) {
+    .wrapper:before {
+      right: 0 - 10px - 125px;
+    }
+    .wrapper:after {
+      right: 0 - 10px;
+    }
+  }
+  @media screen and (max-width: 630px) {
+    h2, p {
+      width: auto;
+    }
+    .wrapper:before, .wrapper:after {
+      display: none;
+    }
+  }
+}
+
+section.register {
+  background: $color-background-register;
+  border: solid $color-border-register;
+  border-width: 10px 0;
+
+  .wrapper {
+    padding-bottom: 8.9em;
+  }
+  h2 {
+    padding-bottom: (46 / 30) * 1em;
+  }
+  iframe, a {
+    width: 95%;
+    margin: 0 0 0 1.7em;
+  }
+  a, img {
+    display: none;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  @media screen and (max-width: 630px) {
+    iframe {
+      display: none;
+    }
+    a, img {
+      display: block;
+    }
+    a.button {
+      width: 67%;
+      margin: 0 auto;
+    }
+  }
+}
