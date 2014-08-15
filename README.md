@@ -93,4 +93,40 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Create a custom instance
 
-TODO
+### Minimal way
+
+Add this project as a dependency to your project, `npm install --save valtechonepage`, create a new [Tema theme](https://www.npmjs.org/package/tema) that inherits from `require('valtechonepage').basetheme` and then launch an instance of this project using that theme and connect it to a server:
+
+```javascript
+var ValtechOnePage = require('valtechonepage'),
+  page = new ValtechOnePage({ theme : require('./newCoolTheme') }),
+  httpServer = require('http').createServer(page.app);
+
+httpServer.listen(page.app.get('port'), function(){
+  console.log('Express server listening on port ' + page.app.get('port'));
+});
+```
+
+### Advanced way
+
+Set up a Grunt workflow similar to the base theme and include the path to the base theme's Sass files in your Sass load path to reuse parts of the base theme override the default colors of the base theme etc.
+
+Also set up your new instance to proxy calls to the database installation and migration system. Do that by adding `knex` and `pg` as dependencies, and adding a `knexfile.js` looking like:
+
+```javascript
+var envFile = __dirname + '/.env',
+  config = require('valtechonepage').getDefaultConfig(require('fs').existsSync(envFile) ? envFile : undefined),
+  db = { client: 'pg', connection: config.db };
+
+module.exports = { development: db, staging: db, production: db };
+```
+
+And npm scripts in your `package.json` looking like:
+
+```
+"scripts": {
+  "install-schema": "node ./node_modules/valtechonepage/lib/install-schema.js",
+  "migrate-schema": "./node_modules/.bin/knex migrate:latest --knexfile knexfile.js --cwd ./node_modules/valtechonepage",
+  "rollback-schema": "./node_modules/.bin/knex migrate:rollback --knexfile knexfile.js --cwd node_modules/valtechonepage"
+}
+```
