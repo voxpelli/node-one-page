@@ -49,6 +49,7 @@
   "main": "./lib/app",
   "scripts": {
     "start": "node .",
+    "test": "node -e \"require('grunt').tasks(['test']);\"",
     "install-schema": "node lib/install-schema.js",
     "migrate-schema": "./node_modules/.bin/knex migrate:latest",
     "rollback-schema": "./node_modules/.bin/knex migrate:rollback"
