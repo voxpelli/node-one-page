@@ -19,7 +19,7 @@
     "dotenv": "~0.5.1",
     "ejs": "^1.0.0",
     "express": "^3.4.7",
-    "forms": "~0.3.0",
+    "forms": "1.1.1",
     "knex": "git://github.com/tgriesser/knex.git#1c37f76020231a855be3cfd0b1eb54dcef08df50",
     "lodash": "^2.4.1",
     "marked": "~0.3.2",
