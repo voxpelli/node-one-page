@@ -22,7 +22,7 @@
     "forms": "1.1.1",
     "knex": "git://github.com/tgriesser/knex.git#1c37f76020231a855be3cfd0b1eb54dcef08df50",
     "lodash": "^2.4.1",
-    "marked": "~0.3.2",
+    "marked": "~0.3.3",
     "passport": ">= 0.1.1",
     "passport-github": "~0.1.5",
     "passport-oauth2": "^1.1.2",
