@@ -1,10 +1,14 @@
 {
-  "name": "valtechonepage",
+  "name": "vtonepage",
   "version": "2.0.0",
   "license": "MIT",
   "author": {
     "name": "Pelle Wessman",
-    "email": "pelle.wessman@valtech.se"
+    "email": "pelle@kodfabrik.se"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/voxpelli/node-one-page.git"
   },
   "dependencies": {
     "backbone-extend-standalone": "~0.1.2",
