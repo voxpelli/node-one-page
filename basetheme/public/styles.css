@@ -438,7 +438,7 @@ p p, p pre, p table, p blockquote, p ul, p ol, pre p, pre pre, pre table, pre bl
 }
 
 a {
-  color: #f7b935;
+  color: #F7B935;
   text-decoration: none;
 }
 
@@ -568,7 +568,7 @@ section.speakers .social a:after {
   color: #FFF;
 }
 #page > header h1 a:hover {
-  color: #f8ce47;
+  color: #F8CE47;
 }
 
 #menu {
@@ -601,10 +601,10 @@ section.speakers .social a:after {
   transition: border-color 0.2s linear;
 }
 #menu li a:hover {
-  border-bottom-color: #f8ce47;
+  border-bottom-color: #F8CE47;
 }
 #menu li.active a {
-  border-bottom-color: #f8ce47;
+  border-bottom-color: #F8CE47;
 }
 
 @media screen and (max-width: 690px) {
@@ -650,8 +650,8 @@ a.button, button:not(.st-format-btn), input[type=submit] {
   border: 0 solid #000;
   border-radius: 5px;
   box-shadow: 0 4px #dfb940;
-  background-color: #f8ce47;
-  color: black;
+  background-color: #F8CE47;
+  color: #000;
   position: relative;
 }
 a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
@@ -667,7 +667,7 @@ a.button:hover:after, button:not(.st-format-btn):hover:after, input[type=submit]
 a.button.action, a.button[type=submit], button:not(.st-format-btn).action, button:not(.st-format-btn)[type=submit], input[type=submit].action, input[type=submit][type=submit] {
   box-shadow: 0 4px #4c8b05;
   background-color: #5aa406;
-  color: white;
+  color: #fff;
 }
 a.button.action:after, a.button[type=submit]:after, button:not(.st-format-btn).action:after, button:not(.st-format-btn)[type=submit]:after, input[type=submit].action:after, input[type=submit][type=submit]:after {
   background: #4c8b05;
@@ -681,8 +681,8 @@ a.button.action:hover:after, a.button[type=submit]:hover:after, button:not(.st-f
 }
 a.button.danger, button:not(.st-format-btn).danger, input[type=submit].danger {
   box-shadow: 0 4px #b92c28;
-  background-color: #d2322d;
-  color: white;
+  background-color: #D2322D;
+  color: #fff;
 }
 a.button.danger:after, button:not(.st-format-btn).danger:after, input[type=submit].danger:after {
   background: #b92c28;
@@ -715,7 +715,7 @@ section.intro {
   padding-bottom: 4.3em;
   box-shadow: inset 0 -30px 20px -20px rgba(0, 0, 0, 0.8);
   color: #fff;
-  background: #222222;
+  background: #222;
   padding-left: 1px;
   margin-left: -1px;
   margin-top: -1px;
@@ -813,8 +813,8 @@ section.intro .wrapper:after {
 }
 
 section.register {
-  background: #ebebeb;
-  border: solid whitesmoke;
+  background: #EBEBEB;
+  border: solid #F5F5F5;
   border-width: 10px 0;
 }
 section.register .wrapper {
@@ -888,7 +888,7 @@ section.agenda h3, section.agenda h4 {
 section.agenda h3 {
   font-family: Georgia, serif;
   font-weight: 400;
-  color: #f8ce47;
+  color: #F8CE47;
   padding: 0.5em 1.05932%;
 }
 section.agenda h4 {
@@ -916,7 +916,7 @@ section.agenda .wrapper > .time {
   border-top: 2px solid #5c5c5c;
   font-size: 1.8em;
   line-height: normal;
-  color: #dd6823;
+  color: #DD6823;
 }
 section.agenda .wrapper .forelasning {
   width: 33.68644%;
@@ -991,7 +991,7 @@ section.speakers .wrapper:after {
   width: 100%;
 }
 section.speakers h2 {
-  border-bottom-color: #f7b935;
+  border-bottom-color: #F7B935;
 }
 section.speakers .speaker {
   display: inline-block;
@@ -1007,7 +1007,7 @@ section.speakers img {
   display: block;
 }
 section.speakers h3 {
-  background: #f7b935;
+  background: #F7B935;
   color: #fff;
   font-size: 1.6em;
   padding: .8125em 2em .8125em 6px;
@@ -1049,7 +1049,7 @@ section.speakers .social li {
   height: 1em;
 }
 section.speakers .social a:after {
-  color: #f7b935;
+  color: #F7B935;
   text-indent: 0;
   display: block;
   position: absolute;

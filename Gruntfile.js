@@ -75,15 +75,16 @@ module.exports = function (grunt) {
         },
         // Ensure that the child themes can include stuff from the parent theme
         loadPath: ['basetheme/sources/sass/'],
+        sourcemap: 'none',
         quiet : true
       },
-      test: {
-        options: {
-          check: true,
-          quiet : false
-        },
-        files: ['<%= sass.options.files %>']
-      },
+      // test: {
+      //   options: {
+      //     check: true,
+      //     quiet : false
+      //   },
+      //   files: ['<%= sass.options.files %>']
+      // },
       dist: {
         options: {
           style: 'compressed'
@@ -136,7 +137,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-fontello');
   grunt.loadNpmTasks('grunt-lintspaces');
 
-  grunt.registerTask('test', ['lintspaces', 'jshint', 'sass:test']);
+  grunt.registerTask('test', [
+    'lintspaces',
+    'jshint',
+    // 'sass:test'
+  ]);
   grunt.registerTask('build', ['lintspaces', 'jshint', 'concat', 'uglify', 'sass']);
   grunt.registerTask('default', ['build']);
 };
