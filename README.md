@@ -1,4 +1,4 @@
-# Valtech One Page
+# Node One Page
 
 Quick and easy one pagers for events and other small information pages.
 
