@@ -32,6 +32,13 @@ module.exports = function (grunt) {
       files: ['<%= jshint.files %>'],
       options: { editorconfig: '.editorconfig' }
     },
+    'dependency-check': {
+      files: '<%= jshint.files %>',
+      options: { excludeMissingDev: true }
+    },
+    jscs: {
+      src: '<%= jshint.files %>',
+    },
     concat: {
       options: {
         separator: ';'
@@ -78,13 +85,6 @@ module.exports = function (grunt) {
         sourcemap: 'none',
         quiet : true
       },
-      // test: {
-      //   options: {
-      //     check: true,
-      //     quiet : false
-      //   },
-      //   files: ['<%= sass.options.files %>']
-      // },
       dist: {
         options: {
           style: 'compressed'
@@ -104,7 +104,7 @@ module.exports = function (grunt) {
     watch: {
       jshint : {
         files: ['<%= jshint.files %>'],
-        tasks: ['lintspaces', 'jshint']
+        tasks: ['jstest']
       },
       js : {
         files: [
@@ -128,20 +128,26 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-notify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-fontello');
-  grunt.loadNpmTasks('grunt-lintspaces');
+  [
+    'grunt-notify',
+    'grunt-contrib-jshint',
+    'grunt-contrib-sass',
+    'grunt-contrib-watch',
+    'grunt-contrib-uglify',
+    'grunt-contrib-concat',
+    'grunt-fontello',
+    'grunt-lintspaces',
+    'grunt-jscs',
+    'dependency-check',
+  ].forEach(grunt.loadNpmTasks.bind(grunt));
 
-  grunt.registerTask('test', [
+  grunt.registerTask('jstest', [
     'lintspaces',
     'jshint',
-    // 'sass:test'
+    'jscs',
+    'dependency-check',
   ]);
-  grunt.registerTask('build', ['lintspaces', 'jshint', 'concat', 'uglify', 'sass']);
+  grunt.registerTask('test', ['jstest']);
+  grunt.registerTask('build', ['test', 'concat', 'uglify', 'sass']);
   grunt.registerTask('default', ['build']);
 };
