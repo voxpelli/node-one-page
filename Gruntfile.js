@@ -85,6 +85,12 @@ module.exports = function (grunt) {
         sourcemap: 'none',
         quiet : true
       },
+      test: {
+        options: {
+          check: true
+        },
+        files: ['<%= sass.options.files %>']
+      },
       dist: {
         options: {
           style: 'compressed'
@@ -104,7 +110,7 @@ module.exports = function (grunt) {
     watch: {
       jshint : {
         files: ['<%= jshint.files %>'],
-        tasks: ['jstest']
+        tasks: ['test-js']
       },
       js : {
         files: [
@@ -112,11 +118,11 @@ module.exports = function (grunt) {
           'basetheme/sources/js/modules/*.js',
           'basetheme/sources/js/*.js'
         ],
-        tasks: ['concat', 'uglify']
+        tasks: ['build-js']
       },
       sass : {
         files: ['basetheme/sources/**/*.scss'],
-        tasks: ['sass']
+        tasks: ['build-css']
       },
       livereload: {
         options: { livereload: true },
@@ -141,13 +147,18 @@ module.exports = function (grunt) {
     'dependency-check',
   ].forEach(grunt.loadNpmTasks.bind(grunt));
 
-  grunt.registerTask('jstest', [
+  grunt.registerTask('test-js', [
     'lintspaces',
     'jshint',
     'jscs',
     'dependency-check',
   ]);
-  grunt.registerTask('test', ['jstest']);
-  grunt.registerTask('build', ['test', 'concat', 'uglify', 'sass']);
+  grunt.registerTask('test-css', ['sass:test']);
+  grunt.registerTask('test', ['test-js', 'test-css']);
+
+  grunt.registerTask('build-js', ['concat', 'uglify']);
+  grunt.registerTask('build-css', ['sass:dev', 'sass:dist']);
+  grunt.registerTask('build', ['test', 'build-js', 'build-css']);
+
   grunt.registerTask('default', ['build']);
 };
