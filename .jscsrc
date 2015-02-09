@@ -5,5 +5,5 @@
   "requireMultipleVarDecl": null,
   "disallowDanglingUnderscores": null,
   "requireCommaBeforeLineBreak": null,
-  "requireBlocksOnNewline": null
+  "requireBlocksOnNewline": 1
 }
