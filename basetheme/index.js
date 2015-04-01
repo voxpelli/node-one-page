@@ -121,7 +121,7 @@ theme = {
   options : {
     renderer : require('ejs').renderFile,
     templateExtension : 'ejs',
-    valtechOnePageUnsupported: [ 'map', 'video' ],
+    vtOnePageUnsupported: [ 'map', 'video' ],
   }
 };
 

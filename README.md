@@ -4,7 +4,7 @@ Quick and easy one pagers for events and other small information pages.
 
 ## What's this?
 
-A simple, quick, pragmatically built code base for the creation of one pagers. There's a single admin page. There's a single enduser page. Built mainly for events who easily want to get some data up quickly. Used on [Valtech Day](http://www.valtechday.se/) 2013-2014 and by The Conference for their archive page of 2014. Also used by Valtech for some other person oriented sites like the presentation of the 2013 [Talent Program](http://talang.valtech.se/).
+A simple, quick, pragmatically built code base for the creation of one pagers. There's a single admin page. There's a single enduser page. Built mainly for events who easily want to get some data up quickly. Used on Valtech Day 2013-2014 and by The Conference for their archive page of 2014. Also used by Valtech for some other person oriented sites like the presentation of the 2013 Talent Program.
 
 Built to be easily hostable on [Heroku](http://www.heroku.com/).
 
@@ -95,11 +95,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ### Minimal way
 
-Add this project as a dependency to your project, `npm install --save valtechonepage`, create a new [Tema theme](https://www.npmjs.org/package/tema) that inherits from `require('valtechonepage').basetheme` and then launch an instance of this project using that theme and connect it to a server:
+Add this project as a dependency to your project, `npm install --save vtonepage`, create a new [Tema theme](https://www.npmjs.org/package/tema) that inherits from `require('vtonepage').basetheme` and then launch an instance of this project using that theme and connect it to a server:
 
 ```javascript
-var ValtechOnePage = require('valtechonepage'),
-  page = new ValtechOnePage({ theme : require('./newCoolTheme') }),
+var VTOnePage = require('vtonepage'),
+  page = new VTOnePage({ theme : require('./newCoolTheme') }),
   httpServer = require('http').createServer(page.app);
 
 httpServer.listen(page.app.get('port'), function(){
@@ -115,7 +115,7 @@ Also set up your new instance to proxy calls to the database installation and mi
 
 ```javascript
 var envFile = __dirname + '/.env',
-  config = require('valtechonepage').getDefaultConfig(require('fs').existsSync(envFile) ? envFile : undefined),
+  config = require('vtonepage').getDefaultConfig(require('fs').existsSync(envFile) ? envFile : undefined),
   db = { client: 'pg', connection: config.db };
 
 module.exports = { development: db, staging: db, production: db };
@@ -125,8 +125,8 @@ And npm scripts in your `package.json` looking like:
 
 ```
 "scripts": {
-  "install-schema": "node ./node_modules/valtechonepage/lib/install-schema.js",
-  "migrate-schema": "./node_modules/.bin/knex migrate:latest --knexfile knexfile.js --cwd ./node_modules/valtechonepage",
-  "rollback-schema": "./node_modules/.bin/knex migrate:rollback --knexfile knexfile.js --cwd node_modules/valtechonepage"
+  "install-schema": "node ./node_modules/vtonepage/lib/install-schema.js",
+  "migrate-schema": "./node_modules/.bin/knex migrate:latest --knexfile knexfile.js --cwd ./node_modules/vtonepage",
+  "rollback-schema": "./node_modules/.bin/knex migrate:rollback --knexfile knexfile.js --cwd ./node_modules/vtonepage"
 }
 ```

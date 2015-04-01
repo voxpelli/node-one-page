@@ -119,7 +119,7 @@
   }
 
   removeUpdateClass = function () {
-    $(document).off('.valtechonepage', removeUpdateClass);
+    $(document).off('.vtonepage', removeUpdateClass);
     $stop.removeClass('updated');
   };
 
@@ -134,8 +134,8 @@
       stopPicker.set('select', stopVal.time + startVal.time - oldStartTime);
       $stop.addClass('updated');
       $(document)
-        .one('keydown.valtechonepage', removeUpdateClass)
-        .one('mousemove.valtechonepage', removeUpdateClass);
+        .one('keydown.vtonepage', removeUpdateClass)
+        .one('mousemove.vtonepage', removeUpdateClass);
     }
     stopPicker.set('min', [startVal.hour, startVal.mins]);
 
