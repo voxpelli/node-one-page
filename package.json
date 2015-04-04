@@ -14,7 +14,7 @@
     "backbone-extend-standalone": "~0.1.2",
     "cloudinary": "^1.0.8",
     "connect-busboy": "0.0.2",
-    "connect-pg-simple": "^2.0.0",
+    "connect-pg-simple": "^3.0.1",
     "connect-roles": "^3.0.3",
     "dotenv": "~0.5.1",
     "ejs": "^1.0.0",
