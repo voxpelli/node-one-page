@@ -29,7 +29,7 @@
     "passport-twitter": "^1.0.2",
     "pg": "^4.1.0",
     "promise": "^6.0.0",
-    "static-expiry": "git://github.com/voxpelli/node-connect-static-expiry.git#c363b61f3a850b19716e09d148ac8f7d28965ac0",
+    "static-expiry": "0.0.11",
     "strftime": "~0.9.0",
     "tema": "~0.2.0"
   },
