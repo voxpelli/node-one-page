@@ -95,7 +95,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ### Minimal way
 
-Add this project as a dependency to your project, `npm install --save vtonepage`, create a new [Tema theme](https://www.npmjs.org/package/tema) that inherits from `require('vtonepage').basetheme` and then launch an instance of this project using that theme and connect it to a server:
+Add this project as a dependency to your project, <del>`npm install --save vtonepage`</del> – do `npm install --save voxpelli/node-one-page` for now, create a new [Tema theme](https://www.npmjs.org/package/tema) that inherits from `require('vtonepage').basetheme` and then launch an instance of this project using that theme and connect it to a server:
 
 ```javascript
 var VTOnePage = require('vtonepage'),
