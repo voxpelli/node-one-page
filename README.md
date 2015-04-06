@@ -138,4 +138,4 @@ There are two officially available content types to extend:
 * `VTOnePage.contentTypes.base` – the most basic content type that every content type should inherit from. Has no basic data storage – it's up to each individual content type to deal with that.
 * `VTOnePage.contentTypes.vars` – a JSON-storage backed content type that simple content types can inherit from. As long as no advanced queries or big amounts of data are going to be stored this is the perfect content type.
 
-The soruce for these and for internal content types that uses these ones can be found in `lib/admin/`.
+The source for these and for internal content types that extend these ones can be found in `lib/admin/`.
