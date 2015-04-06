@@ -34,7 +34,10 @@ module.exports = function (grunt) {
     },
     'dependency-check': {
       files: '<%= jshint.files %>',
-      options: { excludeMissingDev: true }
+      options: {
+        excludeUnusedDev: true,
+        ignoreUnused: ['pg'],
+      }
     },
     jscs: {
       src: '<%= jshint.files %>',
