@@ -382,6 +382,7 @@ body {
   margin: 0;
   background: #fff;
   font: 10px/15px Helvetica, Arial, sans-serif;
+  scroll-behavior: smooth;
 }
 
 h1, h2, h3, h4 {
@@ -447,10 +448,6 @@ a {
   max-width: 944px;
   margin: 0 auto;
   clear: both;
-  overflow: hidden;
-}
-
-#page {
   overflow: hidden;
 }
 

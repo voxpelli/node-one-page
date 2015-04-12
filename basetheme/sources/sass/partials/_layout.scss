@@ -1,4 +1,4 @@
-body { padding: 0; margin: 0; background: #fff; font: 10px/15px Helvetica, Arial, sans-serif; }
+body { padding: 0; margin: 0; background: #fff; font: 10px/15px Helvetica, Arial, sans-serif; scroll-behavior: smooth;}
 
 h1, h2, h3, h4 { padding: 0; margin: 0; line-height: 1.15em;}
 
@@ -37,10 +37,6 @@ a { color: $color-link; text-decoration: none; }
   @if $max-width { max-width: $max-width; }
   margin: 0 auto;
   clear: both;
-  overflow: hidden;
-}
-
-#page {
   overflow: hidden;
 }
 
