@@ -21,6 +21,7 @@
     "express": "^3.4.7",
     "forms": "^1.1.1",
     "knex": "~0.7.6",
+    "knex-migrator-extension": "^0.1.1",
     "lodash": "^3.0.0",
     "marked": "~0.3.3",
     "passport": ">= 0.1.1",
@@ -54,9 +55,9 @@
   "scripts": {
     "start": "node .",
     "test": "node -e \"require('grunt').tasks(['test']);\"",
-    "install-schema": "node lib/install-schema.js",
-    "migrate-schema": "./node_modules/.bin/knex migrate:latest",
-    "rollback-schema": "./node_modules/.bin/knex migrate:rollback"
+    "install-schema": "node -e \"require('.').runMigrationTask('install');\"",
+    "migrate-schema": "node -e \"require('.').runMigrationTask('migrate');\"",
+    "rollback-schema": "node -e \"require('.').runMigrationTask('rollback');\""
   },
   "directories": {
     "lib": "./lib"

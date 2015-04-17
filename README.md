@@ -139,3 +139,13 @@ There are two officially available content types to extend:
 * `VTOnePage.contentTypes.vars` – a JSON-storage backed content type that simple content types can inherit from. As long as no advanced queries or big amounts of data are going to be stored this is the perfect content type.
 
 The source for these and for internal content types that extend these ones can be found in `lib/admin/`.
+
+### Run migrations from child project
+
+A child project would be preferably be configured with these npm scripts.
+
+```
+"install-schema":  "node -e \"require('.').runMigrationTask('install');\"",
+"migrate-schema":  "node -e \"require('.').runMigrationTask('migrate');\"",
+"rollback-schema": "node -e \"require('.').runMigrationTask('rollback');\"",
+```
