@@ -29,7 +29,6 @@
     "passport-oauth2": "^1.1.2",
     "passport-twitter": "^1.0.2",
     "pg": "^4.1.0",
-    "promise": "^6.0.0",
     "static-expiry": "0.0.11",
     "strftime": "~0.9.0",
     "tema": "~0.2.0"
@@ -49,7 +48,7 @@
     "passport-dummy": "voxpelli/passport-dummy#master"
   },
   "engines": {
-    "iojs": "^1.1.0"
+    "node": ">=4.0.0"
   },
   "main": "./lib/app",
   "scripts": {
