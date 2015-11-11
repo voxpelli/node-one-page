@@ -46,15 +46,15 @@
 
   // ACE Editor
   $('textarea.syntax-highlight').each(function () {
-    var $textarea = $(this)
-      , $form = $textarea.closest('form')
-      , classes = $textarea.attr('class') ? $textarea.attr('class').split(' ') : []
-      , syntax
-      , matches
-      , editorElem
-      , editor
-      , i
-      , length;
+    var $textarea = $(this);
+    var $form = $textarea.closest('form');
+    var classes = $textarea.attr('class') ? $textarea.attr('class').split(' ') : [];
+    var syntax;
+    var matches;
+    var editorElem;
+    var editor;
+    var i;
+    var length;
 
     for (i = 0, length = classes.length; i < length; i += 1) {
       matches = classes[i].match(/syntax-highlight-(\w+)/i);
@@ -97,10 +97,10 @@
   }
 
   // Date picker
-  var $start = $('input#id_start')
-    , $stop = $('input#id_stop')
-    , oldStartTime
-    , removeUpdateClass;
+  var $start = $('input#id_start');
+  var $stop = $('input#id_stop');
+  var oldStartTime;
+  var removeUpdateClass;
 
   $('input#id_start, input#id_stop').pickatime({
     clear: false,

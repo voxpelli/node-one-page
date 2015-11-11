@@ -1,12 +1,14 @@
 'use strict';
 
-var _ = require('lodash')
-  , theme
-  , preprocessors = []
-  , processor;
+var _ = require('lodash');
+var theme;
+var preprocessors = [];
+var processor;
 
 preprocessors['sirtrevor-block'] = function (data, callback) {
-  var suggestion, name, locals = this.getLocals(theme);
+  var suggestion;
+  var name;
+  var locals = this.getLocals(theme);
 
   switch (data.content.type) {
     case 'video':
@@ -93,7 +95,7 @@ preprocessors.speaker = function (data, callback) {
     links.push({
       type : type,
       url : url,
-      name : name || (type[0].toUpperCase() + type.substr(1))
+      name : name || (type[0].toUpperCase() + type.substr(1)),
     });
   });
 
@@ -120,7 +122,7 @@ theme = {
     renderer : require('ejs').renderFile,
     templateExtension : 'ejs',
     vtOnePageUnsupported: [ 'map', 'video' ],
-  }
+  },
 };
 
 module.exports = theme;
