@@ -34,6 +34,8 @@
     "tema": "~0.2.0"
   },
   "devDependencies": {
+    "chai": "^3.4.0",
+    "coveralls": "^2.11.4",
     "dependency-check": "^2.2.0",
     "grunt": "~0.4.2",
     "grunt-contrib-concat": "~0.5.0",
@@ -44,7 +46,10 @@
     "grunt-fontello": "~0.1.3",
     "grunt-jscs": "^1.5.0",
     "grunt-lintspaces": "~0.7.0",
+    "grunt-mocha-istanbul": "^3.0.1",
     "grunt-notify": "~0.4.1",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3",
     "passport-dummy": "voxpelli/passport-dummy#master"
   },
   "engines": {

@@ -1,6 +1,6 @@
 /*jslint node: true, white: true, indent: 2 */
 
-"use strict";
+'use strict';
 
 module.exports = function (grunt) {
   grunt.initConfig({
@@ -41,6 +41,21 @@ module.exports = function (grunt) {
     },
     jscs: {
       src: '<%= jshint.files %>',
+    },
+    mocha_istanbul: {
+      options: {
+        root: './lib',
+      },
+      all: {
+        src: 'test/**/*.spec.js'
+      },
+      coveralls: {
+        src: 'test/**/*.spec.js',
+        options: {
+          coverage: true,
+          reportFormats: ['lcovonly']
+        }
+      }
     },
     concat: {
       options: {
@@ -145,10 +160,15 @@ module.exports = function (grunt) {
     'grunt-contrib-uglify',
     'grunt-contrib-concat',
     'grunt-fontello',
-    'grunt-lintspaces',
     'grunt-jscs',
+    'grunt-lintspaces',
+    'grunt-mocha-istanbul',
     'dependency-check',
   ].forEach(grunt.loadNpmTasks.bind(grunt));
+
+  grunt.registerTask('setTestEnv', 'Ensure that environment (database etc) is set up for testing', function () {
+    process.env.NODE_ENV = 'test';
+  });
 
   grunt.registerTask('test-js', [
     'lintspaces',
@@ -157,7 +177,8 @@ module.exports = function (grunt) {
     'dependency-check',
   ]);
   grunt.registerTask('test-css', ['sass:test']);
-  grunt.registerTask('test', ['test-js', 'test-css']);
+  grunt.registerTask('test-mocha', ['setTestEnv', 'mocha_istanbul:all']);
+  grunt.registerTask('test', ['test-js', 'test-css', 'test-mocha']);
 
   grunt.registerTask('build-js', ['concat', 'uglify']);
   grunt.registerTask('build-css', ['sass:dev', 'sass:dist']);
