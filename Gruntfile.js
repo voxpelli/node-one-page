@@ -15,41 +15,25 @@ module.exports = function (grunt) {
       },
     },
     eslint: {
-      node: {
-        src: [
-          'Gruntfile.js',
-          'lib/**/*.js',
-          'basetheme/index.js',
-        ],
-      },
-      tests: {
-        options: {
-          envs: ['mocha'],
-        },
-        src: ['tests/**/*.js'],
-      },
-      browser: {
-        options: {
-          configFile: 'basetheme/sources/.eslintrc',
-          useEslintrc: false,
-        },
-        src: [
-          'basetheme/sources/js/**/*.js',
-          '!basetheme/sources/js/vendor/**/*.js',
-        ],
-      },
+      src: [
+        'Gruntfile.js',
+        'lib/**/*.js',
+        'tests/**/*.js',
+        'basetheme/index.js',
+        'basetheme/sources/js/**/*.js',
+        '!basetheme/sources/js/vendor/**/*.js',
+      ],
     },
     lintspaces: {
       files: [
-        '<%= eslint.node.src %>',
-        '<%= eslint.browser.src %>',
+        '<%= eslint.src %>',
         'basetheme/sources/sass/**/*.scss',
         '!basetheme/sources/sass/vendor/**/*.scss',
       ],
       options: { editorconfig: '.editorconfig' },
     },
     'dependency-check': {
-      files: ['<%= eslint.node.src %>', '<%= eslint.tests.src %>'],
+      files: ['<%= eslint.src %>'],
       options: {
         excludeUnusedDev: true,
         ignoreUnused: ['pg'],
@@ -140,11 +124,7 @@ module.exports = function (grunt) {
     },
     watch: {
       eslint : {
-        files: [
-          '<%= eslint.node.src %>',
-          '<%= eslint.tests.src %>',
-          '<%= eslint.browser.src %>',
-        ],
+        files: ['<%= eslint.src %>'],
         tasks: ['test-js'],
       },
       js : {
