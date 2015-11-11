@@ -1,9 +1,6 @@
-/*jslint browser: true */
 /* global confirm, ace, SirTrevor */
 (function ($) {
   "use strict";
-
-  var sirTrevorInstance;
 
   $('button[name="deleteimage"]').click(function (e) {
     if (!confirm('Säker på att du vill ta bort bilden?')) {
@@ -91,10 +88,12 @@
       SirTrevor.Blocks.Flickr.prototype.flickrKey = window.vtConfig.admin.flickrKey;
     }
 
-    sirTrevorInstance = new SirTrevor.Editor({
+    /*eslint-disable no-new */
+    new SirTrevor.Editor({
       blockTypes: window.vtConfig.admin.blockTypes,
       el: $('.sir-trevor').first()
     });
+    /*eslint-enable no-new */
   }
 
   // Date picker

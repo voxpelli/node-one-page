@@ -1,6 +1,4 @@
-/*jslint node: true, white: true, indent: 2 */
-
-"use strict";
+'use strict';
 
 var _ = require('lodash')
   , theme
@@ -77,16 +75,16 @@ preprocessors.speaker = function (data, callback) {
     }
 
     if (type === 'linkedin') {
-      url = url || ('http://www.linkedin.com/' +  link);
+      url = url || ('http://www.linkedin.com/' + link);
       name = 'LinkedIn';
     } else if (type === 'twitter') {
-      url = url || ('https://twitter.com/' +  encodeURIComponent(link));
+      url = url || ('https://twitter.com/' + encodeURIComponent(link));
       name = 'Twitter';
     } else if (type === 'github') {
-      url = url || ('https://github.com/' +  encodeURIComponent(link));
+      url = url || ('https://github.com/' + encodeURIComponent(link));
       name = 'GitHub';
     } else if (type === 'dribbble') {
-      url = url || ('https://dribbble.com/' +  encodeURIComponent(link));
+      url = url || ('https://dribbble.com/' + encodeURIComponent(link));
       name = 'Dribbble';
     } else if (type === 'blog') {
       name = 'Blogg';

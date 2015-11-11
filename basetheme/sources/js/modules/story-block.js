@@ -1,6 +1,6 @@
 /*jslint browser: true */
 /* global SirTrevor, _ */
-SirTrevor.Blocks.Story = (function(){
+SirTrevor.Blocks.Story = (function () {
   "use strict";
 
   var template = _.template([
@@ -25,7 +25,7 @@ SirTrevor.Blocks.Story = (function(){
 
     onContentPasted: SirTrevor.Block.prototype.onContentPasted,
 
-    loadData: function(data){
+    loadData: function (data) {
       this.getTextBlock().html(SirTrevor.toHTML(data.text || '', this.type));
       this.$('.js-quote-input').val(data.quote);
       this.$('.js-speaker-input').val(data.speaker);
@@ -40,8 +40,8 @@ SirTrevor.Blocks.Story = (function(){
       }
     },
 
-    onBlockRender: function(){
-      var handleUpdate = _.bind(function(ev){
+    onBlockRender: function () {
+      var handleUpdate = _.bind(function (ev) {
         if (this.flickrChangeTimeout) {
           clearTimeout(this.flickrChangeTimeout);
         }
@@ -65,7 +65,7 @@ SirTrevor.Blocks.Story = (function(){
         .on('change', handleUpdate);
     },
 
-    editorHTML: function() {
+    editorHTML: function () {
       return template(this);
     }
   });

@@ -1,0 +1,11 @@
+{
+  "extends": "semistandard",
+  "rules": {
+    "comma-style": 1,
+    "one-var": [1, "always"],
+    "key-spacing": [2, { "beforeColon": false, "afterColon": true, "mode": "minimum" }],
+    "comma-dangle": [1, "always-multiline"],
+    "space-before-function-paren": [2, {"anonymous": "always", "named": "never"}],
+    "spaced-comment": 0
+  }
+}

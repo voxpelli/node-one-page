@@ -1,5 +1,3 @@
-/*jslint node: true, white: true, indent: 2 */
-
 'use strict';
 
 module.exports = function (grunt) {
@@ -12,60 +10,78 @@ module.exports = function (grunt) {
           fonts   : 'basetheme/public/font',
           styles  : 'basetheme/sources/sass/vendor/fontello',
           scss    : true,
-          force   : true
-        }
-      }
+          force   : true,
+        },
+      },
     },
-    jshint: {
-      files: [
-        'Gruntfile.js',
-        'lib/**/*.js',
-        'brandtheme/index.js',
-        'brandtheme/sources/js/*.js',
-        'brandtheme/sources/js/modules/*.js'
-      ],
+    eslint: {
       options: {
-        jshintrc: '.jshintrc'
-      }
+        quiet: true,
+      },
+      node: {
+        src: [
+          'Gruntfile.js',
+          'lib/**/*.js',
+          'basetheme/index.js',
+        ],
+      },
+      tests: {
+        options: {
+          envs: ['mocha'],
+        },
+        src: ['tests/**/*.js'],
+      },
+      browser: {
+        options: {
+          configFile: 'basetheme/sources/.eslintrc',
+          useEslintrc: false,
+        },
+        src: [
+          'basetheme/sources/js/**/*.js',
+          '!basetheme/sources/js/vendor/**/*.js',
+        ],
+      },
     },
     lintspaces: {
-      files: ['<%= jshint.files %>'],
-      options: { editorconfig: '.editorconfig' }
+      files: [
+        '<%= eslint.node.src %>',
+        '<%= eslint.browser.src %>',
+        'basetheme/sources/sass/**/*.scss',
+        '!basetheme/sources/sass/vendor/**/*.scss',
+      ],
+      options: { editorconfig: '.editorconfig' },
     },
     'dependency-check': {
-      files: '<%= jshint.files %>',
+      files: ['<%= eslint.node.src %>', '<%= eslint.tests.src %>'],
       options: {
         excludeUnusedDev: true,
         ignoreUnused: ['pg'],
-      }
-    },
-    jscs: {
-      src: '<%= jshint.files %>',
+      },
     },
     mocha_istanbul: {
       options: {
         root: './lib',
       },
       all: {
-        src: 'test/**/*.spec.js'
+        src: 'test/**/*.spec.js',
       },
       coveralls: {
         src: 'test/**/*.spec.js',
         options: {
           coverage: true,
-          reportFormats: ['lcovonly']
-        }
-      }
+          reportFormats: ['lcovonly'],
+        },
+      },
     },
     concat: {
       options: {
-        separator: ';'
+        separator: ';',
       },
       footer: {
         src: [
-          'basetheme/sources/js/vendor/jquery.js'
+          'basetheme/sources/js/vendor/jquery.js',
         ],
-        dest: 'basetheme/public/footer.js'
+        dest: 'basetheme/public/footer.js',
       },
       admin: {
         src: [
@@ -79,18 +95,18 @@ module.exports = function (grunt) {
           'basetheme/sources/js/vendor/picker.js',
           'basetheme/sources/js/vendor/picker.legacy.js',
           'basetheme/sources/js/vendor/picker.time.js',
-          'basetheme/sources/js/admin.js'
+          'basetheme/sources/js/admin.js',
         ],
-        dest: 'basetheme/public/admin.js'
-      }
+        dest: 'basetheme/public/admin.js',
+      },
     },
     uglify: {
       dist: {
         files: {
           'basetheme/public/footer.min.js': ['basetheme/public/footer.js'],
           'basetheme/public/admin.min.js': ['basetheme/public/admin.js'],
-        }
-      }
+        },
+      },
     },
     sass: {
       options: {
@@ -101,66 +117,65 @@ module.exports = function (grunt) {
         // Ensure that the child themes can include stuff from the parent theme
         loadPath: ['basetheme/sources/sass/'],
         sourcemap: 'none',
-        quiet : true
+        quiet : true,
       },
       test: {
         options: {
-          check: true
+          check: true,
         },
-        files: ['<%= sass.options.files %>']
+        files: ['<%= sass.options.files %>'],
       },
       dist: {
         options: {
-          style: 'compressed'
+          style: 'compressed',
         },
         files: {
           'basetheme/public/styles.min.css': 'basetheme/sources/sass/base.scss',
           'basetheme/public/admin.min.css': 'basetheme/sources/sass/admin.scss',
-        }
+        },
       },
       dev: {
         options: {
-          style: 'expanded'
+          style: 'expanded',
         },
-        files: ['<%= sass.options.files %>']
-      }
+        files: ['<%= sass.options.files %>'],
+      },
     },
     watch: {
-      jshint : {
-        files: ['<%= jshint.files %>'],
-        tasks: ['test-js']
+      eslint : {
+        files: [
+          '<%= eslint.node.src %>',
+          '<%= eslint.tests.src %>',
+          '<%= eslint.browser.src %>',
+        ],
+        tasks: ['test-js'],
       },
       js : {
-        files: [
-          'basetheme/sources/js/vendor/*.js',
-          'basetheme/sources/js/modules/*.js',
-          'basetheme/sources/js/*.js'
-        ],
-        tasks: ['build-js']
+        files: ['basetheme/sources/js/**/*.js'],
+        tasks: ['build-js'],
       },
       sass : {
-        files: ['basetheme/sources/**/*.scss'],
-        tasks: ['build-css']
+        files: ['basetheme/sources/sass/**/*.scss'],
+        tasks: ['build-css'],
       },
       livereload: {
         options: { livereload: true },
         files: [
           'basetheme/public/**/*.css',
-          'basetheme/public/**/*.js'
-        ]
-      }
-    }
+          'basetheme/public/**/*.js',
+        ],
+      },
+    },
   });
 
   [
     'grunt-notify',
-    'grunt-contrib-jshint',
     'grunt-contrib-sass',
     'grunt-contrib-watch',
     'grunt-contrib-uglify',
     'grunt-contrib-concat',
     'grunt-fontello',
-    'grunt-jscs',
+    'grunt-eslint',
     'grunt-lintspaces',
     'grunt-mocha-istanbul',
     'dependency-check',
@@ -172,8 +187,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test-js', [
     'lintspaces',
-    'jshint',
-    'jscs',
+    'eslint',
     'dependency-check',
   ]);
   grunt.registerTask('test-css', ['sass:test']);

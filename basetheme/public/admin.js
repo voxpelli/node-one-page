@@ -5947,7 +5947,7 @@ function log() {
 }(jQuery, _));
 ;/*jslint browser: true */
 /* global SirTrevor, _, base58 */
-SirTrevor.Blocks.Flickr = (function(){
+SirTrevor.Blocks.Flickr = (function () {
   "use strict";
 
   return SirTrevor.Block.extend({
@@ -5962,23 +5962,23 @@ SirTrevor.Blocks.Flickr = (function(){
 
     icon_name: 'image',
 
-    fetchUrl: function(photoID) {
+    fetchUrl: function (photoID) {
       return 'https://api.flickr.com/services/rest/?method=flickr.photos.getSizes' +
         '&api_key=' + this.flickrKey + '&photo_id=' + photoID + '&format=json';
     },
 
-    loadData: function(data){
+    loadData: function (data) {
       if (data.flickr && data.flickr.length) {
         this.$editor.html($('<img>', { src: data.flickr[8].src }));
       }
     },
 
-    onContentPasted: function(event){
+    onContentPasted: function (event) {
       this.handleDropPaste($(event.target).val());
     },
 
-    handleDropPaste: function(url){
-      if(!_.isURI(url)) {
+    handleDropPaste: function (url) {
+      if (!_.isURI(url)) {
         return false;
       }
 
@@ -6004,7 +6004,7 @@ SirTrevor.Blocks.Flickr = (function(){
       this.fetch(ajaxOptions, this.onFetchSuccess, this.onFetchFail);
     },
 
-    onFetchSuccess: function(data) {
+    onFetchSuccess: function (data) {
       var sizes = [];
 
       if (data.sizes && data.sizes.size) {
@@ -6028,12 +6028,12 @@ SirTrevor.Blocks.Flickr = (function(){
       this.ready();
     },
 
-    onFetchFail: function() {
+    onFetchFail: function () {
       this.addMessage("Failed to fetch data from Flickr");
       this.ready();
     },
 
-    onDrop: function(transferData){
+    onDrop: function (transferData) {
       var url = transferData.getData('text/plain');
       this.handleDropPaste(url);
     }
@@ -6042,7 +6042,7 @@ SirTrevor.Blocks.Flickr = (function(){
 }());
 ;/*jslint browser: true */
 /* global SirTrevor, _ */
-SirTrevor.Blocks.Story = (function(){
+SirTrevor.Blocks.Story = (function () {
   "use strict";
 
   var template = _.template([
@@ -6067,7 +6067,7 @@ SirTrevor.Blocks.Story = (function(){
 
     onContentPasted: SirTrevor.Block.prototype.onContentPasted,
 
-    loadData: function(data){
+    loadData: function (data) {
       this.getTextBlock().html(SirTrevor.toHTML(data.text || '', this.type));
       this.$('.js-quote-input').val(data.quote);
       this.$('.js-speaker-input').val(data.speaker);
@@ -6082,8 +6082,8 @@ SirTrevor.Blocks.Story = (function(){
       }
     },
 
-    onBlockRender: function(){
-      var handleUpdate = _.bind(function(ev){
+    onBlockRender: function () {
+      var handleUpdate = _.bind(function (ev) {
         if (this.flickrChangeTimeout) {
           clearTimeout(this.flickrChangeTimeout);
         }
@@ -6107,7 +6107,7 @@ SirTrevor.Blocks.Story = (function(){
         .on('change', handleUpdate);
     },
 
-    editorHTML: function() {
+    editorHTML: function () {
       return template(this);
     }
   });
@@ -7703,12 +7703,9 @@ Picker.extend( 'pickatime', TimePicker )
 
 
 
-;/*jslint browser: true */
-/* global confirm, ace, SirTrevor */
+;/* global confirm, ace, SirTrevor */
 (function ($) {
   "use strict";
-
-  var sirTrevorInstance;
 
   $('button[name="deleteimage"]').click(function (e) {
     if (!confirm('Säker på att du vill ta bort bilden?')) {
@@ -7796,10 +7793,12 @@ Picker.extend( 'pickatime', TimePicker )
       SirTrevor.Blocks.Flickr.prototype.flickrKey = window.vtConfig.admin.flickrKey;
     }
 
-    sirTrevorInstance = new SirTrevor.Editor({
+    /*eslint-disable no-new */
+    new SirTrevor.Editor({
       blockTypes: window.vtConfig.admin.blockTypes,
       el: $('.sir-trevor').first()
     });
+    /*eslint-enable no-new */
   }
 
   // Date picker
