@@ -170,7 +170,7 @@ module.exports = function (grunt) {
     'test-mocha',
   ]);
   grunt.registerTask('test-css', ['sass:test']);
-  grunt.registerTask('test', ['test-js', 'test-css', 'test-mocha']);
+  grunt.registerTask('test', ['test-js', 'test-css']);
 
   grunt.registerTask('build-js', ['concat', 'uglify']);
   grunt.registerTask('build-css', ['sass:dev', 'sass:dist']);

@@ -1,22 +1,51 @@
 'use strict';
 
-var installSchema = require('../lib/install-schema');
-
 // Avoid running tests in non-test environments
 if (process.env.NODE_ENV !== 'test') {
-  console.error('Will only run in a test environment with NODE_ENV set to "test".');
+  console.error('To avoid accidental damage these tests will refuse to run when NODE_ENV is set to something else than "test".');
   process.exit(1);
 }
 
+var VTOnePage = require('../');
+
+// Tables with relations between each other needs special treatment – needs to be deleted in order
+var tables = [
+];
+
 module.exports = {
-  clearDb : function (knex) {
-    return installSchema.tables.reduce(function (deletionChain, table) {
-      return deletionChain.then(knex.schema.dropTableIfExists.bind(knex.schema, table));
-    }, Promise.resolve());
+  setup : function () {
+    var knexConfig = VTOnePage.knexConfig(process.env.NODE_ENV);
+    var knex = require('knex')(knexConfig);
+
+    return this.clearDb(knex)
+      .then(this.setupSchema.bind(this))
+      .then(this.setupSampleData.bind(this, knex));
   },
 
-  setupSchema : function (knex) {
-    return installSchema(knex, Promise);
+  clearDb : function (knex) {
+    var dropTable = function (tableName) {
+      return knex.schema.dropTableIfExists(tableName);
+    };
+
+    return tables
+      .reduce(function (deleteChain, tableName) {
+        return deleteChain.then(dropTable.bind(undefined, tableName));
+      }, Promise.resolve())
+      .then(function () {
+        // Fallback in case we missed a table
+        return knex('information_schema.tables')
+          .select('table_name')
+          //TODO: Parse the schema from the config?
+          .where('table_schema', 'public')
+          .pluck('table_name');
+      })
+      .then(function (tableNames) {
+        return Promise.all(tableNames.map(dropTable));
+      });
+  },
+
+  setupSchema : function () {
+    return VTOnePage.runMigrationTask('install', true);
   },
 
   setupSampleData : function (knex) {

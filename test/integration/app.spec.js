@@ -1,25 +1,20 @@
 'use strict';
 
 var request = require('supertest-as-promised');
-var dbUtils = require('../db-setup');
 
 describe('Node One Page – Main', function () {
   var VTOnePage = require('../../');
+  var dbUtils = require('../db-setup');
 
   var appInstance;
-
   var app;
-  var knex;
 
   beforeEach(function () {
     appInstance = new VTOnePage();
 
     app = appInstance.app;
-    knex = appInstance.knex;
 
-    return dbUtils.clearDb(knex)
-      .then(dbUtils.setupSchema.bind(dbUtils, knex))
-      .then(dbUtils.setupSampleData.bind(dbUtils, knex));
+    return dbUtils.setup(appInstance);
   });
 
   describe('basic', function () {
