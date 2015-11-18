@@ -34,7 +34,7 @@
     "tema": "~0.2.0"
   },
   "devDependencies": {
-    "chai": "^3.4.0",
+    "chai": "^3.4.1",
     "coveralls": "^2.11.4",
     "dependency-check": "^2.2.0",
     "eslint-config-semistandard": "^5.0.0",
@@ -52,7 +52,9 @@
     "grunt-notify": "~0.4.1",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
-    "passport-dummy": "voxpelli/passport-dummy#master"
+    "passport-dummy": "voxpelli/passport-dummy#master",
+    "supertest": "^1.1.0",
+    "supertest-as-promised": "^2.0.2"
   },
   "engines": {
     "node": ">=4.0.0"

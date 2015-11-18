@@ -18,7 +18,7 @@ module.exports = function (grunt) {
       src: [
         'Gruntfile.js',
         'lib/**/*.js',
-        'tests/**/*.js',
+        'test/**/*.js',
         'basetheme/index.js',
         'basetheme/sources/js/**/*.js',
         '!basetheme/sources/js/vendor/**/*.js',
@@ -162,13 +162,14 @@ module.exports = function (grunt) {
     process.env.NODE_ENV = 'test';
   });
 
+  grunt.registerTask('test-mocha', ['setTestEnv', 'mocha_istanbul:all']);
   grunt.registerTask('test-js', [
     'lintspaces',
     'eslint',
     'dependency-check',
+    'test-mocha',
   ]);
   grunt.registerTask('test-css', ['sass:test']);
-  grunt.registerTask('test-mocha', ['setTestEnv', 'mocha_istanbul:all']);
   grunt.registerTask('test', ['test-js', 'test-css', 'test-mocha']);
 
   grunt.registerTask('build-js', ['concat', 'uglify']);
