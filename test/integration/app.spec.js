@@ -3,7 +3,7 @@
 var request = require('supertest-as-promised');
 var dbUtils = require('../db-setup');
 
-describe('Node One Page', function () {
+describe('Node One Page – Main', function () {
   var VTOnePage = require('../../');
 
   var appInstance;
@@ -23,8 +23,11 @@ describe('Node One Page', function () {
   });
 
   describe('basic', function () {
-    it('should return a web page on "/" path', function () {
-      return request(app).get('/').expect(200);
+    it('should return a web page on the "/" path', function () {
+      return request(app)
+        .get('/')
+        .expect(200)
+        .expect('Content-Type', 'text/html; charset=utf-8');
     });
   });
 });
