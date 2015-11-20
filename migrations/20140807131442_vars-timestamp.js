@@ -1,6 +1,4 @@
-/*jslint node: true, white: true, indent: 2 */
-
-"use strict";
+'use strict';
 
 exports.up = function (knex) {
   return knex.schema.table('vars', function (table) {

@@ -1,6 +1,3 @@
-/*jslint node: true, white: true, indent: 2 */
-
-
 'use strict';
 
 exports.up = function (knex) {

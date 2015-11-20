@@ -18,6 +18,7 @@ module.exports = function (grunt) {
       src: [
         'Gruntfile.js',
         'lib/**/*.js',
+        'migrations/**/*.js',
         'test/**/*.js',
         'basetheme/index.js',
         'basetheme/sources/js/**/*.js',
