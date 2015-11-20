@@ -18,8 +18,9 @@ module.exports = {
     var knex = require('knex')(knexConfig);
 
     return this.clearDb(knex)
-      .then(this.setupSchema.bind(this))
-      .then(this.setupSampleData.bind(this, knex));
+      .then(() => this.setupSchema())
+      .then(() => this.setupSampleData(knex))
+      .then(() => knex.destroy());
   },
 
   clearDb : function (knex) {
@@ -28,9 +29,10 @@ module.exports = {
     };
 
     return tables
-      .reduce(function (deleteChain, tableName) {
-        return deleteChain.then(dropTable.bind(undefined, tableName));
-      }, Promise.resolve())
+      .reduce(
+        (deleteChain, tableName) => deleteChain.then(dropTable.bind(undefined, tableName)),
+        Promise.resolve()
+      )
       .then(function () {
         // Fallback in case we missed a table
         return knex('information_schema.tables')
@@ -39,9 +41,7 @@ module.exports = {
           .where('table_schema', 'public')
           .pluck('table_name');
       })
-      .then(function (tableNames) {
-        return Promise.all(tableNames.map(dropTable));
-      });
+      .then(tableNames => Promise.all(tableNames.map(dropTable)));
   },
 
   setupSchema : function () {

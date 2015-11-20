@@ -66,10 +66,10 @@ describe('Node One Page – Admin', function () {
     });
 
     it('should return a HTML page', function () {
-      return request(app)
+      return agent
         .get('/admin')
-        .expect(302)
-        .expect('Location', '/admin/login');
+        .expect(200)
+        .expect('Content-Type', 'text/html; charset=utf-8');
     });
 
     it('should have a <form>-tag in it', function () {

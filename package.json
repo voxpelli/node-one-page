@@ -57,7 +57,7 @@
     "supertest-as-promised": "^2.0.2"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=5.0.0"
   },
   "main": "./lib/app",
   "scripts": {
