@@ -1,16 +1,23 @@
 language: node_js
 node_js:
-  - "0.10"
-  - "0.11"
-  - "iojs"
+  - "stable"
+  - "5"
 env:
 - SASS_VERSION=3.3.14
 - SASS_VERSION=latest
 before_script:
-- if test $SASS_VERSION != "latest"; then gem install sass -v $SASS_VERSION; else gem install sass; fi
+  - if test $SASS_VERSION != "latest"; then gem install sass -v $SASS_VERSION; else gem install sass; fi
+  - psql -c 'create database vtonepage_test;' -U postgres
+sudo: false
 script: npm test
+addons:
+  postgresql: "9.4"
 matrix:
+  include:
+    - node_js: "stable"
+      env: SASS_VERSION=3.3.14
+      addons:
+        postgresql: "9.1"
   fast_finish: true
   allow_failures:
-    - node_js: "0.11"
     - env: SASS_VERSION=latest
