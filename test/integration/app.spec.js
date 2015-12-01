@@ -6,13 +6,14 @@ describe('Node One Page – Main', function () {
   var VTOnePage = require('../../');
   var dbUtils = require('../db-setup');
 
+  var config;
   var appInstance;
   var app;
 
   beforeEach(function () {
-    appInstance = new VTOnePage();
-
-    app = appInstance.app;
+    config = VTOnePage.ExpressConfig.getConfig({});
+    appInstance = new VTOnePage(config);
+    app = appInstance.getApp();
 
     return dbUtils.setup(appInstance);
   });

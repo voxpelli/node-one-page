@@ -12,14 +12,11 @@
   },
   "dependencies": {
     "backbone-extend-standalone": "~0.1.2",
-    "basic-auth": "^1.0.3",
     "cloudinary": "^1.0.8",
-    "compression": "^1.6.0",
     "connect-busboy": "0.0.2",
     "connect-pg-simple": "^3.1.0",
     "connect-roles": "^3.0.3",
     "cookie-parser": "^1.4.0",
-    "dotenv": "^1.1.0",
     "ejs": "^1.0.0",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
@@ -36,7 +33,8 @@
     "serve-static": "^1.10.0",
     "static-expiry": "0.0.11",
     "strftime": "~0.9.0",
-    "tema": "~0.2.0"
+    "tema": "~0.2.0",
+    "vp-express-wrapper": "^0.4.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",

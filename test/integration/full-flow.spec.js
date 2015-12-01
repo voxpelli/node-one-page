@@ -11,14 +11,15 @@ describe('Node One Page – Full Flow', function () {
   var VTOnePage = require('../../');
   var dbUtils = require('../db-setup');
 
+  var config;
   var appInstance;
   var app;
   var agent;
 
   beforeEach(function () {
-    appInstance = new VTOnePage();
-
-    app = appInstance.app;
+    config = VTOnePage.ExpressConfig.getConfig({});
+    appInstance = new VTOnePage(config);
+    app = appInstance.getApp();
     agent = request.agent(app);
 
     return dbUtils
