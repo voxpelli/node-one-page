@@ -32,6 +32,10 @@ describe('Node One Page – Full Flow', function () {
       });
   });
 
+  afterEach(function () {
+    return appInstance.close();
+  });
+
   describe('vars', function () {
     it('should when modified in admin be updated on the front page', function () {
       return Promise.resolve()

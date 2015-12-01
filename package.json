@@ -34,7 +34,7 @@
     "static-expiry": "0.0.11",
     "strftime": "~0.9.0",
     "tema": "~0.2.0",
-    "vp-express-wrapper": "^0.4.1"
+    "vp-express-wrapper": "^0.4.2"
   },
   "devDependencies": {
     "chai": "^3.4.1",

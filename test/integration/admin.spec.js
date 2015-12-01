@@ -21,6 +21,10 @@ describe('Node One Page – Admin', function () {
     return dbUtils.setup(appInstance);
   });
 
+  afterEach(function () {
+    return appInstance.close();
+  });
+
   describe('basic', function () {
     it('should redirect to login on the "/admin" path', function () {
       return request(app)

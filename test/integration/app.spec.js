@@ -18,6 +18,10 @@ describe('Node One Page – Main', function () {
     return dbUtils.setup(appInstance);
   });
 
+  afterEach(function () {
+    return appInstance.close();
+  });
+
   describe('basic', function () {
     it('should return a web page on the "/" path', function () {
       return request(app)
