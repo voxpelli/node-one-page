@@ -22,7 +22,7 @@
       <button type="submit" name="create">
         <%- typeof canAdd === 'undefined' || (resolvedForm.data && resolvedForm.data.id) ? 'Uppdatera' : 'Lägg till' %>
         <% if (formData.name) { -%>
-          <%=: formData.name | downcase %>
+          <%= formData.name.toLowerCase() %>
         <% } -%>
       </button>
     </div>
