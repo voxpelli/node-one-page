@@ -2,6 +2,11 @@
 
 Quick and easy one pagers for events and other small information pages.
 
+
+[![Build Status](https://travis-ci.org/voxpelli/node-one-page.svg?branch=master)](https://travis-ci.org/voxpelli/node-one-page)
+[![Coverage Status](https://coveralls.io/repos/voxpelli/node-one-page/badge.svg?branch=master&service=github)](https://coveralls.io/github/voxpelli/node-one-page?branch=master)
+[![Dependency Status](https://gemnasium.com/voxpelli/node-one-page.svg)](https://gemnasium.com/voxpelli/node-one-page)
+
 ## What's this?
 
 A simple, quick, pragmatically built code base for the creation of one pagers. There's a single admin page. There's a single enduser page. Built mainly for events who easily want to get some data up quickly. Used on Valtech Day 2013-2014 and by The Conference for their archive page of 2014. Also used by Valtech for some other person oriented sites like the presentation of the 2013 Talent Program.
