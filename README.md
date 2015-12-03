@@ -15,12 +15,10 @@ Built to be easily hostable on [Heroku](http://www.heroku.com/).
 
 ## Requirements
 
-* Node.js 0.10
-* Postgres 9.3
+* Node.js >=5.x
+* Postgres 9.4 (or maybe 9.3)
 * [Cloudinary](http://cloudinary.com/) account (Optional)
 * Grunt (Development only)
-* Sass 3.3 (Development only)
-* [Foreman](http://ddollar.github.io/foreman/) (Optional – recommended though in a development environment as this project is built around `Procfile` and `.env` files to simulate a Heroku environment. As currently only one process is used and a backup `.env` parser is provided Foreman isn't strictly needed though)
 
 ## To install and run
 
@@ -58,7 +56,7 @@ Just run `npm run rollback-schema` locally or, if on Heroku, use a [One-Off Dyno
 
 ## To verify code and build theme
 
-Just run `grunt` to verify and build the code – or to continuously do that, run `grunt watch` instead. Ensure that you have [installed Sass](http://sass-lang.com/install) first (tested with version 3.3) or else the compilation will fail.
+Just run `grunt` to verify and build the code – or to continuously do that, run `grunt watch` instead.
 
 ## Configuration
 
@@ -103,12 +101,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 Add this project as a dependency to your project, <del>`npm install --save vtonepage`</del> – do `npm install --save voxpelli/node-one-page` for now, create a new [Tema theme](https://www.npmjs.org/package/tema) that inherits from `require('vtonepage').basetheme` and then launch an instance of this project using that theme and connect it to a server:
 
 ```javascript
-var VTOnePage = require('vtonepage'),
-  page = new VTOnePage({ theme : require('./newCoolTheme') }),
-  httpServer = require('http').createServer(page.app);
+var VTOnePage = require('vtonepage');
 
-httpServer.listen(page.app.get('port'), function(){
-  console.log('Express server listening on port ' + page.app.get('port'));
+VTOnePage.subclassOrRun(module, {
+  theme : require('./newCoolTheme'),
 });
 ```
 
@@ -119,20 +115,16 @@ Set up a Grunt workflow similar to the base theme and include the path to the ba
 Also set up your new instance to proxy calls to the database installation and migration system. Do that by adding `knex` and `pg` as dependencies, and adding a `knexfile.js` looking like:
 
 ```javascript
-var envFile = __dirname + '/.env',
-  config = require('vtonepage').getDefaultConfig(require('fs').existsSync(envFile) ? envFile : undefined),
-  db = { client: 'pg', connection: config.db };
-
-module.exports = { development: db, staging: db, production: db };
+module.exports = require('./').knexConfig();
 ```
 
 And npm scripts in your `package.json` looking like:
 
 ```
 "scripts": {
-  "install-schema": "node ./node_modules/vtonepage/lib/install-schema.js",
-  "migrate-schema": "./node_modules/.bin/knex migrate:latest --knexfile knexfile.js --cwd ./node_modules/vtonepage",
-  "rollback-schema": "./node_modules/.bin/knex migrate:rollback --knexfile knexfile.js --cwd ./node_modules/vtonepage"
+  "install-schema":  "node -e \"require('.').runMigrationTask('install');\"",
+  "migrate-schema":  "node -e \"require('.').runMigrationTask('migrate');\"",
+  "rollback-schema": "node -e \"require('.').runMigrationTask('rollback');\""
 }
 ```
 
@@ -140,8 +132,8 @@ And npm scripts in your `package.json` looking like:
 
 There are two officially available content types to extend:
 
-* `VTOnePage.contentTypes.base` – the most basic content type that every content type should inherit from. Has no basic data storage – it's up to each individual content type to deal with that.
-* `VTOnePage.contentTypes.vars` – a JSON-storage backed content type that simple content types can inherit from. As long as no advanced queries or big amounts of data are going to be stored this is the perfect content type.
+* `VTOnePage.BaseType` – the most basic content type that every content type should inherit from. Has no basic data storage – it's up to each individual content type to deal with that.
+* `VTOnePage.VarsType` – a JSON-storage backed content type that simple content types can inherit from. As long as no advanced queries or big amounts of data are going to be stored this is the perfect content type.
 
 The source for these and for internal content types that extend these ones can be found in `lib/admin/`.
 

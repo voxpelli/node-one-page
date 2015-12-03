@@ -1,1 +1,1 @@
-module.exports = require('./lib/app.js').knexConfig();
+module.exports = require('./').knexConfig();
