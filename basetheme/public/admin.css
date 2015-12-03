@@ -407,7 +407,7 @@ h2 {
 }
 
 h2.line, section.description h2, section.block h2, section.agenda h2, section.speakers h2, section.admin h2 {
-  padding-bottom: 0.26667em;
+  padding-bottom: 0.2666666667em;
   margin-bottom: 0.7em;
   border-bottom: 1px solid #ccc;
 }
@@ -463,6 +463,7 @@ section {
     font-size: 8px;
   }
 }
+
 @font-face {
   font-family: 'fontello';
   src: url("../font/fontello.eot?58192952");
@@ -470,6 +471,7 @@ section {
   font-weight: normal;
   font-style: normal;
 }
+
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -550,20 +552,24 @@ section.speakers .social a:after {
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
+
 #page > header .wrapper {
   padding: 1.5em 0 0;
 }
+
 #page > header h1 {
   font-size: 2em;
   margin-right: 3.2em;
   padding: 0 0 0.45em 0.2em;
   float: left;
 }
+
 #page > header h1 a {
   display: block;
   padding: 0.55em 0;
   color: #FFF;
 }
+
 #page > header h1 a:hover {
   color: #F8CE47;
 }
@@ -576,17 +582,20 @@ section.speakers .social a:after {
   text-align: justify;
   overflow: hidden;
 }
+
 #menu ul {
   font-size: 1em;
   list-style-type: none;
   margin: 0;
   padding: 0 0 0.4375em;
 }
+
 #menu li {
   display: inline-block;
   color: #fff;
   margin: 0.6875em 0 1.125em 2em;
 }
+
 #menu li a {
   padding: 0.75em 0.625em 0.1875em;
   color: #FFF;
@@ -597,9 +606,11 @@ section.speakers .social a:after {
   -o-transition: border-color 0.2s linear;
   transition: border-color 0.2s linear;
 }
+
 #menu li a:hover {
   border-bottom-color: #F8CE47;
 }
+
 #menu li.active a {
   border-bottom-color: #F8CE47;
 }
@@ -608,22 +619,22 @@ section.speakers .social a:after {
   #page > header a.show-menu {
     display: block;
   }
-
   #menu {
     float: none;
     clear: both;
   }
 }
+
 @media screen and (max-width: 370px) {
   #menu {
     margin-left: 0;
   }
-
   #menu li {
     width: 100%;
     margin-left: 0;
   }
 }
+
 input[type=text], textarea, select, .error_msg,
 input.text, selext.select {
   font-size: 1.8em;
@@ -636,7 +647,7 @@ input.text, selext.select {
 
 a.button, button:not(.st-format-btn), input[type=submit] {
   display: inline-block;
-  padding: 0.66667em 1.05556em 0.55556em;
+  padding: 0.6666666667em 1.0555555556em 0.5555555556em;
   margin-bottom: 4px;
   font-size: 1.8em;
   line-height: normal;
@@ -651,46 +662,58 @@ a.button, button:not(.st-format-btn), input[type=submit] {
   color: #000;
   position: relative;
 }
+
 a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
   background: #dfb940;
 }
+
 a.button:hover, button:not(.st-format-btn):hover, input[type=submit]:hover {
-  box-shadow: 0 4px #e5bf42;
+  box-shadow: 0 4px #e6bf42;
   background-color: #ffd449;
 }
+
 a.button:hover:after, button:not(.st-format-btn):hover:after, input[type=submit]:hover:after {
-  background: #e5bf42;
+  background: #e6bf42;
 }
+
 a.button.action, a.button[type=submit], button:not(.st-format-btn).action, button:not(.st-format-btn)[type=submit], input[type=submit].action, input[type=submit][type=submit] {
   box-shadow: 0 4px #4c8b05;
   background-color: #5aa406;
   color: #fff;
 }
+
 a.button.action:after, a.button[type=submit]:after, button:not(.st-format-btn).action:after, button:not(.st-format-btn)[type=submit]:after, input[type=submit].action:after, input[type=submit][type=submit]:after {
   background: #4c8b05;
 }
+
 a.button.action:hover, a.button[type=submit]:hover, button:not(.st-format-btn).action:hover, button:not(.st-format-btn)[type=submit]:hover, input[type=submit].action:hover, input[type=submit][type=submit]:hover {
   box-shadow: 0 4px #5aa406;
-  background-color: #68bd07;
+  background-color: #68be07;
 }
+
 a.button.action:hover:after, a.button[type=submit]:hover:after, button:not(.st-format-btn).action:hover:after, button:not(.st-format-btn)[type=submit]:hover:after, input[type=submit].action:hover:after, input[type=submit][type=submit]:hover:after {
   background: #5aa406;
 }
+
 a.button.danger, button:not(.st-format-btn).danger, input[type=submit].danger {
   box-shadow: 0 4px #b92c28;
   background-color: #D2322D;
   color: #fff;
 }
+
 a.button.danger:after, button:not(.st-format-btn).danger:after, input[type=submit].danger:after {
   background: #b92c28;
 }
+
 a.button.danger:hover, button:not(.st-format-btn).danger:hover, input[type=submit].danger:hover {
   box-shadow: 0 4px #d2322d;
   background-color: #ec3832;
 }
+
 a.button.danger:hover:after, button:not(.st-format-btn).danger:hover:after, input[type=submit].danger:hover:after {
   background: #d2322d;
 }
+
 a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
   content: "";
   display: block;
@@ -701,6 +724,7 @@ a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
   height: 4px;
   z-index: -1;
 }
+
 a.button::-moz-focus-inner, button:not(.st-format-btn)::-moz-focus-inner, input[type=submit]::-moz-focus-inner {
   border: 0;
   padding: 0;
@@ -717,24 +741,28 @@ section.intro {
   margin-left: -1px;
   margin-top: -1px;
 }
+
 section.intro h2, section.intro h3, section.intro h4, section.intro h5, section.intro h6, section.intro p, section.intro table, section.intro pre {
-  padding-right: 2.11864%;
-  padding-left: 2.11864%;
+  padding-right: 2.1186440678%;
+  padding-left: 2.1186440678%;
   position: relative;
   z-index: 10;
 }
+
 section.intro table, section.intro pre {
   display: block;
   padding: 0;
-  margin-right: 2.11864%;
-  margin-left: 2.11864%;
+  margin-right: 2.1186440678%;
+  margin-left: 2.1186440678%;
 }
+
 section.intro h2 {
   font-size: 4.6em;
   font-weight: 700;
   padding-top: 1em;
   padding-bottom: 9px;
 }
+
 section.intro h3, section.intro h4, section.intro h5, section.intro h6, section.intro p, section.intro table, section.intro pre {
   font-size: 2.2em;
   line-height: 1.3;
@@ -742,27 +770,33 @@ section.intro h3, section.intro h4, section.intro h5, section.intro h6, section.
   margin-top: 0;
   margin-bottom: 10px;
 }
+
 section.intro pre {
   padding: .5em 1em;
 }
+
 section.intro a {
   color: inherit;
 }
+
 section.intro a.readmore {
   font-size: .75em;
   display: inline-block;
   position: relative;
   border-bottom: 1px solid #fff;
 }
+
 section.intro .wrapper {
   position: relative;
   overflow: visible;
 }
+
 section.intro .wrapper:before, section.intro .wrapper:after {
   content: "";
   display: block;
   position: absolute;
 }
+
 section.intro .wrapper:before {
   right: -67px;
   bottom: -4.8em;
@@ -771,6 +805,7 @@ section.intro .wrapper:before {
   width: 670px;
   height: 700px;
 }
+
 section.intro .wrapper:after {
   background: no-repeat right bottom;
   background-size: 188px auto;
@@ -779,11 +814,13 @@ section.intro .wrapper:after {
   right: 58px;
   bottom: -11em;
 }
+
 @media screen and (-webkit-min-device-pixel-ratio: 1.3), screen and (-o-min-device-pixel-ratio: 13 / 10), screen and (min-resolution: 1.3dppx) {
   section.intro {
     background-size: 33px auto;
   }
 }
+
 @media screen and (max-width: 880px) {
   section.intro .wrapper:before {
     right: -125px;
@@ -792,6 +829,7 @@ section.intro .wrapper:after {
     right: 0;
   }
 }
+
 @media screen and (max-width: 705px) {
   section.intro .wrapper:before {
     right: -135px;
@@ -800,6 +838,7 @@ section.intro .wrapper:after {
     right: -10px;
   }
 }
+
 @media screen and (max-width: 630px) {
   section.intro h2, section.intro p {
     width: auto;
@@ -814,16 +853,20 @@ section.register {
   border: solid #F5F5F5;
   border-width: 10px 0;
 }
+
 section.register .wrapper {
   padding-bottom: 8.9em;
 }
+
 section.register h2 {
-  padding-bottom: 1.53333em;
+  padding-bottom: 1.5333333333em;
 }
+
 section.register iframe, section.register a {
   width: 95%;
   margin: 0 0 0 1.7em;
 }
+
 section.register a, section.register img {
   display: none;
   text-align: center;
@@ -831,6 +874,7 @@ section.register a, section.register img {
   max-width: 100%;
   height: auto;
 }
+
 @media screen and (max-width: 630px) {
   section.register iframe {
     display: none;
@@ -847,17 +891,21 @@ section.register a, section.register img {
 section.description, section.block {
   padding-bottom: 0;
 }
+
 section.description h2, section.block h2 {
   margin-bottom: 1.1em;
 }
+
 section.description p, section.description h3, section.description h4, section.description h5, section.description h6, section.description pre, section.description table, section.block p, section.block h3, section.block h4, section.block h5, section.block h6, section.block pre, section.block table {
   padding: 0 9px;
   margin-bottom: 0.625em;
 }
+
 section.description h3, section.block h3 {
   font-size: 2.4em;
   line-height: 1.5;
 }
+
 section.description h4, section.description h5, section.description h6, section.block h4, section.block h5, section.block h6 {
   font-size: 1.6em;
 }
@@ -875,51 +923,62 @@ section.agenda {
   padding-bottom: 4.4em;
   position: relative;
 }
+
 section.agenda h2 {
   margin-bottom: 1.1em;
 }
+
 section.agenda h3, section.agenda h4 {
   font-size: 2.4em;
   line-height: 1.5;
 }
+
 section.agenda h3 {
   font-family: Georgia, serif;
   font-weight: 400;
   color: #F8CE47;
-  padding: 0.5em 1.05932%;
+  padding: 0.5em 1.0593220339%;
 }
+
 section.agenda h4 {
   margin-top: -0.25em;
 }
+
 section.agenda .agenda_row {
   clear: both;
   position: relative;
   z-index: 10;
 }
+
 section.agenda .agenda_row.odd {
   background: #f2f2f2;
 }
+
 section.agenda .agenda_row .wrapper {
   padding: 2.5em 0 0;
 }
+
 section.agenda .agenda_row.odd .wrapper {
   padding-top: 1.5em;
 }
+
 section.agenda .wrapper > .time {
-  width: 21.61017%;
-  margin-left: 1.05932%;
-  padding: 7px 1.05932% 0.66667em;
+  width: 21.6101694915%;
+  margin-left: 1.0593220339%;
+  padding: 7px 1.0593220339% 0.6666666667em;
   float: left;
   border-top: 2px solid #5c5c5c;
   font-size: 1.8em;
   line-height: normal;
   color: #DD6823;
 }
+
 section.agenda .wrapper .forelasning {
-  width: 33.68644%;
-  padding: 0 1.05932% 2.5em 2.86017%;
+  width: 33.686440678%;
+  padding: 0 1.0593220339% 2.5em 2.8601694915%;
   float: left;
 }
+
 section.agenda p, section.agenda h5, section.agenda h6, section.agenda pre, section.agenda table {
   font-size: 1.6em;
   max-height: 100%;
@@ -927,13 +986,16 @@ section.agenda p, section.agenda h5, section.agenda h6, section.agenda pre, sect
   padding: 0;
   margin-bottom: 10px;
 }
+
 section.agenda pre {
   padding: .5em 1em;
 }
+
 section.agenda .speaker {
   font-size: 1.6em;
-  padding-bottom: 0.66667em;
+  padding-bottom: 0.6666666667em;
 }
+
 section.agenda .readmore {
   display: block;
   font-size: 1.5em;
@@ -943,22 +1005,24 @@ section.agenda .readmore {
   position: relative;
   z-index: 10;
 }
+
 @media screen and (max-width: 770px) {
   section.agenda .wrapper .forelasning {
-    width: 71.29237%;
+    width: 71.2923728814%;
     float: right;
     padding-left: 0;
   }
 }
+
 @media screen and (max-width: 370px) {
   section.agenda .wrapper > .time,
   section.agenda .wrapper .forelasning {
     float: none;
     width: auto;
-    margin: 0 1.05932%;
+    margin: 0 1.0593220339%;
   }
   section.agenda .wrapper .forelasning {
-    padding-left: 1.05932%;
+    padding-left: 1.0593220339%;
   }
 }
 
@@ -968,28 +1032,34 @@ section.speakers {
   text-align: justify;
   line-height: 0;
 }
+
 section.speakers .speaker {
-  width: 32.20339%;
+  width: 32.2033898305%;
 }
+
 @media screen and (max-width: 630px) {
   section.speakers .speaker {
-    width: 48.73016%;
+    width: 48.7301587302%;
   }
 }
+
 @media screen and (max-width: 370px) {
   section.speakers .speaker {
     display: block;
     width: 100%;
   }
 }
+
 section.speakers .wrapper:after {
   content: '';
   display: inline-block;
   width: 100%;
 }
+
 section.speakers h2 {
   border-bottom-color: #F7B935;
 }
+
 section.speakers .speaker {
   display: inline-block;
   vertical-align: top;
@@ -998,11 +1068,13 @@ section.speakers .speaker {
   text-align: left;
   padding-bottom: 2.75em;
 }
+
 section.speakers img {
   width: 100%;
   height: auto;
   display: block;
 }
+
 section.speakers h3 {
   background: #F7B935;
   color: #fff;
@@ -1010,31 +1082,38 @@ section.speakers h3 {
   padding: .8125em 2em .8125em 6px;
   position: relative;
 }
+
 section.speakers a.readmore {
   color: #fff;
   font-size: 1.6em;
 }
+
 section.speakers a.readmore h3 {
   font-size: 1em;
 }
+
 section.speakers .description {
   overflow: hidden;
 }
+
 section.speakers p, section.speakers h4, section.speakers h5, section.speakers h6, section.speakers table, section.speakers pre {
   font-size: 1.5em;
   background: #fff;
   padding: 10px;
   display: block;
 }
+
 section.speakers pre {
   padding-left: 20px;
   padding-right: 20px;
 }
+
 section.speakers .social {
   font-size: 1em;
   padding: 0;
   margin: 0;
 }
+
 section.speakers .social li {
   position: relative;
   display: inline-block;
@@ -1045,6 +1124,7 @@ section.speakers .social li {
   width: 1em;
   height: 1em;
 }
+
 section.speakers .social a:after {
   color: #F7B935;
   text-indent: 0;
@@ -1648,6 +1728,7 @@ ul.st-text-block {
   font-weight: normal;
   font-style: normal;
 }
+
 /* ==========================================================================
    $BASE-PICKER
    ========================================================================== */
@@ -1810,11 +1891,13 @@ ul.st-text-block {
     max-height: 80%;
   }
 }
+
 @media (min-height: 40.125em) {
   .picker__frame {
     margin-bottom: 7.5%;
   }
 }
+
 /**
  * The wrapper sets the stage to vertically align the box contents.
  */
@@ -1829,6 +1912,7 @@ ul.st-text-block {
     display: block;
   }
 }
+
 /**
  * The box contains all the picker contents.
  */
@@ -1843,6 +1927,7 @@ ul.st-text-block {
     font-size: 1.25em;
   }
 }
+
 @media (min-height: 33.875em) {
   .picker__box {
     display: block;
@@ -1858,6 +1943,7 @@ ul.st-text-block {
     box-shadow: 0 12px 36px 16px rgba(0, 0, 0, 0.24);
   }
 }
+
 @media (min-height: 40.125em) {
   .picker__box {
     font-size: 1.5em;
@@ -1867,6 +1953,7 @@ ul.st-text-block {
     border-radius: 5px;
   }
 }
+
 /**
  * When the picker opens...
  */
@@ -1895,6 +1982,7 @@ ul.st-text-block {
     bottom: 0;
   }
 }
+
 /**
  * For `large` screens, transform into an inline picker.
  */
@@ -1963,6 +2051,7 @@ ul.st-text-block {
     padding: .5em 1em;
   }
 }
+
 /* Hovered time */
 .picker__list-item:hover {
   cursor: pointer;
@@ -2103,6 +2192,7 @@ ul.st-text-block {
     margin-bottom: 5em;
   }
 }
+
 section.login .wrapper {
   padding-bottom: 10em;
 }
@@ -2110,9 +2200,11 @@ section.login .wrapper {
 section.admin h2 {
   margin-bottom: 2em;
 }
+
 section.admin .admin-part {
   padding-bottom: 10em;
 }
+
 section.admin .error_msg {
   font-size: 1.2em;
   background: #D2322D;
@@ -2120,15 +2212,19 @@ section.admin .error_msg {
   border-color: #952320;
   padding: 4px 7px;
 }
+
 section.admin .error_msg a {
   color: #581513;
 }
+
 section.admin div.field {
   margin-bottom: 10px;
 }
+
 section.admin div.field.error input, section.admin div.field.error textarea, section.admin div.field.error select, section.admin div.field.error fieldset {
   border-color: #952320;
 }
+
 section.admin div.field .error_msg {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -2136,6 +2232,7 @@ section.admin div.field .error_msg {
   padding-bottom: 9px;
   margin-bottom: -5px;
 }
+
 section.admin div.field label {
   width: 11%;
   margin-right: 1%;
@@ -2143,6 +2240,7 @@ section.admin div.field label {
   text-align: right;
   font-size: 1.2em;
 }
+
 section.admin div.field input, section.admin div.field textarea, section.admin div.field select, section.admin div.field .error_msg, section.admin div.field fieldset, section.admin div.field .ace_editor {
   width: 40%;
   max-width: 40%;
@@ -2153,41 +2251,50 @@ section.admin div.field input, section.admin div.field textarea, section.admin d
   -o-transition: background-color 1s;
   transition: background-color 1s;
 }
+
 section.admin div.field input.updated, section.admin div.field textarea.updated, section.admin div.field select.updated, section.admin div.field .error_msg.updated, section.admin div.field fieldset.updated, section.admin div.field .ace_editor.updated {
   background-color: #fff886;
   -webkit-transition: none;
   -o-transition: none;
   transition: none;
 }
+
 section.admin div.field textarea {
   vertical-align: super;
   height: 200px;
 }
+
 section.admin div.field .ace_editor {
   vertical-align: top;
   display: inline-block;
 }
+
 section.admin div.field textarea.syntax-highlight, section.admin div.field .ace_editor {
   width: 80%;
   max-width: 80%;
   height: 300px;
 }
+
 section.admin div.field fieldset {
   border-radius: 5px;
   padding: 1em 1.275em 1.4em;
 }
+
 section.admin div.field fieldset legend {
   font-size: 1.2em;
 }
+
 section.admin div.field fieldset label {
   margin: 0 1em 0 .5em;
   text-align: left;
   width: auto;
 }
+
 section.admin div.field fieldset input {
   width: auto;
   min-width: 0;
 }
+
 section.admin div.field fieldset .error_msg {
   min-width: none;
   max-width: none;
@@ -2197,22 +2304,27 @@ section.admin div.field fieldset .error_msg {
   border-width: 1px 0;
   margin: 0 -1.0625em 1.4em;
 }
+
 section.admin div.field img {
   margin-left: 1%;
   vertical-align: top;
 }
+
 section.admin h3 {
   font-family: Georgia, serif;
   font-weight: normal;
 }
+
 section.admin h3, section.admin button, section.admin div.field .error_msg, section.admin fieldset, section.admin .help, section.admin .actions {
   margin-left: 12%;
 }
+
 section.admin .help {
   color: #333;
   font-size: 1.2em;
   padding-top: 10px;
 }
+
 section.admin .actions button {
   margin-left: 0;
   margin-right: 1%;
@@ -2223,26 +2335,33 @@ section.admin table {
   margin-top: 2.5em;
   font-size: 1.2em;
 }
+
 section.admin table th, section.admin table td {
   text-align: left;
   padding: .4em 1em;
 }
+
 section.admin table th.time, section.admin table td.time {
   width: 12%;
 }
+
 section.admin table th.modified, section.admin table td.modified {
   width: 20%;
 }
+
 section.admin table th.actions, section.admin table td.actions {
   width: 25%;
 }
+
 section.admin table td:nth-of-type(3n + 2), section.admin table tr:nth-of-type(2n + 1) td {
   background: #f2f2f2;
 }
+
 section.admin table a.button, section.admin table button {
   font-size: 1em;
   margin-left: 0;
 }
+
 section.admin table td.actions {
   text-align: right;
 }
@@ -2256,13 +2375,16 @@ button.twitter {
   background-color: #4897D9;
   color: #fff;
 }
+
 button.twitter:after {
   background: #4085c0;
 }
+
 button.twitter:hover {
   box-shadow: 0 4px #4897d9;
-  background-color: #50a9f2;
+  background-color: #50a9f3;
 }
+
 button.twitter:hover:after {
   background: #4897d9;
 }
@@ -2272,13 +2394,16 @@ button.github {
   background-color: #D7D7D7;
   color: #000;
 }
+
 button.github:after {
   background: #bebebe;
 }
+
 button.github:hover {
   box-shadow: 0 4px #d7d7d7;
   background-color: #f1f1f1;
 }
+
 button.github:hover:after {
   background: #d7d7d7;
 }
@@ -2290,37 +2415,46 @@ button.github:hover:after {
   padding: 0;
   font-size: 1em;
 }
+
 .admin-puffs ul.menu li {
   display: inline-block;
   margin-right: 3%;
 }
+
 .admin-puffs ul.menu li a {
   box-shadow: 0 4px #b3b3b3;
   background-color: #CCC;
   color: #000;
 }
+
 .admin-puffs ul.menu li a:after {
   background: #b3b3b3;
 }
+
 .admin-puffs ul.menu li a:hover {
   box-shadow: 0 4px #cccccc;
   background-color: #e6e6e6;
 }
+
 .admin-puffs ul.menu li a:hover:after {
   background: #cccccc;
 }
+
 .admin-puffs ul.menu li.active a {
-  box-shadow: 0 4px #27a9e0;
+  box-shadow: 0 4px #27a9e1;
   background-color: #2BBCFA;
   color: #fff;
 }
+
 .admin-puffs ul.menu li.active a:after {
-  background: #27a9e0;
+  background: #27a9e1;
 }
+
 .admin-puffs ul.menu li.active a:hover {
   box-shadow: 0 4px #27ade6;
   background-color: #2cc0ff;
 }
+
 .admin-puffs ul.menu li.active a:hover:after {
   background: #27ade6;
 }
@@ -2348,3 +2482,5 @@ form.form-sirtrevor > div > div.field > label {
 .st-image-thumbnail {
   display: inline;
 }
+
+/*# sourceMappingURL=admin.css.map */

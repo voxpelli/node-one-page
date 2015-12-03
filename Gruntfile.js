@@ -93,19 +93,11 @@ module.exports = function (grunt) {
           'basetheme/public/admin.css': 'basetheme/sources/sass/admin.scss',
         },
         // Ensure that the child themes can include stuff from the parent theme
-        loadPath: ['basetheme/sources/sass/'],
-        sourcemap: 'none',
-        quiet : true,
-      },
-      test: {
-        options: {
-          check: true,
-        },
-        files: ['<%= sass.options.files %>'],
+        includePaths: ['basetheme/sources/sass/'],
       },
       dist: {
         options: {
-          style: 'compressed',
+          outputStyle: 'compressed',
         },
         files: {
           'basetheme/public/styles.min.css': 'basetheme/sources/sass/base.scss',
@@ -114,7 +106,9 @@ module.exports = function (grunt) {
       },
       dev: {
         options: {
-          style: 'expanded',
+          outputStyle: 'expanded',
+          sourceMap: true,
+          sourceMapContents: true,
         },
         files: ['<%= sass.options.files %>'],
       },
@@ -144,7 +138,7 @@ module.exports = function (grunt) {
 
   [
     'grunt-notify',
-    'grunt-contrib-sass',
+    'grunt-sass',
     'grunt-contrib-watch',
     'grunt-contrib-uglify',
     'grunt-contrib-concat',
@@ -166,7 +160,7 @@ module.exports = function (grunt) {
     'dependency-check',
     'test-mocha',
   ]);
-  grunt.registerTask('test-css', ['sass:test']);
+  grunt.registerTask('test-css', [/* 'sasslint' */]);
   grunt.registerTask('test', ['test-js', 'test-css']);
 
   grunt.registerTask('build-js', ['concat', 'uglify']);
