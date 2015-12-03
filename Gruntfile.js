@@ -43,16 +43,12 @@ module.exports = function (grunt) {
     mocha_istanbul: {
       options: {
         root: './lib',
+        ui: 'tdd',
+        coverage: true,
+        reportFormats: ['lcov'],
       },
       all: {
         src: 'test/**/*.spec.js',
-      },
-      coveralls: {
-        src: 'test/**/*.spec.js',
-        options: {
-          coverage: true,
-          reportFormats: ['lcovonly'],
-        },
       },
     },
     concat: {
@@ -178,4 +174,13 @@ module.exports = function (grunt) {
   grunt.registerTask('build', ['test', 'build-js', 'build-css']);
 
   grunt.registerTask('default', ['build']);
+
+  grunt.event.on('coverage', function (lcov, done) {
+    if (!process.env.TRAVIS) { return done(); }
+
+    require('coveralls').handleInput(lcov, function (err) {
+      if (err) { return done(err); }
+      done();
+    });
+  });
 };
