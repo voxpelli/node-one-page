@@ -124,6 +124,7 @@ module.exports = function (grunt) {
         files: {
           'color-helpers': 'sass-color-helpers/stylesheets/color-helpers/*.scss',
           '_color-helpers.scss': 'sass-color-helpers/stylesheets/_color-helpers.scss',
+          '_normalize.scss': 'normalize-css/normalize.css',
         },
       },
     },
