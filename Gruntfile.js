@@ -122,8 +122,8 @@ module.exports = function (grunt) {
           destPrefix: 'basetheme/sources/js/vendor',
         },
         files: {
-          'jquery.form.js': 'jquery-form/jquery.form.js',
-          'jquery.js': 'jquery/jquery.js',
+          'jquery.form.js': 'jquery-form:main',
+          'jquery.js': 'jquery:main',
           'picker.js': 'pickadate/lib/picker.js',
           'picker.legacy.js': 'pickadate/lib/legacy.js',
           'picker.time.js': 'pickadate/lib/picker.time.js',
@@ -135,8 +135,8 @@ module.exports = function (grunt) {
         },
         files: {
           'color-helpers': 'sass-color-helpers/stylesheets/color-helpers/*.scss',
-          '_color-helpers.scss': 'sass-color-helpers/stylesheets/_color-helpers.scss',
-          '_normalize.scss': 'normalize-css/normalize.css',
+          '_color-helpers.scss': 'sass-color-helpers:main',
+          '_normalize.scss': 'normalize-css:main',
           '_pickadate.default.scss': 'pickadate/lib/themes/default.css',
           '_pickadate.default.time.scss': 'pickadate/lib/themes/default.time.css',
         },
