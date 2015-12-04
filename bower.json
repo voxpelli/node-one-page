@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "sass-color-helpers": "~2.0.0",
-    "normalize-css": "normalize.css#^2.1.3"
+    "normalize-css": "normalize.css#^2.1.3",
+    "pickadate": "~3.2.1"
   }
 }

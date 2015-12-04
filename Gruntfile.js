@@ -117,6 +117,16 @@ module.exports = function (grunt) {
       options: {
         clean: true,
       },
+      js: {
+        options: {
+          destPrefix: 'basetheme/sources/js/vendor',
+        },
+        files: {
+          'picker.js': 'pickadate/lib/picker.js',
+          'picker.legacy.js': 'pickadate/lib/legacy.js',
+          'picker.time.js': 'pickadate/lib/picker.time.js',
+        },
+      },
       sass: {
         options: {
           destPrefix: 'basetheme/sources/sass/vendor',
@@ -125,6 +135,8 @@ module.exports = function (grunt) {
           'color-helpers': 'sass-color-helpers/stylesheets/color-helpers/*.scss',
           '_color-helpers.scss': 'sass-color-helpers/stylesheets/_color-helpers.scss',
           '_normalize.scss': 'normalize-css/normalize.css',
+          '_pickadate.default.scss': 'pickadate/lib/themes/default.css',
+          '_pickadate.default.time.scss': 'pickadate/lib/themes/default.time.css',
         },
       },
     },
