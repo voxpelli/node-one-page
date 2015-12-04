@@ -122,6 +122,8 @@ module.exports = function (grunt) {
           destPrefix: 'basetheme/sources/js/vendor',
         },
         files: {
+          'jquery.form.js': 'jquery-form/jquery.form.js',
+          'jquery.js': 'jquery/jquery.js',
           'picker.js': 'pickadate/lib/picker.js',
           'picker.legacy.js': 'pickadate/lib/legacy.js',
           'picker.time.js': 'pickadate/lib/picker.time.js',
