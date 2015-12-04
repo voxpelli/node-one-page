@@ -6,7 +6,7 @@ section.speakers {
     }
   }
 
-  background: hsv_to_color(saturate_hsv(color_to_hsv($color-speakers), 0 - 81));
+  background: ch-hsv-to-color(saturate-hsv(ch-color-to-hsv($color-speakers), 0 - 81));
   box-shadow: $section-shadow;
 
   text-align: justify;

@@ -1,13 +1,6 @@
-// hsv_to_hsl.scss | MIT License | https://gist.github.com/voxpelli/1069204
+// Ported from http://ariya.blogspot.com/2008/07/converting-between-hsl-and-hsv.html
 
-//@function max($v1, $v2) {
-//  @return if($v1 > $v2, $v1, $v2);
-//}
-//@function min($v1, $v2) {
-//  @return if($v1 < $v2, $v1, $v2);
-//}
-
-@function hsv_to_hsl($h, $s: 0, $v: 0) {
+@function ch-hsv-to-hsl($h, $s: 0, $v: 0) {
   @if type_of($h) == 'list' {
     $v: nth($h, 3);
     $s: nth($h, 2);
@@ -27,10 +20,10 @@
   $ss: $s * $v;
   $ll: (2 - $s) * $v;
 
-  @if $ll <= 1 {
-    $ss: $ss / $ll;
-  } @else if ($ll == 2) {
+  @if ($ll == 2 or $ll == 0) {
     $ss: 0;
+  } @else if $ll <= 1 {
+    $ss: $ss / $ll;
   } @else {
     $ss: $ss / (2 - $ll);
   }
@@ -40,7 +33,7 @@
   @return 360deg * $h / (3.1415 * 2), percentage(max(0, min(1, $ss))), percentage(max(0, min(1, $ll)));
 }
 
-@function hsl_to_hsv($h, $ss: 0, $ll: 0) {
+@function ch-hsl-to-hsv($h, $ss: 0, $ll: 0) {
   @if type_of($h) == 'list' {
     $ll: nth($h, 3);
     $ss: nth($h, 2);
@@ -70,16 +63,36 @@
   }
 
   $v: ($ll + $ss) / 2;
-  $s: (2 * $ss) / ($ll + $ss);
+
+  $s: 0;
+  @if $ll + $ss != 0 {
+    $s: (2 * $ss) / ($ll + $ss);
+  }
 
   @return 360deg * $h / (3.1415 * 2), percentage(max(0, min(1, $s))), percentage(max(0, min(1, $v)));
 }
 
-@function color_to_hsv($color) {
-  @return hsl_to_hsv($color);
+@function ch-color-to-hsv($color) {
+  @return ch-hsl-to-hsv($color);
 }
 
-@function hsv_to_color($h, $s: 0, $v: 0) {
-  $hsl: hsv_to_hsl($h, $s, $v);
+@function ch-hsv-to-color($h, $s: 0, $v: 0) {
+  $hsl: ch-hsv-to-hsl($h, $s, $v);
   @return hsl(nth($hsl, 1), nth($hsl, 2), nth($hsl, 3));
+}
+
+@function ch-brightness($h, $s: 0, $v: 0, $adjustment: 0) {
+  @if type_of($h) == 'color' {
+    $h: ch-color-to-hsv($h);
+  }
+  @if type_of($h) == 'list' {
+    $adjustment: $s;
+    $v: nth($h, 3);
+    $s: nth($h, 2);
+    $h: nth($h, 1);
+  }
+
+  $v: ch-max(0%, ch-min(100%, $v + $adjustment));
+
+  @return ch-hsv-to-color($h, $s, $v);
 }

@@ -11,8 +11,8 @@ section.login .wrapper {
 }
 
 section.admin {
-  $color-error-border: hsv_to_color(lighten_hsv($color-danger, 0 - 24));
-  $color-error-link: hsv_to_color(lighten_hsv($color-danger, 0 - 48));
+  $color-error-border: ch-hsv-to-color(lighten-hsv($color-danger, 0 - 24));
+  $color-error-link: ch-hsv-to-color(lighten-hsv($color-danger, 0 - 48));
 
   h2 {
     @extend h2.line;
@@ -24,7 +24,7 @@ section.admin {
   .error_msg {
     font-size: 1.2em;
     background: $color-danger;
-    color: pick_best_color($color-danger, (#fff, #000), 8);
+    color: ch-best-color-contrast($color-danger, (#fff, #000), 8);
     border-color: $color-error-border;
     padding: 4px 7px;
     a {

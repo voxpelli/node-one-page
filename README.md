@@ -112,7 +112,7 @@ VTOnePage.subclassOrRun(module, {
 
 Set up a Grunt workflow similar to the base theme and include the path to the base theme's Sass files in your Sass load path to reuse parts of the base theme override the default colors of the base theme etc.
 
-Also set up your new instance to proxy calls to the database installation and migration system. Do that by adding `knex` and `pg` as dependencies, and adding a `knexfile.js` looking like:
+Also set up your new instance to proxy calls to the database installation and migration system. Do that by adding a `knexfile.js` looking like:
 
 ```javascript
 module.exports = require('./').knexConfig();
@@ -137,12 +137,10 @@ There are two officially available content types to extend:
 
 The source for these and for internal content types that extend these ones can be found in `lib/admin/`.
 
-### Run migrations from child project
+### Development notes
 
-A child project would be preferably be configured with these npm scripts.
+To update Bower dependencies of this project and get the new files copied into place, do:
 
 ```
-"install-schema":  "node -e \"require('.').runMigrationTask('install');\"",
-"migrate-schema":  "node -e \"require('.').runMigrationTask('migrate');\"",
-"rollback-schema": "node -e \"require('.').runMigrationTask('rollback');\"",
+grunt bowercopy
 ```

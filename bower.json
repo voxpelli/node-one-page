@@ -1,0 +1,7 @@
+{
+  "name": "vtonepage",
+  "private": true,
+  "dependencies": {
+    "sass-color-helpers": "~2.0.0"
+  }
+}

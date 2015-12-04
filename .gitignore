@@ -3,3 +3,4 @@
 .sass-cache
 /coverage
 /basetheme/**/*.map
+/bower_components

@@ -113,6 +113,20 @@ module.exports = function (grunt) {
         files: ['<%= sass.options.files %>'],
       },
     },
+    bowercopy: {
+      options: {
+        clean: true,
+      },
+      sass: {
+        options: {
+          destPrefix: 'basetheme/sources/sass/vendor',
+        },
+        files: {
+          'color-helpers': 'sass-color-helpers/stylesheets/color-helpers/*.scss',
+          '_color-helpers.scss': 'sass-color-helpers/stylesheets/_color-helpers.scss',
+        },
+      },
+    },
     watch: {
       eslint : {
         files: ['<%= eslint.src %>'],
@@ -147,6 +161,7 @@ module.exports = function (grunt) {
     'grunt-lintspaces',
     'grunt-mocha-istanbul',
     'dependency-check',
+    'grunt-bowercopy',
   ].forEach(grunt.loadNpmTasks.bind(grunt));
 
   grunt.registerTask('setTestEnv', 'Ensure that environment (database etc) is set up for testing', function () {
