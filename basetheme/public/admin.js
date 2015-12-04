@@ -6191,36 +6191,32 @@ SirTrevor.Blocks.Story = (function () {
     }
   });
 }());
-;
-/*!
- * pickadate.js v3.2.2, 2013/09/19
+;/*!
+ * pickadate.js v3.5.6, 2015/04/20
  * By Amsul, http://amsul.ca
  * Hosted on http://amsul.github.io/pickadate.js
  * Licensed under MIT
  */
 
-/*jshint
-   debug: true,
-   devel: true,
-   browser: true,
-   asi: true,
-   unused: true,
-   boss: true,
-   eqnull: true
- */
-
 (function ( factory ) {
 
-    // Register as an anonymous module.
-    if ( typeof define === 'function' && define.amd )
+    // AMD.
+    if ( typeof define == 'function' && define.amd )
         define( 'picker', ['jquery'], factory )
 
-    // Or using browser globals.
+    // Node.js/browserify.
+    else if ( typeof exports == 'object' )
+        module.exports = factory( require('jquery') )
+
+    // Browser globals.
     else this.Picker = factory( jQuery )
 
 }(function( $ ) {
 
+var $window = $( window )
 var $document = $( document )
+var $html = $( document.documentElement )
+var supportsTransitions = document.documentElement.style.transition != null
 
 
 /**
@@ -6233,9 +6229,12 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
 
 
     var
+        IS_DEFAULT_THEME = false,
+
+
         // The state of the picker.
         STATE = {
-            id: Math.abs( ~~( Math.random() * 1e9 ) )
+            id: ELEMENT.id || 'P' + Math.abs( ~~(Math.random() * new Date()) )
         },
 
 
@@ -6283,125 +6282,41 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
 
                 // Confirm focus state, convert into text input to remove UA stylings,
                 // and set as readonly to prevent keyboard popup.
-                ELEMENT.autofocus = ELEMENT == document.activeElement
-                ELEMENT.type = 'text'
-                ELEMENT.readOnly = true
-
-
-                // Create a new picker component with the settings.
-                P.component = new COMPONENT( P, SETTINGS )
-
-
-                // Create the picker root with a new wrapped holder and bind the events.
-                P.$root = $( PickerConstructor._.node( 'div', createWrappedComponent(), CLASSES.picker ) ).
-                    on({
-
-                        // When something within the root is focused, stop from bubbling
-                        // to the doc and remove the “focused” state from the root.
-                        focusin: function( event ) {
-                            P.$root.removeClass( CLASSES.focused )
-                            event.stopPropagation()
-                        },
-
-                        // If the click is not on the root holder, stop it from bubbling to the doc.
-                        'mousedown click': function( event ) {
-                            if ( event.target != P.$root.children()[ 0 ] ) {
-                                event.stopPropagation()
-                            }
-                        }
-                    }).
-
-                    // If there’s a click on an actionable element, carry out the actions.
-                    on( 'click', '[data-pick], [data-nav], [data-clear]', function() {
-
-                        var $target = $( this ),
-                            targetData = $target.data(),
-                            targetDisabled = $target.hasClass( CLASSES.navDisabled ) || $target.hasClass( CLASSES.disabled ),
-
-                            // * For IE, non-focusable elements can be active elements as well
-                            //   (http://stackoverflow.com/a/2684561).
-                            activeElement = document.activeElement
-                            activeElement = activeElement && ( activeElement.type || activeElement.href )
-
-                        // If it’s disabled or nothing inside is actively focused, re-focus the element.
-                        if ( targetDisabled || !$.contains( P.$root[0], activeElement ) ) {
-                            ELEMENT.focus()
-                        }
-
-                        // If something is superficially changed, update the `highlight` based on the `nav`.
-                        if ( targetData.nav && !targetDisabled ) {
-                            P.set( 'highlight', P.component.item.highlight, { nav: targetData.nav } )
-                        }
-
-                        // If something is picked, set `select` then close with focus.
-                        else if ( PickerConstructor._.isInteger( targetData.pick ) && !targetDisabled ) {
-                            P.set( 'select', targetData.pick ).close( true )
-                        }
-
-                        // If a “clear” button is pressed, empty the values and close with focus.
-                        else if ( targetData.clear ) {
-                            P.clear().close( true )
-                        }
-                    }) //P.$root
-
-
-                // If there’s a format for the hidden input element, create the element
-                // using the name of the original input plus suffix. Otherwise set it to undefined.
-                // If the element has a value, use either the `data-value` or `value`.
-                if ( SETTINGS.formatSubmit ) {
-                    P._hidden = $( '<input type=hidden name="' + ELEMENT.name + ( SETTINGS.hiddenSuffix || '_submit' ) + '"' + ( $ELEMENT.data( 'value' ) ? ' value="' + PickerConstructor._.trigger( P.component.formats.toString, P.component, [ SETTINGS.formatSubmit, P.component.item.select ] ) + '"' : '' ) + '>' )[ 0 ]
+                ELEMENT.autofocus = ELEMENT == getActiveElement()
+                ELEMENT.readOnly = !SETTINGS.editable
+                ELEMENT.id = ELEMENT.id || STATE.id
+                if ( ELEMENT.type != 'text' ) {
+                    ELEMENT.type = 'text'
                 }
 
 
-                // Add the class and bind the events on the element.
-                $ELEMENT.addClass( CLASSES.input ).
+                // Create a new picker component with the settings.
+                P.component = new COMPONENT(P, SETTINGS)
 
-                    // On focus/click, open the picker and adjust the root “focused” state.
-                    on( 'focus.P' + STATE.id + ' click.P' + STATE.id, focusToOpen ).
 
-                    // If the value changes, update the hidden input with the correct format.
-                    on( 'change.P' + STATE.id, function() {
-                        if ( P._hidden ) {
-                            P._hidden.value = ELEMENT.value ? PickerConstructor._.trigger( P.component.formats.toString, P.component, [ SETTINGS.formatSubmit, P.component.item.select ] ) : ''
-                        }
-                    }).
+                // Create the picker root and then prepare it.
+                P.$root = $( '<div class="' + CLASSES.picker + '" id="' + ELEMENT.id + '_root" />' )
+                prepareElementRoot()
 
-                    // Handle keyboard event based on the picker being opened or not.
-                    on( 'keydown.P' + STATE.id, function( event ) {
 
-                        var keycode = event.keyCode,
+                // Create the picker holder and then prepare it.
+                P.$holder = $( createWrappedComponent() ).appendTo( P.$root )
+                prepareElementHolder()
 
-                            // Check if one of the delete keys was pressed.
-                            isKeycodeDelete = /^(8|46)$/.test( keycode )
 
-                        // For some reason IE clears the input value on “escape”.
-                        if ( keycode == 27 ) {
-                            P.close()
-                            return false
-                        }
+                // If there’s a format for the hidden input element, create the element.
+                if ( SETTINGS.formatSubmit ) {
+                    prepareElementHidden()
+                }
 
-                        // Check if `space` or `delete` was pressed or the picker is closed with a key movement.
-                        if ( keycode == 32 || isKeycodeDelete || !STATE.open && P.component.key[ keycode ] ) {
 
-                            // Prevent it from moving the page and bubbling to doc.
-                            event.preventDefault()
-                            event.stopPropagation()
+                // Prepare the input element.
+                prepareElement()
 
-                            // If `delete` was pressed, clear the values and close the picker.
-                            // Otherwise open the picker.
-                            if ( isKeycodeDelete ) { P.clear().close() }
-                            else { P.open() }
-                        }
-                    }).
 
-                    // If there’s a `data-value`, update the value of the element.
-                    val( $ELEMENT.data( 'value' ) ? PickerConstructor._.trigger( P.component.formats.toString, P.component, [ SETTINGS.format, P.component.item.select ] ) : ELEMENT.value ).
-
-                    // Insert the hidden input after the element.
-                    after( P._hidden ).
-
-                    // Store the picker data by component name.
-                    data( NAME, P )
+                // Insert the hidden input as specified in the settings.
+                if ( SETTINGS.containerHidden ) $( SETTINGS.containerHidden ).append( P._hidden )
+                else $ELEMENT.after( P._hidden )
 
 
                 // Insert the root as specified in the settings.
@@ -6427,6 +6342,10 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                 })
 
 
+                // Once we’re all set, check the theme in use.
+                IS_DEFAULT_THEME = isUsingDefaultTheme( P.$holder[0] )
+
+
                 // If the element has autofocus, open the picker.
                 if ( ELEMENT.autofocus ) {
                     P.open()
@@ -6444,7 +6363,11 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
             render: function( entireComponent ) {
 
                 // Insert a new component holder in the root or box.
-                if ( entireComponent ) P.$root.html( createWrappedComponent() )
+                if ( entireComponent ) {
+                    P.$holder = $( createWrappedComponent() )
+                    prepareElementHolder()
+                    P.$root.html( P.$holder )
+                }
                 else P.$root.find( '.' + CLASSES.box ).html( P.component.nodes( STATE.open ) )
 
                 // Trigger the queued “render” events.
@@ -6471,8 +6394,12 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                 // Remove the root.
                 P.$root.remove()
 
-                // Remove the input class, unbind the events, and remove the stored data.
-                $ELEMENT.removeClass( CLASSES.input ).off( '.P' + STATE.id ).removeData( NAME )
+                // Remove the input class, remove the stored data, and unbind
+                // the events (after a tick for IE - see `P.close`).
+                $ELEMENT.removeClass( CLASSES.input ).removeData( NAME )
+                setTimeout( function() {
+                    $ELEMENT.off( '.' + STATE.id )
+                }, 0)
 
                 // Restore the element state
                 ELEMENT.type = STATE.type
@@ -6489,7 +6416,7 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
             }, //stop
 
 
-            /*
+            /**
              * Open up the picker
              */
             open: function( dontGiveFocus ) {
@@ -6499,9 +6426,18 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
 
                 // Add the “active” class.
                 $ELEMENT.addClass( CLASSES.active )
+                aria( ELEMENT, 'expanded', true )
 
-                // Add the “opened” class to the picker root.
-                P.$root.addClass( CLASSES.opened )
+                // * A Firefox bug, when `html` has `overflow:hidden`, results in
+                //   killing transitions :(. So add the “opened” state on the next tick.
+                //   Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=625289
+                setTimeout( function() {
+
+                    // Add the “opened” class to the picker root.
+                    P.$root.addClass( CLASSES.opened )
+                    aria( P.$root[0], 'hidden', false )
+
+                }, 0 )
 
                 // If we have to give focus, bind the element and doc events.
                 if ( dontGiveFocus !== false ) {
@@ -6509,19 +6445,36 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                     // Set it as open.
                     STATE.open = true
 
-                    // Pass focus to the element’s jQuery object.
-                    $ELEMENT.focus()
+                    // Prevent the page from scrolling.
+                    if ( IS_DEFAULT_THEME ) {
+                        $html.
+                            css( 'overflow', 'hidden' ).
+                            css( 'padding-right', '+=' + getScrollbarWidth() )
+                    }
+
+                    // Pass focus to the root element’s jQuery object.
+                    focusPickerOnceOpened()
 
                     // Bind the document events.
-                    $document.on( 'click.P' + STATE.id + ' focusin.P' + STATE.id, function( event ) {
+                    $document.on( 'click.' + STATE.id + ' focusin.' + STATE.id, function( event ) {
+
+                        var target = event.target
 
                         // If the target of the event is not the element, close the picker picker.
                         // * Don’t worry about clicks or focusins on the root because those don’t bubble up.
                         //   Also, for Firefox, a click on an `option` element bubbles up directly
                         //   to the doc. So make sure the target wasn't the doc.
-                        if ( event.target != ELEMENT && event.target != document ) P.close()
+                        // * In Firefox stopPropagation() doesn’t prevent right-click events from bubbling,
+                        //   which causes the picker to unexpectedly close when right-clicking it. So make
+                        //   sure the event wasn’t a right-click.
+                        if ( target != ELEMENT && target != document && event.which != 3 ) {
 
-                    }).on( 'keydown.P' + STATE.id, function( event ) {
+                            // If the target was the holder that covers the screen,
+                            // keep the element focused to maintain tabindex.
+                            P.close( target === P.$holder[0] )
+                        }
+
+                    }).on( 'keydown.' + STATE.id, function( event ) {
 
                         var
                             // Get the keycode.
@@ -6541,19 +6494,22 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
 
 
                         // Check if there is a key movement or “enter” keypress on the element.
-                        else if ( target == ELEMENT && ( keycodeToMove || keycode == 13 ) ) {
+                        else if ( target == P.$holder[0] && ( keycodeToMove || keycode == 13 ) ) {
 
                             // Prevent the default action to stop page movement.
                             event.preventDefault()
 
                             // Trigger the key movement action.
                             if ( keycodeToMove ) {
-                                PickerConstructor._.trigger( P.component.key.go, P, [ keycodeToMove ] )
+                                PickerConstructor._.trigger( P.component.key.go, P, [ PickerConstructor._.trigger( keycodeToMove ) ] )
                             }
 
                             // On “enter”, if the highlighted item isn’t disabled, set the value and close.
                             else if ( !P.$root.find( '.' + CLASSES.highlighted ).hasClass( CLASSES.disabled ) ) {
-                                P.set( 'select', P.component.item.highlight ).close()
+                                P.set( 'select', P.component.item.highlight )
+                                if ( SETTINGS.closeOnSelect ) {
+                                    P.close( true )
+                                }
                             }
                         }
 
@@ -6579,30 +6535,50 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
 
                 // If we need to give focus, do it before changing states.
                 if ( giveFocus ) {
-                    // ....ah yes! It would’ve been incomplete without a crazy workaround for IE :|
-                    // The focus is triggered *after* the close has completed - causing it
-                    // to open again. So unbind and rebind the event at the next tick.
-                    $ELEMENT.off( 'focus.P' + STATE.id ).focus()
-                    setTimeout( function() {
-                        $ELEMENT.on( 'focus.P' + STATE.id, focusToOpen )
-                    }, 0 )
+                    if ( SETTINGS.editable ) {
+                        ELEMENT.focus()
+                    }
+                    else {
+                        // ....ah yes! It would’ve been incomplete without a crazy workaround for IE :|
+                        // The focus is triggered *after* the close has completed - causing it
+                        // to open again. So unbind and rebind the event at the next tick.
+                        P.$holder.off( 'focus.toOpen' ).focus()
+                        setTimeout( function() {
+                            P.$holder.on( 'focus.toOpen', handleFocusToOpenEvent )
+                        }, 0 )
+                    }
                 }
 
                 // Remove the “active” class.
                 $ELEMENT.removeClass( CLASSES.active )
+                aria( ELEMENT, 'expanded', false )
 
-                // Remove the “opened” and “focused” class from the picker root.
-                P.$root.removeClass( CLASSES.opened + ' ' + CLASSES.focused )
+                // * A Firefox bug, when `html` has `overflow:hidden`, results in
+                //   killing transitions :(. So remove the “opened” state on the next tick.
+                //   Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=625289
+                setTimeout( function() {
 
-                // If it’s open, update the state.
-                if ( STATE.open ) {
+                    // Remove the “opened” and “focused” class from the picker root.
+                    P.$root.removeClass( CLASSES.opened + ' ' + CLASSES.focused )
+                    aria( P.$root[0], 'hidden', true )
 
-                    // Set it as closed.
-                    STATE.open = false
+                }, 0 )
 
-                    // Unbind the document events.
-                    $document.off( '.P' + STATE.id )
+                // If it’s already closed, do nothing more.
+                if ( !STATE.open ) return P
+
+                // Set it as closed.
+                STATE.open = false
+
+                // Allow the page to scroll.
+                if ( IS_DEFAULT_THEME ) {
+                    $html.
+                        css( 'overflow', '' ).
+                        css( 'padding-right', '-=' + getScrollbarWidth() )
                 }
+
+                // Unbind the document events.
+                $document.off( '.' + STATE.id )
 
                 // Trigger the queued “close” events.
                 return P.trigger( 'close' )
@@ -6612,8 +6588,8 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
             /**
              * Clear the values
              */
-            clear: function() {
-                return P.set( 'clear' )
+            clear: function( options ) {
+                return P.set( 'clear', null, options )
             }, //clear
 
 
@@ -6623,8 +6599,11 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
             set: function( thing, value, options ) {
 
                 var thingItem, thingValue,
-                    thingIsObject = PickerConstructor._.isObject( thing ),
+                    thingIsObject = $.isPlainObject( thing ),
                     thingObject = thingIsObject ? thing : {}
+
+                // Make sure we have usable options.
+                options = thingIsObject && $.isPlainObject( value ) ? value : options || {}
 
                 if ( thing ) {
 
@@ -6640,15 +6619,16 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                         thingValue = thingObject[ thingItem ]
 
                         // First, if the item exists and there’s a value, set it.
-                        if ( P.component.item[ thingItem ] ) {
-                            P.component.set( thingItem, thingValue, options || {} )
+                        if ( thingItem in P.component.item ) {
+                            if ( thingValue === undefined ) thingValue = null
+                            P.component.set( thingItem, thingValue, options )
                         }
 
                         // Then, check to update the element value and broadcast a change.
                         if ( thingItem == 'select' || thingItem == 'clear' ) {
-                            $ELEMENT.val( thingItem == 'clear' ? '' :
-                                PickerConstructor._.trigger( P.component.formats.toString, P.component, [ SETTINGS.format, P.component.get( thingItem ) ] )
-                            ).trigger( 'change' )
+                            $ELEMENT.
+                                val( thingItem == 'clear' ? '' : P.get( thingItem, SETTINGS.format ) ).
+                                trigger( 'change' )
                         }
                     }
 
@@ -6656,8 +6636,8 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                     P.render()
                 }
 
-                // Trigger queued “set” events and pass the `thingObject`.
-                return P.trigger( 'set', thingObject )
+                // When the method isn’t muted, trigger queued “set” events and pass the `thingObject`.
+                return options.muted ? P : P.trigger( 'set', thingObject )
             }, //set
 
 
@@ -6674,15 +6654,29 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                     return STATE[ thing ]
                 }
 
+                // Return the submission value, if that.
+                if ( thing == 'valueSubmit' ) {
+                    if ( P._hidden ) {
+                        return P._hidden.value
+                    }
+                    thing = 'value'
+                }
+
                 // Return the value, if that.
                 if ( thing == 'value' ) {
                     return ELEMENT.value
                 }
 
                 // Check if a component item exists, return that.
-                if ( P.component.item[ thing ] ) {
+                if ( thing in P.component.item ) {
                     if ( typeof format == 'string' ) {
-                        return PickerConstructor._.trigger( P.component.formats.toString, P.component, [ format, P.component.get( thing ) ] )
+                        var thingValue = P.component.get( thing )
+                        return thingValue ?
+                            PickerConstructor._.trigger(
+                                P.component.formats.toString,
+                                P.component,
+                                [ format, thingValue ]
+                            ) : ''
                     }
                     return P.component.get( thing )
                 }
@@ -6693,10 +6687,10 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
             /**
              * Bind events on the things.
              */
-            on: function( thing, method ) {
+            on: function( thing, method, internal ) {
 
                 var thingName, thingMethod,
-                    thingIsObject = PickerConstructor._.isObject( thing ),
+                    thingIsObject = $.isPlainObject( thing ),
                     thingObject = thingIsObject ? thing : {}
 
                 if ( thing ) {
@@ -6712,6 +6706,11 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                         // Grab the method of the thing.
                         thingMethod = thingObject[ thingName ]
 
+                        // If it was an internal binding, prefix it.
+                        if ( internal ) {
+                            thingName = '_' + thingName
+                        }
+
                         // Make sure the thing methods collection exists.
                         STATE.methods[ thingName ] = STATE.methods[ thingName ] || []
 
@@ -6724,16 +6723,37 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
             }, //on
 
 
+
+            /**
+             * Unbind events on the things.
+             */
+            off: function() {
+                var i, thingName,
+                    names = arguments;
+                for ( i = 0, namesCount = names.length; i < namesCount; i += 1 ) {
+                    thingName = names[i]
+                    if ( thingName in STATE.methods ) {
+                        delete STATE.methods[thingName]
+                    }
+                }
+                return P
+            },
+
+
             /**
              * Fire off method events.
              */
             trigger: function( name, data ) {
-                var methodList = STATE.methods[ name ]
-                if ( methodList ) {
-                    methodList.map( function( method ) {
-                        PickerConstructor._.trigger( method, P, [ data ] )
-                    })
+                var _trigger = function( name ) {
+                    var methodList = STATE.methods[ name ]
+                    if ( methodList ) {
+                        methodList.map( function( method ) {
+                            PickerConstructor._.trigger( method, P, [ data ] )
+                        })
+                    }
                 }
+                _trigger( '_' + name )
+                _trigger( name )
                 return P
             } //trigger
         } //PickerInstance.prototype
@@ -6772,22 +6792,272 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
             ),
 
             // Picker holder class
-            CLASSES.holder
+            CLASSES.holder,
+
+            'tabindex="-1"'
         ) //endreturn
     } //createWrappedComponent
 
 
-    // Separated for IE
-    function focusToOpen( event ) {
+
+    /**
+     * Prepare the input element with all bindings.
+     */
+    function prepareElement() {
+
+        $ELEMENT.
+
+            // Store the picker data by component name.
+            data(NAME, P).
+
+            // Add the “input” class name.
+            addClass(CLASSES.input).
+
+            // If there’s a `data-value`, update the value of the element.
+            val( $ELEMENT.data('value') ?
+                P.get('select', SETTINGS.format) :
+                ELEMENT.value
+            )
+
+
+        // Only bind keydown events if the element isn’t editable.
+        if ( !SETTINGS.editable ) {
+
+            $ELEMENT.
+
+                // On focus/click, open the picker.
+                on( 'focus.' + STATE.id + ' click.' + STATE.id, function(event) {
+                    event.preventDefault()
+                    P.open()
+                }).
+
+                // Handle keyboard event based on the picker being opened or not.
+                on( 'keydown.' + STATE.id, handleKeydownEvent )
+        }
+
+
+        // Update the aria attributes.
+        aria(ELEMENT, {
+            haspopup: true,
+            expanded: false,
+            readonly: false,
+            owns: ELEMENT.id + '_root'
+        })
+    }
+
+
+    /**
+     * Prepare the root picker element with all bindings.
+     */
+    function prepareElementRoot() {
+        aria( P.$root[0], 'hidden', true )
+    }
+
+
+     /**
+      * Prepare the holder picker element with all bindings.
+      */
+    function prepareElementHolder() {
+
+        P.$holder.
+
+            on({
+
+                // For iOS8.
+                keydown: handleKeydownEvent,
+
+                'focus.toOpen': handleFocusToOpenEvent,
+
+                blur: function() {
+                    // Remove the “target” class.
+                    $ELEMENT.removeClass( CLASSES.target )
+                },
+
+                // When something within the holder is focused, stop from bubbling
+                // to the doc and remove the “focused” state from the root.
+                focusin: function( event ) {
+                    P.$root.removeClass( CLASSES.focused )
+                    event.stopPropagation()
+                },
+
+                // When something within the holder is clicked, stop it
+                // from bubbling to the doc.
+                'mousedown click': function( event ) {
+
+                    var target = event.target
+
+                    // Make sure the target isn’t the root holder so it can bubble up.
+                    if ( target != P.$holder[0] ) {
+
+                        event.stopPropagation()
+
+                        // * For mousedown events, cancel the default action in order to
+                        //   prevent cases where focus is shifted onto external elements
+                        //   when using things like jQuery mobile or MagnificPopup (ref: #249 & #120).
+                        //   Also, for Firefox, don’t prevent action on the `option` element.
+                        if ( event.type == 'mousedown' && !$( target ).is( 'input, select, textarea, button, option' )) {
+
+                            event.preventDefault()
+
+                            // Re-focus onto the holder so that users can click away
+                            // from elements focused within the picker.
+                            P.$holder[0].focus()
+                        }
+                    }
+                }
+
+            }).
+
+            // If there’s a click on an actionable element, carry out the actions.
+            on( 'click', '[data-pick], [data-nav], [data-clear], [data-close]', function() {
+
+                var $target = $( this ),
+                    targetData = $target.data(),
+                    targetDisabled = $target.hasClass( CLASSES.navDisabled ) || $target.hasClass( CLASSES.disabled ),
+
+                    // * For IE, non-focusable elements can be active elements as well
+                    //   (http://stackoverflow.com/a/2684561).
+                    activeElement = getActiveElement()
+                    activeElement = activeElement && ( activeElement.type || activeElement.href )
+
+                // If it’s disabled or nothing inside is actively focused, re-focus the element.
+                if ( targetDisabled || activeElement && !$.contains( P.$root[0], activeElement ) ) {
+                    P.$holder[0].focus()
+                }
+
+                // If something is superficially changed, update the `highlight` based on the `nav`.
+                if ( !targetDisabled && targetData.nav ) {
+                    P.set( 'highlight', P.component.item.highlight, { nav: targetData.nav } )
+                }
+
+                // If something is picked, set `select` then close with focus.
+                else if ( !targetDisabled && 'pick' in targetData ) {
+                    P.set( 'select', targetData.pick )
+                    if ( SETTINGS.closeOnSelect ) {
+                        P.close( true )
+                    }
+                }
+
+                // If a “clear” button is pressed, empty the values and close with focus.
+                else if ( targetData.clear ) {
+                    P.clear()
+                    if ( SETTINGS.closeOnClear ) {
+                        P.close( true )
+                    }
+                }
+
+                else if ( targetData.close ) {
+                    P.close( true )
+                }
+
+            }) //P.$holder
+
+    }
+
+
+     /**
+      * Prepare the hidden input element along with all bindings.
+      */
+    function prepareElementHidden() {
+
+        var name
+
+        if ( SETTINGS.hiddenName === true ) {
+            name = ELEMENT.name
+            ELEMENT.name = ''
+        }
+        else {
+            name = [
+                typeof SETTINGS.hiddenPrefix == 'string' ? SETTINGS.hiddenPrefix : '',
+                typeof SETTINGS.hiddenSuffix == 'string' ? SETTINGS.hiddenSuffix : '_submit'
+            ]
+            name = name[0] + ELEMENT.name + name[1]
+        }
+
+        P._hidden = $(
+            '<input ' +
+            'type=hidden ' +
+
+            // Create the name using the original input’s with a prefix and suffix.
+            'name="' + name + '"' +
+
+            // If the element has a value, set the hidden value as well.
+            (
+                $ELEMENT.data('value') || ELEMENT.value ?
+                    ' value="' + P.get('select', SETTINGS.formatSubmit) + '"' :
+                    ''
+            ) +
+            '>'
+        )[0]
+
+        $ELEMENT.
+
+            // If the value changes, update the hidden input with the correct format.
+            on('change.' + STATE.id, function() {
+                P._hidden.value = ELEMENT.value ?
+                    P.get('select', SETTINGS.formatSubmit) :
+                    ''
+            })
+    }
+
+
+    // Wait for transitions to end before focusing the holder. Otherwise, while
+    // using the `container` option, the view jumps to the container.
+    function focusPickerOnceOpened() {
+
+        if (IS_DEFAULT_THEME && supportsTransitions) {
+            P.$holder.find('.' + CLASSES.frame).one('transitionend', function() {
+                P.$holder[0].focus()
+            })
+        }
+        else {
+            P.$holder[0].focus()
+        }
+    }
+
+
+    function handleFocusToOpenEvent(event) {
 
         // Stop the event from propagating to the doc.
         event.stopPropagation()
 
-        // If it’s a focus event, add the “focused” class to the root.
-        if ( event.type == 'focus' ) P.$root.addClass( CLASSES.focused )
+        // Add the “target” class.
+        $ELEMENT.addClass( CLASSES.target )
+
+        // Add the “focused” class to the root.
+        P.$root.addClass( CLASSES.focused )
 
         // And then finally open the picker.
         P.open()
+    }
+
+
+    // For iOS8.
+    function handleKeydownEvent( event ) {
+
+        var keycode = event.keyCode,
+
+            // Check if one of the delete keys was pressed.
+            isKeycodeDelete = /^(8|46)$/.test(keycode)
+
+        // For some reason IE clears the input value on “escape”.
+        if ( keycode == 27 ) {
+            P.close( true )
+            return false
+        }
+
+        // Check if `space` or `delete` was pressed or the picker is closed with a key movement.
+        if ( keycode == 32 || isKeycodeDelete || !STATE.open && P.component.key[keycode] ) {
+
+            // Prevent it from moving the page and bubbling to doc.
+            event.preventDefault()
+            event.stopPropagation()
+
+            // If `delete` was pressed, clear the values and close the picker.
+            // Otherwise open the picker.
+            if ( isKeycodeDelete ) { P.clear().close() }
+            else { P.open() }
+        }
     }
 
 
@@ -6810,6 +7080,7 @@ PickerConstructor.klasses = function( prefix ) {
 
         input: prefix + '__input',
         active: prefix + '__input--active',
+        target: prefix + '__input--target',
 
         holder: prefix + '__holder',
 
@@ -6819,6 +7090,63 @@ PickerConstructor.klasses = function( prefix ) {
         box: prefix + '__box'
     }
 } //PickerConstructor.klasses
+
+
+
+/**
+ * Check if the default theme is being used.
+ */
+function isUsingDefaultTheme( element ) {
+
+    var theme,
+        prop = 'position'
+
+    // For IE.
+    if ( element.currentStyle ) {
+        theme = element.currentStyle[prop]
+    }
+
+    // For normal browsers.
+    else if ( window.getComputedStyle ) {
+        theme = getComputedStyle( element )[prop]
+    }
+
+    return theme == 'fixed'
+}
+
+
+
+/**
+ * Get the width of the browser’s scrollbar.
+ * Taken from: https://github.com/VodkaBears/Remodal/blob/master/src/jquery.remodal.js
+ */
+function getScrollbarWidth() {
+
+    if ( $html.height() <= $window.height() ) {
+        return 0
+    }
+
+    var $outer = $( '<div style="visibility:hidden;width:100px" />' ).
+        appendTo( 'body' )
+
+    // Get the width without scrollbars.
+    var widthWithoutScroll = $outer[0].offsetWidth
+
+    // Force adding scrollbars.
+    $outer.css( 'overflow', 'scroll' )
+
+    // Add the inner div.
+    var $inner = $( '<div style="width:100%" />' ).appendTo( $outer )
+
+    // Get the width with scrollbars.
+    var widthWithScroll = $inner[0].offsetWidth
+
+    // Remove the divs.
+    $outer.remove()
+
+    // Return the difference between the widths.
+    return widthWithoutScroll - widthWithScroll
+}
 
 
 
@@ -6919,14 +7247,6 @@ PickerConstructor._ = {
 
 
     /**
-     * Tell if something is an object.
-     */
-    isObject: function( value ) {
-        return {}.toString.call( value ).indexOf( 'Object' ) > -1
-    },
-
-
-    /**
      * Tell if something is a date object.
      */
     isDate: function( value ) {
@@ -6939,7 +7259,13 @@ PickerConstructor._ = {
      */
     isInteger: function( value ) {
         return {}.toString.call( value ).indexOf( 'Number' ) > -1 && value % 1 === 0
-    }
+    },
+
+
+    /**
+     * Create ARIA attribute strings.
+     */
+    ariaAttr: ariaAttr
 } //PickerConstructor._
 
 
@@ -6962,8 +7288,7 @@ PickerConstructor.extend = function( name, Component ) {
 
         // If the component data exists and `options` is a string, carry out the action.
         if ( componentData && typeof options == 'string' ) {
-            PickerConstructor._.trigger( componentData[ options ], componentData, [ action ] )
-            return this
+            return PickerConstructor._.trigger( componentData[ options ], componentData, [ action ] )
         }
 
         // Otherwise go through each matched element and if the component
@@ -6980,6 +7305,44 @@ PickerConstructor.extend = function( name, Component ) {
     // Set the defaults.
     $.fn[ name ].defaults = Component.defaults
 } //PickerConstructor.extend
+
+
+
+function aria(element, attribute, value) {
+    if ( $.isPlainObject(attribute) ) {
+        for ( var key in attribute ) {
+            ariaSet(element, key, attribute[key])
+        }
+    }
+    else {
+        ariaSet(element, attribute, value)
+    }
+}
+function ariaSet(element, attribute, value) {
+    element.setAttribute(
+        (attribute == 'role' ? '' : 'aria-') + attribute,
+        value
+    )
+}
+function ariaAttr(attribute, data) {
+    if ( !$.isPlainObject(attribute) ) {
+        attribute = { attribute: data }
+    }
+    data = ''
+    for ( var key in attribute ) {
+        var attr = (key == 'role' ? '' : 'aria-') + key,
+            attrVal = attribute[key]
+        data += attrVal == null ? '' : attr + '="' + attribute[key] + '"'
+    }
+    return data
+}
+
+// IE8 bug throws an error for activeElements within iframes.
+function getActiveElement() {
+    try {
+        return document.activeElement
+    } catch ( err ) { }
+}
 
 
 
@@ -7123,32 +7486,26 @@ String.prototype.split = function(separator, limit) {
         output.push(str.slice(lastLastIndex))
     }
     return output.length > limit ? output.slice(0, limit) : output
-}
-;
-/*!
- * Time picker for pickadate.js v3.2.2
+};
+;/*!
+ * Time picker for pickadate.js v3.5.6
  * http://amsul.github.io/pickadate.js/time.htm
- */
-
-/*jshint
-   debug: true,
-   devel: true,
-   browser: true,
-   asi: true,
-   unused: true,
-   boss: true
  */
 
 (function ( factory ) {
 
-    // Register as an anonymous module.
-    if ( typeof define === 'function' && define.amd )
-        define( ['picker'], factory )
+    // AMD.
+    if ( typeof define == 'function' && define.amd )
+        define( ['picker', 'jquery'], factory )
 
-    // Or using browser globals.
-    else factory( Picker )
+    // Node.js/browserify.
+    else if ( typeof exports == 'object' )
+        module.exports = factory( require('./picker.js'), require('jquery') )
 
-}(function( Picker ) {
+    // Browser globals.
+    else factory( Picker, jQuery )
+
+}(function( Picker, $ ) {
 
 
 /**
@@ -7157,7 +7514,8 @@ String.prototype.split = function(separator, limit) {
 var HOURS_IN_DAY = 24,
     MINUTES_IN_HOUR = 60,
     HOURS_TO_NOON = 12,
-    MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR
+    MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR,
+    _ = Picker._
 
 
 
@@ -7167,9 +7525,13 @@ var HOURS_IN_DAY = 24,
 function TimePicker( picker, settings ) {
 
     var clock = this,
-        elementDataValue = picker.$node.data( 'value' )
+        elementValue = picker.$node[ 0 ].value,
+        elementDataValue = picker.$node.data( 'value' ),
+        valueString = elementDataValue || elementValue,
+        formatString = elementDataValue ? settings.formatSubmit : settings.format
 
     clock.settings = settings
+    clock.$node = picker.$node
 
     // The queue of methods that will be used to build item objects.
     clock.queue = {
@@ -7178,15 +7540,16 @@ function TimePicker( picker, settings ) {
         max: 'measure create',
         now: 'now create',
         select: 'parse create validate',
-        highlight: 'create validate',
-        view: 'create validate',
-        disable: 'flipItem',
-        enable: 'flipItem'
+        highlight: 'parse create validate',
+        view: 'parse create validate',
+        disable: 'deactivate',
+        enable: 'activate'
     }
 
     // The component's item object.
     clock.item = {}
 
+    clock.item.clear = null
     clock.item.interval = settings.interval || 30
     clock.item.disable = ( settings.disable || [] ).slice( 0 )
     clock.item.enable = -(function( collectionDisabled ) {
@@ -7196,18 +7559,22 @@ function TimePicker( picker, settings ) {
     clock.
         set( 'min', settings.min ).
         set( 'max', settings.max ).
-        set( 'now' ).
+        set( 'now' )
 
-        // Setting the `select` also sets the `highlight` and `view`.
-        set( 'select',
+    // When there’s a value, set the `select`, which in turn
+    // also sets the `highlight` and `view`.
+    if ( valueString ) {
+        clock.set( 'select', valueString, {
+            format: formatString
+        })
+    }
 
-            // If there's a `value` or `data-value`, use that with formatting.
-            // Otherwise default to the minimum selectable time.
-            elementDataValue || picker.$node[ 0 ].value || clock.item.min,
-
-            // Use the relevant format.
-            { format: elementDataValue ? settings.formatSubmit : settings.format }
-        )
+    // If there’s no value, default to highlighting “today”.
+    else {
+        clock.
+            set( 'select', null ).
+            set( 'highlight', clock.item.now )
+    }
 
     // The keycode to movement mapping.
     clock.key = {
@@ -7216,7 +7583,11 @@ function TimePicker( picker, settings ) {
         39: 1, // Right
         37: -1, // Left
         go: function( timeChange ) {
-            clock.set( 'highlight', clock.item.highlight.pick + timeChange * clock.item.interval, { interval: timeChange * clock.item.interval } )
+            clock.set(
+                'highlight',
+                clock.item.highlight.pick + timeChange * clock.item.interval,
+                { interval: timeChange * clock.item.interval }
+            )
             this.render()
         }
     }
@@ -7226,20 +7597,32 @@ function TimePicker( picker, settings ) {
     picker.
         on( 'render', function() {
             var $pickerHolder = picker.$root.children(),
-                $viewset = $pickerHolder.find( '.' + settings.klass.viewset )
+                $viewset = $pickerHolder.find( '.' + settings.klass.viewset ),
+                vendors = function( prop ) {
+                    return ['webkit', 'moz', 'ms', 'o', ''].map(function( vendor ) {
+                        return ( vendor ? '-' + vendor + '-' : '' ) + prop
+                    })
+                },
+                animations = function( $el, state ) {
+                    vendors( 'transform' ).map(function( prop ) {
+                        $el.css( prop, state )
+                    })
+                    vendors( 'transition' ).map(function( prop ) {
+                        $el.css( prop, state )
+                    })
+                }
             if ( $viewset.length ) {
-                $pickerHolder[ 0 ].scrollTop = ~~( $viewset.position().top - ( $viewset[ 0 ].clientHeight * 2 ) )
+                animations( $pickerHolder, 'none' )
+                $pickerHolder[ 0 ].scrollTop = ~~$viewset.position().top - ( $viewset[ 0 ].clientHeight * 2 )
+                animations( $pickerHolder, '' )
             }
-            else {
-                console.warn( 'Nothing to viewset with', clock.item.view )
-            }
-        }).
+        }, 1 ).
         on( 'open', function() {
-            picker.$root.find( 'button' ).attr( 'disable', false )
-        }).
+            picker.$root.find( 'button' ).attr( 'disabled', false )
+        }, 1 ).
         on( 'close', function() {
-            picker.$root.find( 'button' ).attr( 'disable', true )
-        })
+            picker.$root.find( 'button' ).attr( 'disabled', true )
+        }, 1 )
 
 } //TimePicker
 
@@ -7249,35 +7632,47 @@ function TimePicker( picker, settings ) {
  */
 TimePicker.prototype.set = function( type, value, options ) {
 
-    var clock = this
+    var clock = this,
+        clockItem = clock.item
 
-    // Go through the queue of methods, and invoke the function. Update this
-    // as the time unit, and set the final resultant as this item type.
+    // If the value is `null` just set it immediately.
+    if ( value === null ) {
+        if ( type == 'clear' ) type = 'select'
+        clockItem[ type ] = value
+        return clock
+    }
+
+    // Otherwise go through the queue of methods, and invoke the functions.
+    // Update this as the time unit, and set the final value as this item.
     // * In the case of `enable`, keep the queue but set `disable` instead.
     //   And in the case of `flip`, keep the queue but set `enable` instead.
-    clock.item[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = clock.queue[ type ].split( ' ' ).map( function( method ) {
-        return value = clock[ method ]( type, value, options )
+    clockItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = clock.queue[ type ].split( ' ' ).map( function( method ) {
+        value = clock[ method ]( type, value, options )
+        return value
     }).pop()
 
     // Check if we need to cascade through more updates.
     if ( type == 'select' ) {
-        clock.set( 'highlight', clock.item.select, options )
+        clock.set( 'highlight', clockItem.select, options )
     }
     else if ( type == 'highlight' ) {
-        clock.set( 'view', clock.item.highlight, options )
+        clock.set( 'view', clockItem.highlight, options )
     }
     else if ( type == 'interval' ) {
         clock.
-            set( 'min', clock.item.min, options ).
-            set( 'max', clock.item.max, options )
+            set( 'min', clockItem.min, options ).
+            set( 'max', clockItem.max, options )
     }
-    else if ( ( type == 'flip' || type == 'min' || type == 'max' || type == 'disable' || type == 'enable' ) && clock.item.select && clock.item.highlight ) {
-        if ( type == 'min' ) {
-            clock.set( 'max', clock.item.max, options )
+    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
+        if ( clockItem.select && clock.disabled( clockItem.select ) ) {
+            clock.set( 'select', value, options )
         }
-        clock.
-            set( 'select', clock.item.select, options ).
-            set( 'highlight', clock.item.highlight, options )
+        if ( clockItem.highlight && clock.disabled( clockItem.highlight ) ) {
+            clock.set( 'highlight', value, options )
+        }
+        if ( type == 'min' ) {
+            clock.set( 'max', clockItem.max, options )
+        }
     }
 
     return clock
@@ -7299,31 +7694,42 @@ TimePicker.prototype.create = function( type, value, options ) {
 
     var clock = this
 
-    // If there's no value, use the type as the value.
+    // If there’s no value, use the type as the value.
     value = value === undefined ? type : value
 
-    // If it's an object, use the "pick" value.
-    if ( Picker._.isObject( value ) && Picker._.isInteger( value.pick ) ) {
+    // If it’s a date object, convert it into an array.
+    if ( _.isDate( value ) ) {
+        value = [ value.getHours(), value.getMinutes() ]
+    }
+
+    // If it’s an object, use the “pick” value.
+    if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
         value = value.pick
     }
 
-    // If it's an array, convert it into minutes.
+    // If it’s an array, convert it into minutes.
     else if ( $.isArray( value ) ) {
         value = +value[ 0 ] * MINUTES_IN_HOUR + (+value[ 1 ])
     }
 
-    // If no valid value is passed, set it to "now".
-    else if ( !Picker._.isInteger( value ) ) {
+    // If no valid value is passed, set it to “now”.
+    else if ( !_.isInteger( value ) ) {
         value = clock.now( type, value, options )
     }
 
-    // If we're setting the max, make sure it's greater than the min.
+    // If we’re setting the max, make sure it’s greater than the min.
     if ( type == 'max' && value < clock.item.min.pick ) {
         value += MINUTES_IN_DAY
     }
 
-    // Normalize it into a "reachable" interval.
-    value = clock.normalize( value, options )
+    // If the value doesn’t fall directly on the interval,
+    // add one interval to indicate it as “passed”.
+    if ( type != 'min' && type != 'max' && (value - clock.item.min.pick) % clock.item.interval !== 0 ) {
+        value += clock.item.interval
+    }
+
+    // Normalize it into a “reachable” interval.
+    value = clock.normalize( type, value, options )
 
     // Return the compiled object.
     return {
@@ -7337,10 +7743,72 @@ TimePicker.prototype.create = function( type, value, options ) {
         // The time in total minutes.
         time: ( MINUTES_IN_DAY + value ) % MINUTES_IN_DAY,
 
-        // Reference to the "relative" value to pick.
-        pick: value
+        // Reference to the “relative” value to pick.
+        pick: value % MINUTES_IN_DAY
     }
 } //TimePicker.prototype.create
+
+
+/**
+ * Create a range limit object using an array, date object,
+ * literal “true”, or integer relative to another time.
+ */
+TimePicker.prototype.createRange = function( from, to ) {
+
+    var clock = this,
+        createTime = function( time ) {
+            if ( time === true || $.isArray( time ) || _.isDate( time ) ) {
+                return clock.create( time )
+            }
+            return time
+        }
+
+    // Create objects if possible.
+    if ( !_.isInteger( from ) ) {
+        from = createTime( from )
+    }
+    if ( !_.isInteger( to ) ) {
+        to = createTime( to )
+    }
+
+    // Create relative times.
+    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
+        from = [ to.hour, to.mins + ( from * clock.settings.interval ) ];
+    }
+    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
+        to = [ from.hour, from.mins + ( to * clock.settings.interval ) ];
+    }
+
+    return {
+        from: createTime( from ),
+        to: createTime( to )
+    }
+} //TimePicker.prototype.createRange
+
+
+/**
+ * Check if a time unit falls within a time range object.
+ */
+TimePicker.prototype.withinRange = function( range, timeUnit ) {
+    range = this.createRange(range.from, range.to)
+    return timeUnit.pick >= range.from.pick && timeUnit.pick <= range.to.pick
+}
+
+
+/**
+ * Check if two time range objects overlap.
+ */
+TimePicker.prototype.overlapRanges = function( one, two ) {
+
+    var clock = this
+
+    // Convert the ranges into comparable times.
+    one = clock.createRange( one.from, one.to )
+    two = clock.createRange( two.from, two.to )
+
+    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
+        clock.withinRange( two, one.from ) || clock.withinRange( two, one.to )
+}
 
 
 /**
@@ -7348,32 +7816,50 @@ TimePicker.prototype.create = function( type, value, options ) {
  */
 TimePicker.prototype.now = function( type, value/*, options*/ ) {
 
-    var date = new Date(),
-        dateMinutes = date.getHours() * MINUTES_IN_HOUR + date.getMinutes()
+    var interval = this.item.interval,
+        date = new Date(),
+        nowMinutes = date.getHours() * MINUTES_IN_HOUR + date.getMinutes(),
+        isValueInteger = _.isInteger( value ),
+        isBelowInterval
 
-    // If the value is a number, adjust by that many intervals because
-    // the time has passed. In the case of “midnight” and a negative `min`,
-    // increase the value by 2. Otherwise increase it by 1.
-    if ( Picker._.isInteger( value ) ) {
-        value += type == 'min' && value < 0 && dateMinutes === 0 ? 2 : 1
+    // Make sure “now” falls within the interval range.
+    nowMinutes -= nowMinutes % interval
+
+    // Check if the difference is less than the interval itself.
+    isBelowInterval = value < 0 && interval * value + nowMinutes <= -interval
+
+    // Add an interval because the time has “passed”.
+    nowMinutes += type == 'min' && isBelowInterval ? 0 : interval
+
+    // If the value is a number, adjust by that many intervals.
+    if ( isValueInteger ) {
+        nowMinutes += interval * (
+            isBelowInterval && type != 'max' ?
+                value + 1 :
+                value
+            )
     }
 
-    // If the value isn’t a number, default to 1 passed interval.
-    else {
-        value = 1
-    }
-
-    // Calculate the final relative time.
-    return value * this.item.interval + dateMinutes
+    // Return the final calculation.
+    return nowMinutes
 } //TimePicker.prototype.now
 
 
 /**
- * Normalize minutes or an object to be "reachable" based on the interval.
+ * Normalize minutes to be “reachable” based on the min and interval.
  */
-TimePicker.prototype.normalize = function( value/*, options*/ ) {
-    // If it's a negative value, add one interval to keep it as "passed".
-    return value - ( ( value < 0 ? this.item.interval : 0 ) + value % this.item.interval )
+TimePicker.prototype.normalize = function( type, value/*, options*/ ) {
+
+    var interval = this.item.interval,
+        minTime = this.item.min && this.item.min.pick || 0
+
+    // If setting min time, don’t shift anything.
+    // Otherwise get the value and min difference and then
+    // normalize the difference with the interval.
+    value -= type == 'min' ? 0 : ( value - minTime ) % interval
+
+    // Return the adjusted value.
+    return value
 } //TimePicker.prototype.normalize
 
 
@@ -7384,19 +7870,24 @@ TimePicker.prototype.measure = function( type, value, options ) {
 
     var clock = this
 
-    // If it's anything false-y, set it to the default.
+    // If it’s anything false-y, set it to the default.
     if ( !value ) {
         value = type == 'min' ? [ 0, 0 ] : [ HOURS_IN_DAY - 1, MINUTES_IN_HOUR - 1 ]
     }
 
-    // If it's a literal true, or an integer, make it relative to now.
-    else if ( value === true || Picker._.isInteger( value ) ) {
+    // If it’s a string, parse it.
+    if ( typeof value == 'string' ) {
+        value = clock.parse( type, value )
+    }
+
+    // If it’s a literal true, or an integer, make it relative to now.
+    else if ( value === true || _.isInteger( value ) ) {
         value = clock.now( type, value, options )
     }
 
-    // If it's an object already, just normalize it.
-    else if ( Picker._.isObject( value ) && Picker._.isInteger( value.pick ) ) {
-        value = clock.normalize( value.pick, options )
+    // If it’s an object already, just normalize it.
+    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        value = clock.normalize( type, value.pick, options )
     }
 
     return value
@@ -7435,27 +7926,39 @@ TimePicker.prototype.validate = function( type, timeObject, options ) {
 /**
  * Check if an object is disabled.
  */
-TimePicker.prototype.disabled = function( timeObject ) {
+TimePicker.prototype.disabled = function( timeToVerify ) {
 
-    var
-        clock = this,
+    var clock = this,
 
         // Filter through the disabled times to check if this is one.
-        isDisabledTime = clock.item.disable.filter( function( timeToDisable ) {
+        isDisabledMatch = clock.item.disable.filter( function( timeToDisable ) {
 
             // If the time is a number, match the hours.
-            if ( Picker._.isInteger( timeToDisable ) ) {
-                return timeObject.hour == timeToDisable
+            if ( _.isInteger( timeToDisable ) ) {
+                return timeToVerify.hour == timeToDisable
             }
 
-            // If it's an array, create the object and match the times.
-            if ( $.isArray( timeToDisable ) ) {
-                return timeObject.pick == clock.create( timeToDisable ).pick
+            // If it’s an array, create the object and match the times.
+            if ( $.isArray( timeToDisable ) || _.isDate( timeToDisable ) ) {
+                return timeToVerify.pick == clock.create( timeToDisable ).pick
             }
-        }).length
+
+            // If it’s an object, match a time within the “from” and “to” range.
+            if ( $.isPlainObject( timeToDisable ) ) {
+                return clock.withinRange( timeToDisable, timeToVerify )
+            }
+        })
+
+    // If this time matches a disabled time, confirm it’s not inverted.
+    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( timeToDisable ) {
+        return $.isArray( timeToDisable ) && timeToDisable[2] == 'inverted' ||
+            $.isPlainObject( timeToDisable ) && timeToDisable.inverted
+    }).length
 
     // If the clock is "enabled" flag is flipped, flip the condition.
-    return clock.item.enable === -1 ? !isDisabledTime : isDisabledTime
+    return clock.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
+        timeToVerify.pick < clock.item.min.pick ||
+        timeToVerify.pick > clock.item.max.pick
 } //TimePicker.prototype.disabled
 
 
@@ -7464,17 +7967,26 @@ TimePicker.prototype.disabled = function( timeObject ) {
  */
 TimePicker.prototype.shift = function( timeObject, interval ) {
 
-    var
-        clock = this
+    var clock = this,
+        minLimit = clock.item.min.pick,
+        maxLimit = clock.item.max.pick/*,
+        safety = 1000*/
+
+    interval = interval || clock.item.interval
 
     // Keep looping as long as the time is disabled.
-    while ( clock.disabled( timeObject ) ) {
+    while ( /*safety &&*/ clock.disabled( timeObject ) ) {
+
+        /*safety -= 1
+        if ( !safety ) {
+            throw 'Fell into an infinite loop while shifting to ' + timeObject.hour + ':' + timeObject.mins + '.'
+        }*/
 
         // Increase/decrease the time by the interval and keep looping.
-        timeObject = clock.create( timeObject.pick += interval || clock.item.interval )
+        timeObject = clock.create( timeObject.pick += interval )
 
         // If we've looped beyond the limits, break out of the loop.
-        if ( timeObject.pick <= clock.item.min.pick || timeObject.pick >= clock.item.max.pick ) {
+        if ( timeObject.pick <= minLimit || timeObject.pick >= maxLimit ) {
             break
         }
     }
@@ -7499,46 +8011,68 @@ TimePicker.prototype.scope = function( timeObject ) {
  */
 TimePicker.prototype.parse = function( type, value, options ) {
 
-    var
+    var hour, minutes, isPM, item, parseValue,
         clock = this,
         parsingObject = {}
 
-    if ( !value || Picker._.isInteger( value ) || $.isArray( value ) || Picker._.isDate( value ) || Picker._.isObject( value ) && Picker._.isInteger( value.pick ) ) {
+    // If it’s already parsed, we’re good.
+    if ( !value || typeof value != 'string' ) {
         return value
     }
 
-    // We need a `.format` to parse the value.
+    // We need a `.format` to parse the value with.
     if ( !( options && options.format ) ) {
-        throw "Need a formatting option to parse this.."
+        options = options || {}
+        options.format = clock.settings.format
     }
 
     // Convert the format into an array and then map through it.
     clock.formats.toArray( options.format ).map( function( label ) {
 
         var
+            substring,
+
             // Grab the formatting label.
             formattingLabel = clock.formats[ label ],
 
             // The format length is from the formatting label function or the
             // label length without the escaping exclamation (!) mark.
-            formatLength = formattingLabel ? Picker._.trigger( formattingLabel, clock, [ value, parsingObject ] ) : label.replace( /^!/, '' ).length
+            formatLength = formattingLabel ?
+                _.trigger( formattingLabel, clock, [ value, parsingObject ] ) :
+                label.replace( /^!/, '' ).length
 
         // If there's a format label, split the value up to the format length.
         // Then add it to the parsing object with appropriate label.
         if ( formattingLabel ) {
-            parsingObject[ label ] = value.substr( 0, formatLength )
+            substring = value.substr( 0, formatLength )
+            parsingObject[ label ] = substring.match(/^\d+$/) ? +substring : substring
         }
 
         // Update the time value as the substring from format length to end.
         value = value.substr( formatLength )
     })
 
-    return +parsingObject.i + MINUTES_IN_HOUR * (
+    // Grab the hour and minutes from the parsing object.
+    for ( item in parsingObject ) {
+        parseValue = parsingObject[item]
+        if ( _.isInteger(parseValue) ) {
+            if ( item.match(/^(h|hh)$/i) ) {
+                hour = parseValue
+                if ( item == 'h' || item == 'hh' ) {
+                    hour %= 12
+                }
+            }
+            else if ( item == 'i' ) {
+                minutes = parseValue
+            }
+        }
+        else if ( item.match(/^a$/i) && parseValue.match(/^p/i) && ('h' in parsingObject || 'hh' in parsingObject) ) {
+            isPM = true
+        }
+    }
 
-        +( parsingObject.H || parsingObject.HH ) ||
-
-        ( +( parsingObject.h || parsingObject.hh ) % 12 + ( /^p/i.test( parsingObject.A || parsingObject.a ) ? 12 : 0 ) )
-    )
+    // Calculate it in minutes and return.
+    return (isPM ? hour + 12 : hour) * MINUTES_IN_HOUR + minutes
 } //TimePicker.prototype.parse
 
 
@@ -7551,31 +8085,31 @@ TimePicker.prototype.formats = {
 
         // If there's string, then get the digits length.
         // Otherwise return the selected hour in "standard" format.
-        return string ? Picker._.digits( string ) : timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON
+        return string ? _.digits( string ) : timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON
     },
     hh: function( string, timeObject ) {
 
         // If there's a string, then the length is always 2.
         // Otherwise return the selected hour in "standard" format with a leading zero.
-        return string ? 2 : Picker._.lead( timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON )
+        return string ? 2 : _.lead( timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON )
     },
     H: function( string, timeObject ) {
 
         // If there's string, then get the digits length.
         // Otherwise return the selected hour in "military" format as a string.
-        return string ? Picker._.digits( string ) : '' + ( timeObject.hour % 24 )
+        return string ? _.digits( string ) : '' + ( timeObject.hour % 24 )
     },
     HH: function( string, timeObject ) {
 
         // If there's string, then get the digits length.
         // Otherwise return the selected hour in "military" format with a leading zero.
-        return string ? Picker._.digits( string ) : Picker._.lead( timeObject.hour % 24 )
+        return string ? _.digits( string ) : _.lead( timeObject.hour % 24 )
     },
     i: function( string, timeObject ) {
 
         // If there's a string, then the length is always 2.
         // Otherwise return the selected minutes.
-        return string ? 2 : Picker._.lead( timeObject.mins )
+        return string ? 2 : _.lead( timeObject.mins )
     },
     a: function( string, timeObject ) {
 
@@ -7597,82 +8131,235 @@ TimePicker.prototype.formats = {
     toString: function ( formatString, itemObject ) {
         var clock = this
         return clock.formats.toArray( formatString ).map( function( label ) {
-            return Picker._.trigger( clock.formats[ label ], clock, [ 0, itemObject ] ) || label.replace( /^!/, '' )
+            return _.trigger( clock.formats[ label ], clock, [ 0, itemObject ] ) || label.replace( /^!/, '' )
         }).join( '' )
     }
 } //TimePicker.prototype.formats
 
 
+
+
 /**
- * Flip an item as enabled or disabled.
+ * Check if two time units are the exact.
  */
-TimePicker.prototype.flipItem = function( type, value/*, options*/ ) {
+TimePicker.prototype.isTimeExact = function( one, two ) {
+
+    var clock = this
+
+    // When we’re working with minutes, do a direct comparison.
+    if (
+        ( _.isInteger( one ) && _.isInteger( two ) ) ||
+        ( typeof one == 'boolean' && typeof two == 'boolean' )
+     ) {
+        return one === two
+    }
+
+    // When we’re working with time representations, compare the “pick” value.
+    if (
+        ( _.isDate( one ) || $.isArray( one ) ) &&
+        ( _.isDate( two ) || $.isArray( two ) )
+    ) {
+        return clock.create( one ).pick === clock.create( two ).pick
+    }
+
+    // When we’re working with range objects, compare the “from” and “to”.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return clock.isTimeExact( one.from, two.from ) && clock.isTimeExact( one.to, two.to )
+    }
+
+    return false
+}
+
+
+/**
+ * Check if two time units overlap.
+ */
+TimePicker.prototype.isTimeOverlap = function( one, two ) {
+
+    var clock = this
+
+    // When we’re working with an integer, compare the hours.
+    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
+        return one === clock.create( two ).hour
+    }
+    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
+        return two === clock.create( one ).hour
+    }
+
+    // When we’re working with range objects, check if the ranges overlap.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return clock.overlapRanges( one, two )
+    }
+
+    return false
+}
+
+
+/**
+ * Flip the “enabled” state.
+ */
+TimePicker.prototype.flipEnable = function(val) {
+    var itemObject = this.item
+    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
+}
+
+
+/**
+ * Mark a collection of times as “disabled”.
+ */
+TimePicker.prototype.deactivate = function( type, timesToDisable ) {
 
     var clock = this,
-        collection = clock.item.disable,
-        isFlipped = clock.item.enable === -1
+        disabledItems = clock.item.disable.slice(0)
 
-    // Flip the enabled and disabled times.
-    if ( value == 'flip' ) {
-        clock.item.enable = isFlipped ? 1 : -1
+
+    // If we’re flipping, that’s all we need to do.
+    if ( timesToDisable == 'flip' ) {
+        clock.flipEnable()
     }
 
-    // Check if we have to add/remove from collection.
-    else if ( !isFlipped && type == 'enable' || isFlipped && type == 'disable' ) {
-        collection = clock.removeDisabled( collection, value )
-    }
-    else if ( !isFlipped && type == 'disable' || isFlipped && type == 'enable' ) {
-        collection = clock.addDisabled( collection, value )
+    else if ( timesToDisable === false ) {
+        clock.flipEnable(1)
+        disabledItems = []
     }
 
-    return collection
-} //TimePicker.prototype.flipItem
+    else if ( timesToDisable === true ) {
+        clock.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the times to disable.
+    else {
+
+        timesToDisable.map(function( unitToDisable ) {
+
+            var matchFound
+
+            // When we have disabled items, check for matches.
+            // If something is matched, immediately break out.
+            for ( var index = 0; index < disabledItems.length; index += 1 ) {
+                if ( clock.isTimeExact( unitToDisable, disabledItems[index] ) ) {
+                    matchFound = true
+                    break
+                }
+            }
+
+            // If nothing was found, add the validated unit to the collection.
+            if ( !matchFound ) {
+                if (
+                    _.isInteger( unitToDisable ) ||
+                    _.isDate( unitToDisable ) ||
+                    $.isArray( unitToDisable ) ||
+                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
+                ) {
+                    disabledItems.push( unitToDisable )
+                }
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems
+} //TimePicker.prototype.deactivate
 
 
 /**
- * Add an item to the disabled collection.
+ * Mark a collection of times as “enabled”.
  */
-TimePicker.prototype.addDisabled = function( collection, item ) {
-    var clock = this
-    item.map( function( timeUnit ) {
-        if ( !clock.filterDisabled( collection, timeUnit ).length ) {
-            collection.push( timeUnit )
-        }
-    })
-    return collection
-} //TimePicker.prototype.addDisabled
+TimePicker.prototype.activate = function( type, timesToEnable ) {
 
+    var clock = this,
+        disabledItems = clock.item.disable,
+        disabledItemsCount = disabledItems.length
 
-/**
- * Remove an item from the disabled collection.
- */
-TimePicker.prototype.removeDisabled = function( collection, item ) {
-    var clock = this
-    item.map( function( timeUnit ) {
-        collection = clock.filterDisabled( collection, timeUnit, 1 )
-    })
-    return collection
-} //TimePicker.prototype.removeDisabled
+    // If we’re flipping, that’s all we need to do.
+    if ( timesToEnable == 'flip' ) {
+        clock.flipEnable()
+    }
 
+    else if ( timesToEnable === true ) {
+        clock.flipEnable(1)
+        disabledItems = []
+    }
 
-/**
- * Filter through the disabled collection to find a time unit.
- */
-TimePicker.prototype.filterDisabled = function( collection, timeUnit, isRemoving ) {
-    var timeIsArray = $.isArray( timeUnit )
-    return collection.filter( function( disabledTimeUnit ) {
-        var isMatch = !timeIsArray && timeUnit === disabledTimeUnit ||
-            timeIsArray && $.isArray( disabledTimeUnit ) && timeUnit.toString() === disabledTimeUnit.toString()
-        return isRemoving ? !isMatch : isMatch
-    })
-} //TimePicker.prototype.filterDisabled
+    else if ( timesToEnable === false ) {
+        clock.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the disabled times.
+    else {
+
+        timesToEnable.map(function( unitToEnable ) {
+
+            var matchFound,
+                disabledUnit,
+                index,
+                isRangeMatched
+
+            // Go through the disabled items and try to find a match.
+            for ( index = 0; index < disabledItemsCount; index += 1 ) {
+
+                disabledUnit = disabledItems[index]
+
+                // When an exact match is found, remove it from the collection.
+                if ( clock.isTimeExact( disabledUnit, unitToEnable ) ) {
+                    matchFound = disabledItems[index] = null
+                    isRangeMatched = true
+                    break
+                }
+
+                // When an overlapped match is found, add the “inverted” state to it.
+                else if ( clock.isTimeOverlap( disabledUnit, unitToEnable ) ) {
+                    if ( $.isPlainObject( unitToEnable ) ) {
+                        unitToEnable.inverted = true
+                        matchFound = unitToEnable
+                    }
+                    else if ( $.isArray( unitToEnable ) ) {
+                        matchFound = unitToEnable
+                        if ( !matchFound[2] ) matchFound.push( 'inverted' )
+                    }
+                    else if ( _.isDate( unitToEnable ) ) {
+                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
+                    }
+                    break
+                }
+            }
+
+            // If a match was found, remove a previous duplicate entry.
+            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( clock.isTimeExact( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // In the event that we’re dealing with an overlap of range times,
+            // make sure there are no “inverted” times because of it.
+            if ( isRangeMatched ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( clock.isTimeOverlap( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // If something is still matched, add it into the collection.
+            if ( matchFound ) {
+                disabledItems.push( matchFound )
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems.filter(function( val ) { return val != null })
+} //TimePicker.prototype.activate
 
 
 /**
  * The division to use for the range intervals.
  */
 TimePicker.prototype.i = function( type, value/*, options*/ ) {
-    return Picker._.isInteger( value ) && value > 0 ? value : this.item.interval
+    return _.isInteger( value ) && value > 0 ? value : this.item.interval
 }
 
 
@@ -7689,39 +8376,68 @@ TimePicker.prototype.nodes = function( isOpen ) {
         viewsetObject = clock.item.view,
         disabledCollection = clock.item.disable
 
-    return Picker._.node( 'ul', Picker._.group({
-        min: clock.item.min.pick,
-        max: clock.item.max.pick,
-        i: clock.item.interval,
-        node: 'li',
-        item: function( loopedTime ) {
-            loopedTime = clock.create( loopedTime )
-            return [
-                Picker._.trigger( clock.formats.toString, clock, [ Picker._.trigger( settings.formatLabel, clock, [ loopedTime ] ) || settings.format, loopedTime ] ),
-                (function( klasses, timeMinutes ) {
+    return _.node(
+        'ul',
+        _.group({
+            min: clock.item.min.pick,
+            max: clock.item.max.pick,
+            i: clock.item.interval,
+            node: 'li',
+            item: function( loopedTime ) {
+                loopedTime = clock.create( loopedTime )
+                var timeMinutes = loopedTime.pick,
+                    isSelected = selectedObject && selectedObject.pick == timeMinutes,
+                    isHighlighted = highlightedObject && highlightedObject.pick == timeMinutes,
+                    isDisabled = disabledCollection && clock.disabled( loopedTime ),
+                    formattedTime = _.trigger( clock.formats.toString, clock, [ settings.format, loopedTime ] )
+                return [
+                    _.trigger( clock.formats.toString, clock, [ _.trigger( settings.formatLabel, clock, [ loopedTime ] ) || settings.format, loopedTime ] ),
+                    (function( klasses ) {
 
-                    if ( selectedObject && selectedObject.pick == timeMinutes ) {
-                        klasses.push( settings.klass.selected )
-                    }
+                        if ( isSelected ) {
+                            klasses.push( settings.klass.selected )
+                        }
 
-                    if ( highlightedObject && highlightedObject.pick == timeMinutes ) {
-                        klasses.push( settings.klass.highlighted )
-                    }
+                        if ( isHighlighted ) {
+                            klasses.push( settings.klass.highlighted )
+                        }
 
-                    if ( viewsetObject && viewsetObject.pick == timeMinutes ) {
-                        klasses.push( settings.klass.viewset )
-                    }
+                        if ( viewsetObject && viewsetObject.pick == timeMinutes ) {
+                            klasses.push( settings.klass.viewset )
+                        }
 
-                    if ( disabledCollection && clock.disabled( loopedTime ) ) {
-                        klasses.push( settings.klass.disabled )
-                    }
+                        if ( isDisabled ) {
+                            klasses.push( settings.klass.disabled )
+                        }
 
-                    return klasses.join( ' ' )
-                })( [ settings.klass.listItem ], loopedTime.pick ),
-                'data-pick=' + loopedTime.pick
-            ]
-        }
-    }) + Picker._.node( 'li', Picker._.node( 'button', settings.clear, settings.klass.buttonClear, 'data-clear=1' + ( isOpen ? '' : ' disable' ) ) ), settings.klass.list )
+                        return klasses.join( ' ' )
+                    })( [ settings.klass.listItem ] ),
+                    'data-pick=' + loopedTime.pick + ' ' + _.ariaAttr({
+                        role: 'option',
+                        label: formattedTime,
+                        selected: isSelected && clock.$node.val() === formattedTime ? true : null,
+                        activedescendant: isHighlighted ? true : null,
+                        disabled: isDisabled ? true : null
+                    })
+                ]
+            }
+        }) +
+
+        // * For Firefox forms to submit, make sure to set the button’s `type` attribute as “button”.
+        _.node(
+            'li',
+            _.node(
+                'button',
+                settings.clear,
+                settings.klass.buttonClear,
+                'type=button data-clear=1' + ( isOpen ? '' : ' disabled' ) + ' ' +
+                _.ariaAttr({ controls: clock.$node[0].id })
+            ),
+            '', _.ariaAttr({ role: 'presentation' })
+        ),
+        settings.klass.list,
+        _.ariaAttr({ role: 'listbox', controls: clock.$node[0].id })
+    )
 } //TimePicker.prototype.nodes
 
 
@@ -7730,10 +8446,9 @@ TimePicker.prototype.nodes = function( isOpen ) {
 
 
 
-/* ==========================================================================
-   Extend the picker to add the component with the defaults.
-   ========================================================================== */
-
+/**
+ * Extend the picker to add the component with the defaults.
+ */
 TimePicker.defaults = (function( prefix ) {
 
     return {
@@ -7746,6 +8461,10 @@ TimePicker.defaults = (function( prefix ) {
 
         // The interval between each time
         interval: 30,
+
+        // Picker close behavior
+        closeOnSelect: true,
+        closeOnClear: true,
 
         // Classes
         klass: {
@@ -7772,7 +8491,7 @@ TimePicker.defaults = (function( prefix ) {
 
 
 /**
- * Extend the picker to add the date picker.
+ * Extend the picker to add the time picker.
  */
 Picker.extend( 'pickatime', TimePicker )
 
