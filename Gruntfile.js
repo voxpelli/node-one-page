@@ -183,6 +183,8 @@ module.exports = function (grunt) {
   grunt.registerTask('build-css', ['sass:dev', 'sass:dist']);
   grunt.registerTask('build', ['test', 'build-js', 'build-css']);
 
+  grunt.registerTask('bower', ['bowercopy', 'build']);
+
   grunt.registerTask('default', ['build']);
 
   grunt.event.on('coverage', function (lcov, done) {

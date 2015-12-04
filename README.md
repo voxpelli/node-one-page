@@ -142,5 +142,5 @@ The source for these and for internal content types that extend these ones can b
 To update Bower dependencies of this project and get the new files copied into place, do:
 
 ```
-grunt bowercopy
+grunt bower
 ```
