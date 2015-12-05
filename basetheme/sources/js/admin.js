@@ -4,20 +4,17 @@
 
 // Full CommonJS modules
 
-global.jQuery = require('jquery');
-global._ = require('underscore');
-global.Eventable = require('./vendor/eventable');
-
-require('./vendor/picker.time');
-
 var SirTrevor = require('./vendor/sir-trevor');
 
 SirTrevor.Blocks.Flickr = require('./modules/flickr-block');
 SirTrevor.Blocks.Story = require('./modules/story-block');
 
 require('./vendor/jquery.form');
+require('./vendor/picker.time');
 
-(function ($) {
+(function () {
+  var $ = require('jquery');
+
   $('button[name="deleteimage"]').click(function (e) {
     if (!confirm('Säker på att du vill ta bort bilden?')) {
       e.preventDefault();
@@ -158,4 +155,4 @@ require('./vendor/jquery.form');
 
     oldStartTime = startVal.time;
   });
-}(global.jQuery));
+}());

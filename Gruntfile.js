@@ -52,6 +52,9 @@ module.exports = function (grunt) {
       },
     },
     browserify: {
+      options: {
+        plugin: [require('bundle-collapser/plugin')],
+      },
       dist: {
         files: {
           'basetheme/public/admin.js': ['basetheme/sources/js/admin.js'],

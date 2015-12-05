@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "browserify-shim": "^3.8.11",
+    "bundle-collapser": "^1.2.1",
     "chai": "^3.4.1",
     "coveralls": "^2.11.4",
     "dependency-check": "^2.2.0",
@@ -69,8 +70,23 @@
       "browserify-shim"
     ]
   },
+  "browser": {
+    "eventable": "./basetheme/sources/js/vendor/eventable.js"
+  },
   "browserify-shim": {
-    "./basetheme/sources/js/vendor/sir-trevor.js": "SirTrevor"
+    "./basetheme/sources/js/vendor/jquery.form.js": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
+    "./basetheme/sources/js/vendor/sir-trevor.js": {
+      "exports": "SirTrevor",
+      "depends": [
+        "jquery:jQuery",
+        "underscore:_",
+        "eventable:Eventable"
+      ]
+    }
   },
   "engines": {
     "node": ">=5.0.0"

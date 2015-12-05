@@ -1,25 +1,21 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (global){
 /* global ace */
 
 'use strict';
 
 // Full CommonJS modules
 
-global.jQuery = require('jquery');
-global._ = require('underscore');
-global.Eventable = require('./vendor/eventable');
+var SirTrevor = require(9);
 
-require('./vendor/picker.time');
+SirTrevor.Blocks.Flickr = require(2);
+SirTrevor.Blocks.Story = require(3);
 
-var SirTrevor = require('./vendor/sir-trevor');
+require(6);
+require(8);
 
-SirTrevor.Blocks.Flickr = require('./modules/flickr-block');
-SirTrevor.Blocks.Story = require('./modules/story-block');
+(function () {
+  var $ = require(10);
 
-require('./vendor/jquery.form');
-
-(function ($) {
   $('button[name="deleteimage"]').click(function (e) {
     if (!confirm('Säker på att du vill ta bort bilden?')) {
       e.preventDefault();
@@ -160,16 +156,15 @@ require('./vendor/jquery.form');
 
     oldStartTime = startVal.time;
   });
-}(global.jQuery));
+}());
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./modules/flickr-block":2,"./modules/story-block":3,"./vendor/eventable":5,"./vendor/jquery.form":6,"./vendor/picker.time":8,"./vendor/sir-trevor":9,"jquery":10,"underscore":11}],2:[function(require,module,exports){
+},{"10":10,"2":2,"3":3,"6":6,"8":8,"9":9}],2:[function(require,module,exports){
 'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var base58 = require('../vendor/base58');
-var SirTrevor = require('../vendor/sir-trevor');
+var $ = require(10);
+var _ = require(11);
+var base58 = require(4);
+var SirTrevor = require(9);
 
 module.exports = (function () {
   return SirTrevor.Block.extend({
@@ -263,13 +258,13 @@ module.exports = (function () {
   });
 }());
 
-},{"../vendor/base58":4,"../vendor/sir-trevor":9,"jquery":10,"underscore":11}],3:[function(require,module,exports){
+},{"10":10,"11":11,"4":4,"9":9}],3:[function(require,module,exports){
 'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var SirTrevor = require('../vendor/sir-trevor');
-var FlickrBlock = require('./flickr-block');
+var $ = require(10);
+var _ = require(11);
+var SirTrevor = require(9);
+var FlickrBlock = require(2);
 
 module.exports = (function () {
   var template = _.template([
@@ -340,7 +335,7 @@ module.exports = (function () {
   });
 }());
 
-},{"../vendor/sir-trevor":9,"./flickr-block":2,"jquery":10,"underscore":11}],4:[function(require,module,exports){
+},{"10":10,"11":11,"2":2,"9":9}],4:[function(require,module,exports){
 /*
  * base58.js
  *  - encodes integers to and decodes from a base58 (or your own) base58 alphabet
@@ -398,7 +393,7 @@ module.exports = (function(alpha) {
   } else if (typeof exports !== 'undefined') {
     // Node. Does not work with strict CommonJS, but only CommonJS-like
     // enviroments that support module.exports, like Node.
-    var _ = require('underscore');
+    var _ = require(11);
     module.exports = factory(_);
   } else {
     // Browser globals
@@ -582,7 +577,11 @@ module.exports = (function(alpha) {
 
 }));
 
-},{"underscore":11}],6:[function(require,module,exports){
+},{"11":11}],6:[function(require,module,exports){
+(function (global){
+
+; jQuery = global.jQuery = require(10);
+; var __browserify_shim_require__=require;(function browserifyShim(module, define, require) {
 /*!
  * jQuery Form Plugin
  * version: 3.51.0-2014.06.20
@@ -1861,7 +1860,10 @@ function log() {
 
 }));
 
-},{}],7:[function(require,module,exports){
+}).call(global, module, undefined, undefined);
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"10":10}],7:[function(require,module,exports){
 /*!
  * pickadate.js v3.5.6, 2015/04/20
  * By Amsul, http://amsul.ca
@@ -1877,7 +1879,7 @@ function log() {
 
     // Node.js/browserify.
     else if ( typeof exports == 'object' )
-        module.exports = factory( require('jquery') )
+        module.exports = factory( require(10) )
 
     // Browser globals.
     else this.Picker = factory( jQuery )
@@ -3026,7 +3028,7 @@ return PickerConstructor
 
 
 
-},{"jquery":10}],8:[function(require,module,exports){
+},{"10":10}],8:[function(require,module,exports){
 /*!
  * Time picker for pickadate.js v3.5.6
  * http://amsul.github.io/pickadate.js/time.htm
@@ -3040,7 +3042,7 @@ return PickerConstructor
 
     // Node.js/browserify.
     else if ( typeof exports == 'object' )
-        module.exports = factory( require('./picker.js'), require('jquery') )
+        module.exports = factory( require(7), require(10) )
 
     // Browser globals.
     else factory( Picker, jQuery )
@@ -4041,8 +4043,12 @@ Picker.extend( 'pickatime', TimePicker )
 
 
 
-},{"./picker.js":7,"jquery":10}],9:[function(require,module,exports){
+},{"10":10,"7":7}],9:[function(require,module,exports){
 (function (global){
+
+; jQuery = global.jQuery = require(10);
+_ = global._ = require(11);
+Eventable = global.Eventable = require(5);
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
  * Sir Trevor JS v0.3.2
@@ -7218,7 +7224,7 @@ Picker.extend( 'pickatime', TimePicker )
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{"10":10,"11":11,"5":5}],10:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
