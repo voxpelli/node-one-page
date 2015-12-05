@@ -1,68 +1,10 @@
 {
+  "extends": "semistandard",
   "root": true,
   "env": {
     "browser": true,
-    "jquery": true
-  },
-  "globals": {},
-  "rules": {
-    "semi": 0,
-    "no-bitwise": 2,
-    "camelcase": 0,
-    "curly": [
-      2,
-      "all"
-    ],
-    "eqeqeq": 2,
-    "no-extend-native": 2,
-    "wrap-iife": 2,
-    "indent": [
-      2,
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
-    "no-use-before-define": 2,
-    "comma-style": [1, "last"],
-    "new-cap": 2,
-    "no-caller": 2,
-    "no-empty": 2,
-    "no-irregular-whitespace": 2,
-    "no-new": 2,
-    "strict": [2, "function"],
-    "no-undef": 2,
-    "no-unused-vars": 2,
-    "no-with": 2,
-    "brace-style": 2,
-    "no-mixed-spaces-and-tabs": 2,
-    "no-multi-str": 2,
-    "space-unary-ops": 0,
-    "space-before-function-paren": [2, {"anonymous": "always", "named": "never"}],
-    "array-bracket-spacing": [
-      2,
-      "never",
-      {
-        "singleValue": true
-      }
-    ],
-    "space-in-parens": [
-      2,
-      "never"
-    ],
-    "no-trailing-spaces": 2,
-    "dot-notation": 2,
-    "eol-last": 2,
-    "space-infix-ops": 2,
-    "space-return-throw-case": 0,
-    "space-after-keywords": [
-      2,
-      "always"
-    ],
-    "space-before-blocks": [
-      2,
-      "always"
-    ],
-    "key-spacing": [2, { "beforeColon": false, "afterColon": true, "mode": "minimum" }],
+    "commonjs": true,
+    "es6": false,
+    "node": false
   }
 }

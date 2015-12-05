@@ -1,5 +1,6 @@
 {
   "extends": "semistandard",
+  "root": true,
   "rules": {
     "key-spacing": [2, { "beforeColon": false, "afterColon": true, "mode": "minimum" }],
     "comma-dangle": [2, "always-multiline"],

@@ -1,8 +1,11 @@
-/*jslint browser: true */
-/* global SirTrevor, _, base58 */
-SirTrevor.Blocks.Flickr = (function () {
-  "use strict";
+'use strict';
 
+var $ = require('jquery');
+var _ = require('underscore');
+var base58 = require('../vendor/base58');
+var SirTrevor = require('../vendor/sir-trevor');
+
+module.exports = (function () {
   return SirTrevor.Block.extend({
 
     flickrRegex: /(?:http[s]?:\/\/)?(?:www.)?(?:(?:(flickr.com)\/photos\/[^\/]+\/)|(?:(flic.kr)\/p\/))(\w+)/,
@@ -35,10 +38,11 @@ SirTrevor.Blocks.Flickr = (function () {
         return false;
       }
 
-      var match = this.flickrRegex.exec(url), photoID;
+      var match = this.flickrRegex.exec(url);
+      var photoID;
 
       if (match === null || _.isUndefined(match[3])) {
-        this.addMessage("Invalid Flickr URL");
+        this.addMessage('Invalid Flickr URL');
         return false;
       }
 
@@ -82,7 +86,7 @@ SirTrevor.Blocks.Flickr = (function () {
     },
 
     onFetchFail: function () {
-      this.addMessage("Failed to fetch data from Flickr");
+      this.addMessage('Failed to fetch data from Flickr');
       this.ready();
     },
 
@@ -91,5 +95,4 @@ SirTrevor.Blocks.Flickr = (function () {
       this.handleDropPaste(url);
     }
   });
-
 }());

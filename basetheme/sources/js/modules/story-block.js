@@ -1,8 +1,11 @@
-/*jslint browser: true */
-/* global SirTrevor, _ */
-SirTrevor.Blocks.Story = (function () {
-  "use strict";
+'use strict';
 
+var $ = require('jquery');
+var _ = require('underscore');
+var SirTrevor = require('../vendor/sir-trevor');
+var FlickrBlock = require('./flickr-block');
+
+module.exports = (function () {
   var template = _.template([
     '<div class="st-required st-text-block" data-st-name="Main description" contenteditable="true"></div>',
     '<div class="st-input-field-wrapper"><label class="st-input-label">Quote</label>',
@@ -13,9 +16,9 @@ SirTrevor.Blocks.Story = (function () {
     '<input maxlength="140" name="video" class="st-input-string js-video-input" type="text" placeholder="http://example.com/video" /></div>',
     '<div class="st-input-field-wrapper"><label class="st-input-label">Flickr</label>',
     '<input maxlength="140" name="flickrUrl" class="st-input-string js-flickr-input" type="text" placeholder="https://www.flickr.com/photos/bohman/14162064034/" /><div class="st-image-thumbnail"></div></div>'
-  ].join("\n"));
+  ].join('\n'));
 
-  return SirTrevor.Blocks.Flickr.extend({
+  return FlickrBlock.extend({
     type: 'story',
     icon_name: 'quote',
 

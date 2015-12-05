@@ -13,7 +13,7 @@
  * https://gist.github.com/inflammable/2929362
  */
 
-var base58 = (function(alpha) {
+module.exports = (function(alpha) {
     var alphabet = alpha || '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
         base = alphabet.length;
     return {

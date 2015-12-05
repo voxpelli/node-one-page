@@ -1,7 +1,23 @@
-/* global confirm, ace, SirTrevor */
-(function ($) {
-  "use strict";
+/* global ace */
 
+'use strict';
+
+// Full CommonJS modules
+
+global.jQuery = require('jquery');
+global._ = require('underscore');
+global.Eventable = require('./vendor/eventable');
+
+require('./vendor/picker.time');
+
+var SirTrevor = require('./vendor/sir-trevor');
+
+SirTrevor.Blocks.Flickr = require('./modules/flickr-block');
+SirTrevor.Blocks.Story = require('./modules/story-block');
+
+require('./vendor/jquery.form');
+
+(function ($) {
   $('button[name="deleteimage"]').click(function (e) {
     if (!confirm('Säker på att du vill ta bort bilden?')) {
       e.preventDefault();
@@ -9,12 +25,12 @@
   });
 
   $('button[name="remove"]').closest('form').ajaxForm({
-    dataType : 'json',
-    beforeSubmit : function (arr, $form) {
+    dataType: 'json',
+    beforeSubmit: function (arr, $form) {
       var title = $form.closest('tr').find('.title').text();
       return confirm('Säker på att du vill ta bort "' + title + '"?');
     },
-    success : function (data, statusText, xhr, $form) {
+    success: function (data, statusText, xhr, $form) {
       if (data && data.success) {
         $form.closest('tr').remove();
       }
@@ -24,7 +40,9 @@
   (function () {
     var $menu = $('<ul />').addClass('menu');
     $('div.admin-puffs .admin-part h3').each(function (index) {
-      var $this = $(this), $adminPart = $this.closest('.admin-part'), $a;
+      var $this = $(this);
+      var $adminPart = $this.closest('.admin-part');
+      var $a;
       $a = $('<a />')
         .addClass('button')
         .attr('href', '#' + $this.attr('id'))
@@ -67,9 +85,9 @@
     editorElem = $('<div />').insertBefore($textarea.hide());
 
     editor = ace.edit(editorElem.get(0));
-    editor.setTheme("ace/theme/monokai");
+    editor.setTheme('ace/theme/monokai');
     if (syntax) {
-      editor.getSession().setMode("ace/mode/" + syntax);
+      editor.getSession().setMode('ace/mode/' + syntax);
     }
     editor.getSession().setTabSize(2);
     editor.getSession().setUseSoftTabs(true);
@@ -88,12 +106,12 @@
       SirTrevor.Blocks.Flickr.prototype.flickrKey = window.vtConfig.admin.flickrKey;
     }
 
-    /*eslint-disable no-new */
+    /* eslint-disable no-new */
     new SirTrevor.Editor({
       blockTypes: window.vtConfig.admin.blockTypes,
       el: $('.sir-trevor').first()
     });
-    /*eslint-enable no-new */
+    /* eslint-enable no-new */
   }
 
   // Date picker
@@ -107,8 +125,8 @@
     format: 'HH:i',
     interval: 15,
     container: $('#main'),
-    min: [8,0],
-    max: [22,0]
+    min: [8, 0],
+    max: [22, 0]
   });
 
   if ($start.val()) {
@@ -140,4 +158,4 @@
 
     oldStartTime = startVal.time;
   });
-}($));
+}(global.jQuery));

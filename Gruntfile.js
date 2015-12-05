@@ -22,12 +22,12 @@ module.exports = function (grunt) {
         'test/**/*.js',
         'basetheme/index.js',
         'basetheme/sources/js/**/*.js',
-        '!basetheme/sources/js/vendor/**/*.js',
       ],
     },
     lintspaces: {
       files: [
         '<%= eslint.src %>',
+        '!basetheme/sources/js/vendor/**/*.js',
         'basetheme/sources/sass/**/*.scss',
         '!basetheme/sources/sass/vendor/**/*.scss',
       ],
@@ -51,47 +51,28 @@ module.exports = function (grunt) {
         src: 'test/**/*.spec.js',
       },
     },
-    concat: {
-      options: {
-        separator: ';',
+    browserify: {
+      dist: {
+        files: {
+          'basetheme/public/admin.js': ['basetheme/sources/js/admin.js'],
+        },
       },
-      footer: {
-        src: [
-          'basetheme/sources/js/vendor/jquery.js',
-        ],
-        dest: 'basetheme/public/footer.js',
-      },
-      admin: {
-        src: [
-          'basetheme/sources/js/vendor/base58.js',
-          'basetheme/sources/js/vendor/jquery.form.js',
-          'basetheme/sources/js/vendor/underscore.js',
-          'basetheme/sources/js/vendor/eventable.js',
-          'basetheme/sources/js/vendor/sir-trevor.js',
-          'basetheme/sources/js/modules/flickr-block.js',
-          'basetheme/sources/js/modules/story-block.js',
-          'basetheme/sources/js/vendor/picker.js',
-          'basetheme/sources/js/vendor/picker.legacy.js',
-          'basetheme/sources/js/vendor/picker.time.js',
-          'basetheme/sources/js/admin.js',
-        ],
-        dest: 'basetheme/public/admin.js',
+      watch: {
+        options: {
+          watch: true,
+        },
+        files: ['<%= browserify.dist.files %>'],
       },
     },
     uglify: {
       dist: {
         files: {
-          'basetheme/public/footer.min.js': ['basetheme/public/footer.js'],
           'basetheme/public/admin.min.js': ['basetheme/public/admin.js'],
         },
       },
     },
     sass: {
       options: {
-        files: {
-          'basetheme/public/styles.css': 'basetheme/sources/sass/base.scss',
-          'basetheme/public/admin.css': 'basetheme/sources/sass/admin.scss',
-        },
         // Ensure that the child themes can include stuff from the parent theme
         includePaths: ['basetheme/sources/sass/'],
       },
@@ -110,7 +91,10 @@ module.exports = function (grunt) {
           sourceMap: true,
           sourceMapContents: true,
         },
-        files: ['<%= sass.options.files %>'],
+        files: {
+          'basetheme/public/styles.css': 'basetheme/sources/sass/base.scss',
+          'basetheme/public/admin.css': 'basetheme/sources/sass/admin.scss',
+        },
       },
     },
     bowercopy: {
@@ -123,7 +107,6 @@ module.exports = function (grunt) {
         },
         files: {
           'jquery.form.js': 'jquery-form:main',
-          'jquery.js': 'jquery:main',
           'picker.js': 'pickadate/lib/picker.js',
           'picker.legacy.js': 'pickadate/lib/legacy.js',
           'picker.time.js': 'pickadate/lib/picker.time.js',
@@ -148,8 +131,11 @@ module.exports = function (grunt) {
         tasks: ['test-js'],
       },
       js : {
-        files: ['basetheme/sources/js/**/*.js'],
-        tasks: ['build-js'],
+        files: [
+          'basetheme/public/**/*.js',
+          '!basetheme/public/**/*.min.js',
+        ],
+        tasks: ['uglify'],
       },
       sass : {
         files: ['basetheme/sources/sass/**/*.scss'],
@@ -160,6 +146,7 @@ module.exports = function (grunt) {
         files: [
           'basetheme/public/**/*.css',
           'basetheme/public/**/*.js',
+          '!basetheme/public/**/*.min.js',
         ],
       },
     },
@@ -170,7 +157,7 @@ module.exports = function (grunt) {
     'grunt-sass',
     'grunt-contrib-watch',
     'grunt-contrib-uglify',
-    'grunt-contrib-concat',
+    'grunt-browserify',
     'grunt-fontello',
     'grunt-eslint',
     'grunt-lintspaces',
@@ -193,11 +180,13 @@ module.exports = function (grunt) {
   grunt.registerTask('test-css', [/* 'sasslint' */]);
   grunt.registerTask('test', ['test-js', 'test-css']);
 
-  grunt.registerTask('build-js', ['concat', 'uglify']);
+  grunt.registerTask('build-js', ['browserify:dist', 'uglify']);
   grunt.registerTask('build-css', ['sass:dev', 'sass:dist']);
   grunt.registerTask('build', ['test', 'build-js', 'build-css']);
 
   grunt.registerTask('bower', ['bowercopy', 'build']);
+
+  grunt.registerTask('full-watch', ['browserify:watch', 'watch']);
 
   grunt.registerTask('default', ['build']);
 
