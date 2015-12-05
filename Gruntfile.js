@@ -68,6 +68,9 @@ module.exports = function (grunt) {
       },
     },
     uglify: {
+      options: {
+        screwIE8: true,
+      },
       dist: {
         files: {
           'basetheme/public/admin.min.js': ['basetheme/public/admin.js'],
