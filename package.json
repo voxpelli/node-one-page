@@ -25,6 +25,7 @@
     "knex": "~0.9.0",
     "knex-migrator-extension": "^0.1.3",
     "lodash": "^3.0.0",
+    "lru-cache": "^3.2.0",
     "marked": "~0.3.3",
     "passport": ">= 0.1.1",
     "passport-github": "^1.0.0",
