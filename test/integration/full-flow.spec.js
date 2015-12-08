@@ -1,20 +1,20 @@
 'use strict';
 
-var chai = require('chai');
-var request = require('supertest-as-promised');
+const chai = require('chai');
+const request = require('supertest-as-promised');
 
 chai.should();
 
 //TODO: Ensure all features are activated no matter the .env
 
 describe('Node One Page – Full Flow', function () {
-  var VTOnePage = require('../../');
-  var dbUtils = require('../db-setup');
+  const VTOnePage = require('../../');
+  const dbUtils = require('../db-setup');
 
-  var config;
-  var appInstance;
-  var app;
-  var agent;
+  let config;
+  let appInstance;
+  let app;
+  let agent;
 
   beforeEach(function () {
     config = VTOnePage.ExpressConfig.getConfig({});

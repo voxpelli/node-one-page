@@ -1,17 +1,17 @@
 'use strict';
 
-var chai = require('chai');
-var request = require('supertest-as-promised');
+const chai = require('chai');
+const request = require('supertest-as-promised');
 
 chai.should();
 
 describe('Node One Page – Admin', function () {
-  var VTOnePage = require('../../');
-  var dbUtils = require('../db-setup');
+  const VTOnePage = require('../../');
+  const dbUtils = require('../db-setup');
 
-  var config;
-  var appInstance;
-  var app;
+  let config;
+  let appInstance;
+  let app;
 
   beforeEach(function () {
     config = VTOnePage.ExpressConfig.getConfig({});
@@ -43,7 +43,7 @@ describe('Node One Page – Admin', function () {
 
   describe('authentication', function () {
     it('should be able to log in with the Dummy strategy', function () {
-      var agent = request.agent(app);
+      let agent = request.agent(app);
 
       return agent
         .post('/admin/auth/dummy')
@@ -59,7 +59,7 @@ describe('Node One Page – Admin', function () {
   });
 
   describe('/admin', function () {
-    var agent;
+    let agent;
 
     beforeEach(function () {
       agent = request.agent(app);

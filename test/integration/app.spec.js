@@ -1,14 +1,14 @@
 'use strict';
 
-var request = require('supertest-as-promised');
+const request = require('supertest-as-promised');
 
 describe('Node One Page – Main', function () {
-  var VTOnePage = require('../../');
-  var dbUtils = require('../db-setup');
+  const VTOnePage = require('../../');
+  const dbUtils = require('../db-setup');
 
-  var config;
-  var appInstance;
-  var app;
+  let config;
+  let appInstance;
+  let app;
 
   beforeEach(function () {
     config = VTOnePage.ExpressConfig.getConfig({});
