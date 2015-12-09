@@ -2,6 +2,9 @@
 
 const chai = require('chai');
 const request = require('supertest-as-promised');
+const logger = require('bunyan-adaptor')({
+  verbose: function () {},
+});
 
 chai.should();
 
@@ -18,7 +21,9 @@ describe('Node One Page – Full Flow', function () {
 
   beforeEach(function () {
     config = VTOnePage.ExpressConfig.getConfig({});
-    appInstance = new VTOnePage(config);
+    appInstance = new VTOnePage(config, {
+      logger: logger,
+    });
     app = appInstance.getApp();
     agent = request.agent(app);
 

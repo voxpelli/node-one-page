@@ -2,6 +2,9 @@
 
 const chai = require('chai');
 const request = require('supertest-as-promised');
+const logger = require('bunyan-adaptor')({
+  verbose: function () {},
+});
 
 chai.should();
 
@@ -15,7 +18,9 @@ describe('Node One Page – Admin', function () {
 
   beforeEach(function () {
     config = VTOnePage.ExpressConfig.getConfig({});
-    appInstance = new VTOnePage(config);
+    appInstance = new VTOnePage(config, {
+      logger: logger,
+    });
     app = appInstance.getApp();
 
     return dbUtils.setup(appInstance);

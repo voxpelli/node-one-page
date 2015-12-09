@@ -1,6 +1,9 @@
 'use strict';
 
 const request = require('supertest-as-promised');
+const logger = require('bunyan-adaptor')({
+  verbose: function () {},
+});
 
 describe('Node One Page – Extended', function () {
   const VTOnePage = require('../../');
@@ -14,7 +17,9 @@ describe('Node One Page – Extended', function () {
   const createApp = function (protoProps, staticProps) {
     AppClass = VTOnePage.extend(protoProps, staticProps);
     config = AppClass.ExpressConfig.getConfig({});
-    appInstance = new AppClass(config);
+    appInstance = new AppClass(config, {
+      logger: logger,
+    });
     app = appInstance.getApp();
 
     return dbUtils.setup(appInstance);
