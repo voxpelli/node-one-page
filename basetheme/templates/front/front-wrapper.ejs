@@ -1,12 +1,12 @@
 <% stylesheet(furl('/styles.css', '/styles.min.css')) %>
 
 <% block('front', true) -%>
-<% block('title', dictionary.sitename) -%>
-<% block('pageTitle', dictionary.sitename) -%>
+<% block('title', data.dictionary.sitename) -%>
+<% block('pageTitle', data.dictionary.sitename) -%>
 
-<% if (data.vars && data.vars['extracode-css']) block('cssconfig', data.vars['extracode-css'].body) -%>
+<% if (data['extracode-css']) block('cssconfig', data['extracode-css'].body) -%>
 
-<% block('jsconfig', 'vtConfig.dictionary = ' + JSON.stringify(jsDictionary) + ';') -%>
+<% block('jsconfig', 'vtConfig.dictionary = ' + JSON.stringify(data.dictionary.jsDictionary) + ';') -%>
 <% block('jsconfig', 'vtConfig.activeFeatures = ' + JSON.stringify(clientFeatures) + ';') -%>
 <% block('menu', '<li><a href="/#top">Start</a></li>' + (block('menu') || ''), true) -%>
 
