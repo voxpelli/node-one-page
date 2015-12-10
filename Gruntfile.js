@@ -53,6 +53,7 @@ module.exports = function (grunt) {
     },
     browserify: {
       options: {
+        // TODO: Can this maybe be replaced with the "full-paths: false" option instead?
         plugin: [require('bundle-collapser/plugin')],
       },
       dist: {
