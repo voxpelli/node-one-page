@@ -17,6 +17,10 @@
   <% if (block('cssconfig')) { %>
     <style><%- block('cssconfig') %></style>
   <% } %>
+
+  <% if (block('front')) { -%>
+    <link rel="canonical" href="<%= configHost %>/" />
+  <% } -%>
 </head>
 
 <body id="top">
