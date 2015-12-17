@@ -116,11 +116,11 @@ section.admin {
       vertical-align: top;
     }
   }
-  h3 {
+  h3, h4, h5, h6 {
     font-family: $font-special-serif;
     font-weight: normal;
   }
-  h3, button, div.field .error_msg, fieldset, .help, .actions {
+  h3, h4, h5, h6, button, div.field .error_msg, fieldset, .help, .actions {
     margin-left: $label_width;
   }
   .help {

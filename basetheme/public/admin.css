@@ -2171,12 +2171,12 @@ section.admin div.field img {
   vertical-align: top;
 }
 
-section.admin h3 {
+section.admin h3, section.admin h4, section.admin h5, section.admin h6 {
   font-family: Georgia, serif;
   font-weight: normal;
 }
 
-section.admin h3, section.admin button, section.admin div.field .error_msg, section.admin fieldset, section.admin .help, section.admin .actions {
+section.admin h3, section.admin h4, section.admin h5, section.admin h6, section.admin button, section.admin div.field .error_msg, section.admin fieldset, section.admin .help, section.admin .actions {
   margin-left: 12%;
 }
 
