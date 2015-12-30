@@ -1,6 +1,8 @@
 'use strict';
 
 var _ = require('lodash');
+var ejs = require('ejs');
+
 var theme;
 var preprocessors = [];
 var processor;
@@ -118,8 +120,15 @@ theme = {
   publicPath : __dirname + '/public/',
   preprocessors : preprocessors,
   processor : processor,
+  initializeTheme: function (temaInstance) {
+    if (temaInstance.options.cache) {
+      ejs.cache = require('lru-cache')(100);
+    }
+  },
   options : {
-    renderer : require('ejs').renderFile,
+    renderer : function (path, data, callback) {
+      ejs.renderFile(path, data, { cache: true }, callback);
+    },
     templateExtension : 'ejs',
     vtOnePageUnsupported: [ 'map', 'video' ],
   },

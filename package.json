@@ -36,7 +36,7 @@
     "serve-static": "^1.10.0",
     "static-expiry": "0.0.11",
     "strftime": "~0.9.0",
-    "tema": "~0.2.0",
+    "tema": "~0.2.3",
     "underscore": "~1.6.0",
     "vp-express-wrapper": "^0.6.0"
   },
