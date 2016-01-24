@@ -23,7 +23,7 @@ $('button[name="deleteimage"]').click(function (e) {
 $('button[name="remove"]').closest('form').ajaxForm({
   dataType: 'json',
   beforeSubmit: function (arr, $form) {
-    var title = $form.closest('tr').find('.title').text();
+    var title = $form.closest('tr').find('.title').text().trim();
     return confirm('Säker på att du vill ta bort "' + title + '"?');
   },
   success: function (data, statusText, xhr, $form) {

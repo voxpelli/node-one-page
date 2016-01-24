@@ -1,0 +1,57 @@
+<table>
+  <tr>
+    <% columns.forEach(function (column) { %>
+      <th
+        scope="col"
+        <% if (column.className) { %> class="<%= column.className %>" <% } %>
+      ><%= column.title %></th>
+    <% }); %>
+    <% if (features.modified) {%>
+      <th scope="col" class="modified"><%= features.modified === true ? 'Senast ändrad' : features.modified %></th>
+    <% } %>
+    <% if (features.actions) {%>
+      <th scope="col" class="actions">Åtgärder</th>
+    <% } %>
+  </tr>
+  <% list.forEach(function (el) { %>
+    <% var link = features.link; %>
+    <tr>
+      <% columns.forEach(function (column) { %>
+        <td
+          <% if (column.className) { %> class="<%= column.className %>" <% } %>
+        >
+          <% if (link) { %>
+            <% link = (typeof link === 'function' ? link(el) : link); %>
+            <a href="<%= link.replace(':id', encodeURIComponent(el.id)) %>">
+          <% } %>
+            <%= el[column.key] %>
+          <% if (link) { %>
+            </a>
+            <% link = false; %>
+          <% } %>
+        </td>
+      <% }); %>
+      <% if (features.modified) {%>
+        <td class="modified"><%= prettydate(new Date(el.modified)) %></td>
+      <% } %>
+      <% if (features.actions || features.customActions) {%>
+        <td class="actions">
+          <% var customActions = (typeof features.customActions === 'function' ? features.customActions(el) : features.customActions) || []; %>
+          <% customActions.forEach(function (action) { %>
+            <a href="<%= baseUrl + action.path.replace(':id', encodeURIComponent(el.id)) %>" class="button"><%= action.name %></a>
+          <% }); %>
+          <% if (features.actions.edit) {%>
+            <a href="<%= baseUrl + path + '/' + encodeURIComponent(el.id) + hash %>" class="button">Ändra</a>
+          <% } %>
+          <% if (features.actions.delete) {%>
+            <form action="<%= baseUrl + path + '/' + encodeURIComponent(el.id) %>?_method=delete" method="post">
+              <div>
+                <button class="danger" type="submit" name="remove">Ta bort</button>
+              </div>
+            </form>
+          <% } %>
+        </td>
+      <% } %>
+    </tr>
+  <% }); %>
+</table>

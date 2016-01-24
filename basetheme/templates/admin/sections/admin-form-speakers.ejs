@@ -1,7 +1,7 @@
 <% block('menu', '<li><a href="#speakers">' + escape(dictionaryData.speakers) + '</a></li>'); -%>
 <div class="admin-part">
   <h3 id="speakers"><%= dictionaryData.speakers %></h3>
-  <form action="/admin/speakers" method="post" enctype="multipart/form-data">
+  <form action="<%=  baseUrl %>/speakers" method="post" enctype="multipart/form-data">
     <div>
       <%- form.toHTML() %>
       <div class="actions">
@@ -23,9 +23,9 @@
         <td class="title"><%= el.name %></td>
         <td class="modified"><%= prettydate(new Date(el.modified)) %></td>
         <td class="actions">
-          <form action="/admin/speakers/<%= encodeURIComponent(el.id) %>?_method=delete" method="post">
+          <form action="<%=  baseUrl %>/speakers/<%= encodeURIComponent(el.id) %>?_method=delete" method="post">
             <div>
-              <a href="/admin/speakers/<%= encodeURIComponent(el.id) %>#speakers" class="button">Ändra</a>
+              <a href="<%=  baseUrl %>/speakers/<%= encodeURIComponent(el.id) %>#speakers" class="button">Ändra</a>
 
               <button class="danger" type="submit" name="remove">Ta bort</button>
             </div>

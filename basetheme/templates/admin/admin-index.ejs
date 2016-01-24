@@ -8,7 +8,7 @@
 <% script(furl('/admin.js', '/admin.min.js')) -%>
 <section class="admin">
   <div class="wrapper">
-    <h2>Admin</h2>
+    <h2>Admin<%= adminTitle ? ' – ' + adminTitle : '' %></h2>
     <%- content %>
   </div>
 </div>

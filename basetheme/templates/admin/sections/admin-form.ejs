@@ -7,7 +7,7 @@
   <% } else { %>
     <span id="<%= formData.id %>"></span>
   <% } %>
-  <form class="form-<%= formData.id %>" action="/admin/<%= formData.id %>#<%= formData.id %>" method="post" enctype="<%- formData.multipart ? 'multipart/form-data' : 'application/x-www-form-urlencoded' %>">
+  <form class="form-<%= formData.id %>" action="<%= baseUrl + '/' + formData.id %>#<%= formData.id %>" method="post" enctype="<%- formData.multipart ? 'multipart/form-data' : 'application/x-www-form-urlencoded' %>">
     <div>
       <% var resolvedForm = typeof form === 'undefined' ? formData.form : form; %>
 
@@ -21,8 +21,8 @@
       <%- resolvedForm.toHTML() %>
       <button type="submit" name="create">
         <%- typeof canAdd === 'undefined' || (resolvedForm.data && resolvedForm.data.id) ? 'Uppdatera' : 'Lägg till' %>
-        <% if (formData.name) { -%>
-          <%= formData.name.toLowerCase() %>
+        <% if (formData.singularName) { -%>
+          <%= formData.singularName.toLowerCase() %>
         <% } -%>
       </button>
     </div>

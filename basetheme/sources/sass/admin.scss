@@ -156,6 +156,10 @@ section.admin table {
   }
   td.actions {
     text-align: right;
+
+    form, div {
+      display: inline;
+    }
   }
 }
 

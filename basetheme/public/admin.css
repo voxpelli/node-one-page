@@ -2227,6 +2227,10 @@ section.admin table td.actions {
   text-align: right;
 }
 
+section.admin table td.actions form, section.admin table td.actions div {
+  display: inline;
+}
+
 section.login form, section.login form > div {
   display: inline;
 }

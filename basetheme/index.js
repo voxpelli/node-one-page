@@ -131,6 +131,17 @@ theme = {
     },
     templateExtension : 'ejs',
     vtOnePageUnsupported: [ 'map', 'video' ],
+    vtOnePageTemplates: {
+      'sub-page': {
+        name: 'Undersida',
+        template: false,
+      },
+      'default': {
+        name: 'Framsida',
+        globalData: true,
+        template: false,
+      },
+    },
   },
 };
 
