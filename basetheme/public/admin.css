@@ -2102,7 +2102,7 @@ section.admin div.field label {
   font-size: 1.2em;
 }
 
-section.admin div.field input, section.admin div.field textarea, section.admin div.field select, section.admin div.field .error_msg, section.admin div.field fieldset, section.admin div.field .ace_editor {
+section.admin div.field input:not([type="checkbox"]), section.admin div.field textarea, section.admin div.field select, section.admin div.field .error_msg, section.admin div.field fieldset, section.admin div.field .ace_editor {
   width: 40%;
   max-width: 40%;
   min-width: 300px;
@@ -2113,7 +2113,7 @@ section.admin div.field input, section.admin div.field textarea, section.admin d
   transition: background-color 1s;
 }
 
-section.admin div.field input.updated, section.admin div.field textarea.updated, section.admin div.field select.updated, section.admin div.field .error_msg.updated, section.admin div.field fieldset.updated, section.admin div.field .ace_editor.updated {
+section.admin div.field input:not([type="checkbox"]).updated, section.admin div.field textarea.updated, section.admin div.field select.updated, section.admin div.field .error_msg.updated, section.admin div.field fieldset.updated, section.admin div.field .ace_editor.updated {
   background-color: #fff886;
   -webkit-transition: none;
   -o-transition: none;
@@ -2214,7 +2214,7 @@ section.admin table th.actions, section.admin table td.actions {
   width: 25%;
 }
 
-section.admin table td:nth-of-type(3n + 2), section.admin table tr:nth-of-type(2n + 1) td {
+section.admin table td:nth-of-type(3n + 3), section.admin table tr:nth-of-type(2n + 1) td {
   background: #f2f2f2;
 }
 

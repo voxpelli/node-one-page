@@ -15,12 +15,14 @@
   <table>
     <tr>
       <th scope="col" class="title">Namn</th>
+      <th scope="col" class="published">Publicerad</th>
       <th scope="col" class="modified">Senast ändrad</th>
       <th scope="col" class="actions">Åtgärder</th>
     </tr>
     <% formData.list.forEach(function (el) { %>
       <tr>
         <td class="title"><%= el.name %></td>
+        <td class="published"><%= el.published ? 'Ja' : 'Nej' %></td>
         <td class="modified"><%= prettydate(new Date(el.modified)) %></td>
         <td class="actions">
           <form action="<%=  baseUrl %>/speakers/<%= encodeURIComponent(el.id) %>?_method=delete" method="post">

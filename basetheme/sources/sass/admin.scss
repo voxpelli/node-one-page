@@ -54,7 +54,7 @@ section.admin {
       text-align: right;
       font-size: 1.2em;
     }
-    input, textarea, select, .error_msg, fieldset, .ace_editor {
+    input:not([type="checkbox"]), textarea, select, .error_msg, fieldset, .ace_editor {
       width: 40%;
       max-width: 40%;
       min-width: 300px;
@@ -147,7 +147,7 @@ section.admin table {
     &.modified { width: 20% }
     &.actions { width: 25% }
   }
-  td:nth-of-type(3n + 2), tr:nth-of-type(2n + 1) td {
+  td:nth-of-type(3n + 3), tr:nth-of-type(2n + 1) td {
     background: $color-zebra;
   }
   a.button, button {
