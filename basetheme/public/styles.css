@@ -635,7 +635,7 @@ section.speakers .social a:after {
   }
 }
 
-input[type=text], textarea, select, .error_msg,
+input[type=text], input[type=email], input[type=password], textarea, select, .error_msg,
 input.text, selext.select {
   font-size: 1.8em;
   border-radius: 5px;
