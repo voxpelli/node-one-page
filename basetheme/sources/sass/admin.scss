@@ -54,7 +54,7 @@ section.admin {
       text-align: right;
       font-size: 1.2em;
     }
-    input:not([type="checkbox"]), textarea, select, .error_msg, fieldset, .ace_editor {
+    input:not([type="checkbox"]):not([type="radio"]), textarea, select, .error_msg, fieldset, .ace_editor {
       width: 40%;
       max-width: 40%;
       min-width: 300px;
