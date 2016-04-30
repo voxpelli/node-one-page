@@ -8,7 +8,7 @@ input.text, selext.select {
   -moz-box-sizing: content-box;
   box-sizing: content-box;
 }
-a.button, button:not(.st-format-btn), input[type=submit] {
+.button, a.button, button:not(.st-format-btn), input[type=submit] {
   display: inline-block;
   padding: (12em / 18) (19em / 18) (10em / 18);
   margin-bottom: 4px;
@@ -20,6 +20,10 @@ a.button, button:not(.st-format-btn), input[type=submit] {
   cursor: pointer;
   border: 0 solid #000;
   border-radius: $border-radius;
+
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 
   @include button-color($color-button);
 

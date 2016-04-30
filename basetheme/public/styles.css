@@ -645,7 +645,7 @@ input.text, selext.select {
   box-sizing: content-box;
 }
 
-a.button, button:not(.st-format-btn), input[type=submit] {
+.button, a.button, button:not(.st-format-btn), input[type=submit] {
   display: inline-block;
   padding: 0.6666666667em 1.0555555556em 0.5555555556em;
   margin-bottom: 4px;
@@ -657,64 +657,67 @@ a.button, button:not(.st-format-btn), input[type=submit] {
   cursor: pointer;
   border: 0 solid #000;
   border-radius: 5px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   box-shadow: 0 4px #dfb940;
   background-color: #F8CE47;
   color: #000;
   position: relative;
 }
 
-a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
+.button:after, a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
   background: #dfb940;
 }
 
-a.button:hover, button:not(.st-format-btn):hover, input[type=submit]:hover {
+.button:hover, a.button:hover, button:not(.st-format-btn):hover, input[type=submit]:hover {
   box-shadow: 0 4px #e6bf42;
   background-color: #ffd449;
 }
 
-a.button:hover:after, button:not(.st-format-btn):hover:after, input[type=submit]:hover:after {
+.button:hover:after, a.button:hover:after, button:not(.st-format-btn):hover:after, input[type=submit]:hover:after {
   background: #e6bf42;
 }
 
-a.button.action, a.button[type=submit], button:not(.st-format-btn).action, button:not(.st-format-btn)[type=submit], input[type=submit].action, input[type=submit][type=submit] {
+.button.action, .button[type=submit], a.button.action, a.button[type=submit], button:not(.st-format-btn).action, button:not(.st-format-btn)[type=submit], input[type=submit].action, input[type=submit][type=submit] {
   box-shadow: 0 4px #4c8b05;
   background-color: #5aa406;
   color: #fff;
 }
 
-a.button.action:after, a.button[type=submit]:after, button:not(.st-format-btn).action:after, button:not(.st-format-btn)[type=submit]:after, input[type=submit].action:after, input[type=submit][type=submit]:after {
+.button.action:after, .button[type=submit]:after, a.button.action:after, a.button[type=submit]:after, button:not(.st-format-btn).action:after, button:not(.st-format-btn)[type=submit]:after, input[type=submit].action:after, input[type=submit][type=submit]:after {
   background: #4c8b05;
 }
 
-a.button.action:hover, a.button[type=submit]:hover, button:not(.st-format-btn).action:hover, button:not(.st-format-btn)[type=submit]:hover, input[type=submit].action:hover, input[type=submit][type=submit]:hover {
+.button.action:hover, .button[type=submit]:hover, a.button.action:hover, a.button[type=submit]:hover, button:not(.st-format-btn).action:hover, button:not(.st-format-btn)[type=submit]:hover, input[type=submit].action:hover, input[type=submit][type=submit]:hover {
   box-shadow: 0 4px #5aa406;
   background-color: #68be07;
 }
 
-a.button.action:hover:after, a.button[type=submit]:hover:after, button:not(.st-format-btn).action:hover:after, button:not(.st-format-btn)[type=submit]:hover:after, input[type=submit].action:hover:after, input[type=submit][type=submit]:hover:after {
+.button.action:hover:after, .button[type=submit]:hover:after, a.button.action:hover:after, a.button[type=submit]:hover:after, button:not(.st-format-btn).action:hover:after, button:not(.st-format-btn)[type=submit]:hover:after, input[type=submit].action:hover:after, input[type=submit][type=submit]:hover:after {
   background: #5aa406;
 }
 
-a.button.danger, button:not(.st-format-btn).danger, input[type=submit].danger {
+.button.danger, a.button.danger, button:not(.st-format-btn).danger, input[type=submit].danger {
   box-shadow: 0 4px #b92c28;
   background-color: #D2322D;
   color: #fff;
 }
 
-a.button.danger:after, button:not(.st-format-btn).danger:after, input[type=submit].danger:after {
+.button.danger:after, a.button.danger:after, button:not(.st-format-btn).danger:after, input[type=submit].danger:after {
   background: #b92c28;
 }
 
-a.button.danger:hover, button:not(.st-format-btn).danger:hover, input[type=submit].danger:hover {
+.button.danger:hover, a.button.danger:hover, button:not(.st-format-btn).danger:hover, input[type=submit].danger:hover {
   box-shadow: 0 4px #d2322d;
   background-color: #ec3832;
 }
 
-a.button.danger:hover:after, button:not(.st-format-btn).danger:hover:after, input[type=submit].danger:hover:after {
+.button.danger:hover:after, a.button.danger:hover:after, button:not(.st-format-btn).danger:hover:after, input[type=submit].danger:hover:after {
   background: #d2322d;
 }
 
-a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
+.button:after, a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
   content: "";
   display: block;
   position: absolute;
@@ -725,7 +728,7 @@ a.button:after, button:not(.st-format-btn):after, input[type=submit]:after {
   z-index: -1;
 }
 
-a.button::-moz-focus-inner, button:not(.st-format-btn)::-moz-focus-inner, input[type=submit]::-moz-focus-inner {
+.button::-moz-focus-inner, a.button::-moz-focus-inner, button:not(.st-format-btn)::-moz-focus-inner, input[type=submit]::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
