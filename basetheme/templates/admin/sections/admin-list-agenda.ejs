@@ -2,7 +2,7 @@
   <tr>
     <th scope="col" class="title">Titel</th>
     <th scope="col" class="time">Pågår</th>
-    <th scope="col">Spår</th>
+    <th scope="col" class="published">Publicerad</th>
     <th scope="col" class="modified">Senast ändrad</th>
     <th scope="col" class="actions">Åtgärder</th>
   </tr>
@@ -10,7 +10,7 @@
     <tr>
       <td class="title"><%= el.title %></td>
       <td class="time"><%= strftime('%R', new Date('1970-01-01 ' + el.start)) + ' - ' + strftime('%R', new Date('1970-01-01 ' + el.stop)) %></td>
-      <td><%= el.category === 0 ? 'Marknad' : 'Teknik' %></td>
+      <td class="published"><%= el.published ? 'Ja' : 'Nej' %></td>
       <td class="modified"><%= prettydate(new Date(el.modified)) %></td>
       <td class="actions">
         <form action="/admin/agenda/<%= encodeURIComponent(el.id) %>?_method=delete" method="post">
