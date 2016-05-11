@@ -120,9 +120,7 @@ $('input#id_start, input#id_stop').pickatime({
   clear: false,
   format: 'HH:i',
   interval: 15,
-  container: $('#main'),
-  min: [8, 0],
-  max: [22, 0]
+  container: $('#main')
 });
 
 if ($start.val()) {
