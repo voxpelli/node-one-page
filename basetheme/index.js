@@ -92,6 +92,9 @@ preprocessors.speaker = function (data, callback) {
       name = 'Dribbble';
     } else if (type === 'blog') {
       name = 'Blogg';
+    } else if (type === 'video') {
+      url = url;
+      name = 'Video';
     }
 
     links.push({
