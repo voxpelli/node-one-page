@@ -15,6 +15,7 @@
       <td class="actions">
         <form action="/admin/agenda/<%= encodeURIComponent(el.id) %>?_method=delete" method="post">
           <div>
+            <a href="/admin/agenda/<%= encodeURIComponent(el.id) %>/export" class="button">Deltagarlista</a>
             <a href="/admin/agenda/<%= encodeURIComponent(el.id) %>#agenda" class="button">Ändra</a>
 
             <button class="danger" type="submit" name="remove">Ta bort</button>
